@@ -1,0 +1,231 @@
+/* ──────────────────────────────────────────────────────────────
+   Sliding wardrobe shutters: CSS-3D wardrobe with draggable panels
+   (reuses the carcass, interior and lighting from shutters.css)
+   ────────────────────────────────────────────────────────────── */
+.sl-wrap {
+  --dw: 11em;
+  --m-hi: color-mix(in srgb, var(--frame) 52%, #fff);
+  --m-lo: color-mix(in srgb, var(--frame) 62%, #000);
+}
+.cab.sl {
+  cursor: default;
+}
+.sl-panels {
+  inset: 0.5em;
+  transform-style: preserve-3d;
+}
+.sl-panel {
+  --pw: 0.7em;
+  --m-hi: color-mix(in srgb, var(--frame) 52%, #fff);
+  --m-lo: color-mix(in srgb, var(--frame) 62%, #000);
+  position: absolute;
+  top: 0.35em;
+  bottom: 0.35em;
+  width: calc(100% / var(--n));
+  left: calc(var(--x) * 100%);
+  /* each panel runs on its own track, one behind the other */
+  transform: translateZ(calc(0.25em + (var(--n) - 1 - var(--i)) * 0.5em));
+  /* soft-close glide */
+  transition: left 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow:
+    0.5em 0 1.3em rgba(0, 0, 0, 0.45),
+    -0.5em 0 1.3em rgba(0, 0, 0, 0.45);
+  cursor: grab;
+  touch-action: none;
+  outline: none;
+}
+.sl-panel:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 0.3em;
+}
+.sl-panel.is-grabbed {
+  transition: none;
+  cursor: grabbing;
+}
+.sl-panel > * {
+  pointer-events: none;
+}
+.sl-insert {
+  position: absolute;
+  inset: var(--pw);
+  overflow: hidden;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 0 0 0.13em #0d0d0e,
+    inset 0 0 0 0.2em rgba(255, 255, 255, 0.1),
+    inset 0 0 1.2em rgba(0, 0, 0, 0.22);
+}
+/* recessed grip channel in both stiles */
+.sl-grip {
+  position: absolute;
+  inset: 0;
+}
+.sl-grip::before,
+.sl-grip::after {
+  content: "";
+  position: absolute;
+  top: 28%;
+  bottom: 28%;
+  width: 0.22em;
+  border-radius: 0.11em;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.25) 60%, rgba(255, 255, 255, 0.35));
+}
+.sl-grip::before {
+  left: calc(var(--pw) * 0.5 - 0.11em);
+}
+.sl-grip::after {
+  right: calc(var(--pw) * 0.5 - 0.11em);
+  transform: scaleX(-1);
+}
+/* aluminium tracks at the top and bottom, in front of every panel */
+.sl-track {
+  left: 0.3em;
+  right: 0.3em;
+  height: 0.8em;
+  transform: translateZ(calc(0.3em + var(--n) * 0.5em));
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 2px),
+    linear-gradient(180deg, var(--m-lo) 0%, var(--m-hi) 18%, var(--frame) 45%, var(--m-lo) 85%, rgba(0, 0, 0, 0.6) 100%);
+  box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.45);
+}
+.sl-track-top {
+  top: 0.15em;
+}
+.sl-track-bottom {
+  bottom: 0.15em;
+  transform: translateZ(calc(0.3em + var(--n) * 0.5em)) scaleY(-1);
+}
+
+/* ─── finishes ─── */
+.slf-tinted {
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.12) 42%, transparent 52%),
+    linear-gradient(170deg, color-mix(in srgb, var(--fc) 74%, transparent), color-mix(in srgb, var(--fc) 64%, transparent));
+}
+.slf-lacquer {
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.3) 45%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(170deg, color-mix(in srgb, var(--fc) 82%, #fff), var(--fc) 55%, color-mix(in srgb, var(--fc) 80%, #000));
+}
+.slf-fabric {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, color-mix(in srgb, var(--fc) 90%, #fff), color-mix(in srgb, var(--fc) 85%, #000));
+}
+.slf-cane {
+  background:
+    radial-gradient(circle, rgba(20, 16, 12, 0.3) 0 24%, transparent 28%) 0 0 / 1.1em 1.1em,
+    repeating-linear-gradient(45deg, var(--fc) 0 0.16em, transparent 0.16em 0.55em),
+    repeating-linear-gradient(-45deg, var(--fc) 0 0.16em, transparent 0.16em 0.55em),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--fc) 80%, #fff) 0 0.09em, transparent 0.09em 0.55em),
+    color-mix(in srgb, var(--fc) 16%, transparent);
+}
+.slf-print {
+  background-color: #e9e2d8;
+}
+
+/* ─── controls ─── */
+.sl-opt {
+  border-radius: 7px;
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+  transition: outline-color 300ms, transform 300ms var(--ease-out);
+}
+.sl-opt:hover {
+  transform: translateY(-2px);
+}
+.sl-opt.is-active {
+  outline-color: var(--pink);
+}
+.sl-swatch {
+  display: block;
+  width: 44px;
+  height: 56px;
+  border-radius: 6px;
+  font-size: 10px;
+  box-shadow:
+    inset 0 0 0 3px #3a3a3e,
+    0 4px 10px -4px rgba(0, 0, 0, 0.6);
+}
+.sl-swatch.slf-tinted,
+.sl-swatch.slf-cane {
+  background-color: #cfc8bd;
+}
+.sl-upload {
+  height: 56px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+  transition: border-color 300ms, color 300ms, background 300ms;
+}
+.sl-upload span {
+  font-size: 20px;
+  line-height: 1;
+  color: var(--pink-light);
+}
+.sl-upload:hover {
+  border-color: var(--pink);
+  background: rgba(255, 255, 255, 0.04);
+}
+.sl-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+.sl-kinds button {
+  padding: 9px 13px;
+}
+.sl-reveal button {
+  padding: 10px 16px;
+}
+.sp-legend .sl-legend-val {
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 13px;
+}
+.sl-hint {
+  position: absolute !important;
+  top: 28px;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  transform: translateX(-50%);
+  animation: hint-nudge 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes hint-nudge {
+  0%,
+  100% {
+    transform: translateX(-50%);
+  }
+  25% {
+    transform: translateX(calc(-50% - 6px));
+  }
+  75% {
+    transform: translateX(calc(-50% + 6px));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sl-panel {
+    transition: none;
+  }
+  .sl-hint {
+    animation: none;
+  }
+}
