@@ -1,0 +1,324 @@
+/* ──────────────────────────────────────────────────────────────
+   Fabric glass: woven textile laminated between glass
+   ────────────────────────────────────────────────────────────── */
+.fg-wrap {
+  --gz: 0.12em;
+  --pwid: 15em;
+  --phei: 23em;
+  position: relative;
+  display: inline-block;
+}
+.fg-wrap.is-exploded {
+  --gz: 3.4em;
+}
+.fg-scene {
+  position: relative;
+  width: 40em;
+  height: 28em;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--gap, 0);
+  padding-bottom: 2.4em;
+  border-radius: 0.3em;
+  overflow: hidden;
+  perspective: 1500px;
+  background:
+    var(--view, none) center / cover,
+    radial-gradient(ellipse at 50% 30%, #4a453f, #24211f 80%);
+  box-shadow: 0 3em 5em -2em rgba(0, 0, 0, 0.7);
+}
+/* room dims when the backlight is on */
+.fg-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 9, 14, 0.58);
+  opacity: 0;
+  transition: opacity 1000ms var(--ease);
+}
+.is-lit .fg-scene::before {
+  opacity: 1;
+}
+.fg-scene::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2.4em;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 5.5em),
+    linear-gradient(180deg, #6a5140, #3d2d22);
+}
+.fg-panel {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: var(--pwid);
+  height: var(--phei);
+  transform-style: preserve-3d;
+  transform: rotateY(var(--ang));
+  transition: transform 1200ms cubic-bezier(0.6, 0, 0.2, 1);
+}
+.is-exploded .fg-panel {
+  transform: rotateY(-42deg) rotateX(12deg) scale(0.8);
+}
+.fg-panel > span {
+  position: absolute;
+  display: block;
+}
+.fg-layer {
+  inset: 0;
+  transform: translateZ(calc(var(--k) * var(--gz)));
+  transition:
+    transform 1200ms cubic-bezier(0.6, 0, 0.2, 1),
+    opacity 600ms;
+}
+.fg-glass {
+  background: rgba(215, 232, 228, 0.07);
+  box-shadow:
+    inset 0 0 0 0.18em rgba(140, 190, 170, 0.5),
+    inset 0 0 1.4em rgba(140, 190, 170, 0.08);
+}
+.fg-inter {
+  background: rgba(245, 245, 240, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  opacity: 0;
+}
+.is-exploded .fg-inter {
+  opacity: 1;
+}
+.is-exploded .fg-glass {
+  background: rgba(215, 232, 228, 0.12);
+}
+/* the woven textile: a tinted, masked texture with thread shading */
+.fg-fabric {
+  background-color: var(--fc);
+  -webkit-mask: var(--tex) 0 0 / var(--ts) var(--ts) repeat;
+  mask: var(--tex) 0 0 / var(--ts) var(--ts) repeat;
+  transition:
+    transform 1200ms cubic-bezier(0.6, 0, 0.2, 1),
+    background-color 600ms,
+    filter 800ms;
+}
+.fg-fabric i {
+  position: absolute;
+  inset: 0;
+  background: var(--tex) 0 0 / var(--ts) var(--ts) repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.7;
+}
+.is-metal .fg-fabric i {
+  mix-blend-mode: overlay;
+  opacity: 1;
+}
+.is-lit .fg-fabric {
+  filter: brightness(1.18) saturate(1.05);
+}
+.fg-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 22%, rgba(255, 255, 255, 0.18) 30%, rgba(255, 255, 255, 0.04) 38%, transparent 46%);
+}
+/* LED light panel behind the glass */
+.fg-light {
+  inset: 2%;
+  transform: translateZ(calc(-3 * var(--gz) - 0.1em));
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, #fffaf0, #ffe7c4 70%, #f7d3a3);
+  box-shadow:
+    0 0 3em 1em rgba(255, 226, 180, 0.55),
+    0 0 9em 3em rgba(255, 215, 160, 0.25);
+  opacity: 0;
+  transition:
+    opacity 900ms var(--ease),
+    transform 1200ms cubic-bezier(0.6, 0, 0.2, 1);
+}
+.is-lit .fg-light {
+  opacity: 1;
+}
+/* optional frame + knob */
+.fg-frame {
+  inset: -0.55em;
+  border: 0.55em solid var(--frame);
+  border-image: linear-gradient(135deg, color-mix(in srgb, var(--frame) 55%, #fff), var(--frame) 40%, color-mix(in srgb, var(--frame) 60%, #000)) 1;
+  transform: translateZ(calc(2 * var(--gz) + 0.05em));
+  box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.4);
+}
+.fg-knob {
+  top: 50%;
+  width: 0.55em;
+  height: 6em;
+  margin-top: -3em;
+  border-radius: 0.28em;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--frame) 55%, #fff), var(--frame) 45%, color-mix(in srgb, var(--frame) 60%, #000));
+  box-shadow: 0.3em 0.2em 0.45em rgba(0, 0, 0, 0.5);
+  transform: translateZ(calc(2 * var(--gz) + 0.4em));
+}
+.fg-knob.r {
+  right: 0.9em;
+}
+.fg-knob.l {
+  left: 0.9em;
+}
+
+/* application layouts */
+.fg-divider {
+  --pwid: 13em;
+  --phei: 20.5em;
+}
+.fg-divider .fg-scene {
+  width: 36em;
+  height: 26em;
+}
+.fg-shutter {
+  --pwid: 10.5em;
+  --phei: 22em;
+}
+.fg-shutter .fg-scene {
+  --gap: 0.35em;
+  width: 30em;
+  height: 27em;
+  background: radial-gradient(ellipse at 50% 30%, #3b3631, #1f1c1a 80%);
+}
+.fg-wall {
+  --pwid: 10.5em;
+  --phei: 19em;
+}
+.fg-wall .fg-scene {
+  --gap: 1em;
+  width: 40em;
+  height: 26em;
+  padding-bottom: 3.2em;
+  background: radial-gradient(ellipse at 50% 30%, #3d3934, #1e1c1a 80%);
+}
+
+/* exploded-view legend */
+.fg-legend {
+  position: absolute;
+  top: 1.4em;
+  right: 1.4em;
+  z-index: 4;
+  margin: 0;
+  padding: 14px 16px;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  border-radius: 10px;
+  background: rgba(11, 11, 12, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+}
+.fg-legend li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  animation: fade-up 600ms var(--ease-out) both;
+  animation-delay: calc(400ms + var(--d) * 1ms);
+}
+.fg-legend span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--pink-light);
+}
+.fg-legend li.is-fabric {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* magnifier */
+.fg-loupe {
+  position: absolute;
+  z-index: 5;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  background: #2a2622;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.85),
+    0 12px 30px rgba(0, 0, 0, 0.55);
+}
+.is-lit .fg-loupe {
+  background: #fff1dc;
+}
+.fg-loupe::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.35), transparent 42%);
+}
+.fg-loupe-fab {
+  position: absolute;
+  inset: 0;
+  background-color: var(--fc);
+  -webkit-mask-image: var(--tex);
+  mask-image: var(--tex);
+  -webkit-mask-size: calc(var(--ts) * 3) calc(var(--ts) * 3);
+  mask-size: calc(var(--ts) * 3) calc(var(--ts) * 3);
+}
+.fg-loupe-fab i {
+  position: absolute;
+  inset: 0;
+  background-image: var(--tex);
+  background-size: calc(var(--ts) * 3) calc(var(--ts) * 3);
+  mix-blend-mode: multiply;
+  opacity: 0.7;
+}
+.is-metal .fg-loupe-fab i {
+  mix-blend-mode: overlay;
+  opacity: 1;
+}
+
+/* swatches + stage sizing */
+.fg-swatch {
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 56px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #2a2622;
+  box-shadow:
+    inset 0 0 0 3px #3a3a3e,
+    0 4px 10px -4px rgba(0, 0, 0, 0.6);
+}
+.fg-swatch i {
+  position: absolute;
+  inset: 3px;
+  background-color: var(--fc);
+  -webkit-mask: var(--tex) 0 0 / 72px 72px repeat;
+  mask: var(--tex) 0 0 / 72px 72px repeat;
+}
+.fg-swatch i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--tex) 0 0 / 72px 72px repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.7;
+}
+.fg-stage {
+  font-size: clamp(8px, 0.95vw, 14px);
+}
+.fg-sec-stage {
+  font-size: clamp(8px, 0.85vw, 13px);
+}
+.fg-sec-pickers {
+  display: grid;
+  gap: 22px;
+}
+@media (max-width: 900px) {
+  .fg-stage,
+  .fg-sec-stage {
+    font-size: clamp(6.5px, 1.9vw, 10px);
+  }
+  .fg-legend {
+    top: 0.8em;
+    right: 0.8em;
+    font-size: 10px;
+    padding: 10px 12px;
+  }
+}
