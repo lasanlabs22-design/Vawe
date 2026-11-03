@@ -100,29 +100,16 @@
   transform: rotateX(90deg);
   background: linear-gradient(0deg, #ece8e2, #c9c3bb);
 }
+/* the interior brightens once the strip has lit all the way round (see .cab-led) */
 .is-lit .cab-back {
   filter: brightness(1.04) saturate(1.04);
-  animation: int-on 1000ms steps(1, end);
+  transition-delay: 1.6s;
 }
 .is-lit .cab-side,
 .is-lit .cab-top,
 .is-lit .cab-bottom {
   filter: brightness(1);
-}
-@keyframes int-on {
-  0% {
-    filter: brightness(0.32) saturate(0.7);
-  }
-  12% {
-    filter: brightness(0.85) saturate(0.9);
-  }
-  22% {
-    filter: brightness(0.42) saturate(0.75);
-  }
-  38%,
-  100% {
-    filter: brightness(1.04) saturate(1.04);
-  }
+  transition-delay: 1.6s;
 }
 /* carcass face frame */
 .cab-face {
@@ -149,24 +136,61 @@
 }
 .is-lit .cab-glow {
   opacity: 1;
+  transition-delay: 1.5s;
 }
-/* LED profile around the whole inner edge of the opening; switches on evenly, all at once */
+/* LED strip in an aluminium channel around the inner edge of the opening.
+   The channel is always visible; switching on lights the chips from the top-left corner,
+   clockwise through all four corners, and then the interior glows. */
 .cab-led {
+  --lw: 0.32em;
+  --chip: color-mix(in srgb, var(--glow) 35%, #fff);
+  --diffuse: color-mix(in srgb, var(--glow) 80%, #fff);
   inset: 0.75em;
-  border: 0.14em solid color-mix(in srgb, var(--glow) 55%, #fff);
-  border-radius: 0.15em;
   transform: translateZ(-0.2em);
   box-shadow:
-    0 0 0.6em 0.12em color-mix(in srgb, var(--glow) 85%, transparent),
-    inset 0 0 0.6em 0.12em color-mix(in srgb, var(--glow) 85%, transparent),
-    inset 0 0 2.6em 0.6em color-mix(in srgb, var(--glow) 35%, transparent);
-  opacity: 0;
-  transition: opacity 900ms var(--ease);
+    inset 0 0 0 var(--lw) rgba(196, 190, 181, 0.85),
+    inset 0 0 0 calc(var(--lw) + 1px) rgba(0, 0, 0, 0.35);
   pointer-events: none;
 }
-.is-lit .cab-led {
+/* the lit chips: one layer per side, each a row of bright LEDs on a glowing diffuser */
+.cab-led::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, var(--chip) 0 0.2em, var(--diffuse) 0.2em 0.6em) left top / 100% var(--lw) no-repeat,
+    repeating-linear-gradient(180deg, var(--chip) 0 0.2em, var(--diffuse) 0.2em 0.6em) right top / var(--lw) 100% no-repeat,
+    repeating-linear-gradient(270deg, var(--chip) 0 0.2em, var(--diffuse) 0.2em 0.6em) right bottom / 100% var(--lw) no-repeat,
+    repeating-linear-gradient(0deg, var(--chip) 0 0.2em, var(--diffuse) 0.2em 0.6em) left bottom / var(--lw) 100% no-repeat;
+  filter:
+    drop-shadow(0 0 0.25em var(--glow))
+    drop-shadow(0 0 1.1em color-mix(in srgb, var(--glow) 70%, transparent));
+  opacity: 0;
+  transition: opacity 500ms var(--ease);
+}
+.is-lit .cab-led::before {
   opacity: 1;
-  animation: led-breathe 4.5s ease-in-out 1s infinite;
+  transition-duration: 0s;
+  animation:
+    led-trace 1800ms linear both,
+    led-breathe 4.5s ease-in-out 3s infinite;
+}
+@keyframes led-trace {
+  0% {
+    background-size: 0% var(--lw), var(--lw) 0%, 0% var(--lw), var(--lw) 0%;
+  }
+  25% {
+    background-size: 100% var(--lw), var(--lw) 0%, 0% var(--lw), var(--lw) 0%;
+  }
+  50% {
+    background-size: 100% var(--lw), var(--lw) 100%, 0% var(--lw), var(--lw) 0%;
+  }
+  75% {
+    background-size: 100% var(--lw), var(--lw) 100%, 100% var(--lw), var(--lw) 0%;
+  }
+  100% {
+    background-size: 100% var(--lw), var(--lw) 100%, 100% var(--lw), var(--lw) 100%;
+  }
 }
 @keyframes led-breathe {
   0%,
@@ -481,6 +505,7 @@
 }
 .is-open.is-lit .cab-floor::after {
   opacity: 1;
+  transition-delay: 1.5s;
 }
 
 /* ─── inserts (also used for swatches) ─── */
@@ -896,7 +921,7 @@
   .door,
   .ins-flash,
   .glass-sheen::after,
-  .cab-led {
+  .cab-led::before {
     transition: none !important;
     animation: none !important;
   }
