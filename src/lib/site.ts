@@ -1,5 +1,5 @@
 // Single source of truth for business details.
-// TODO(vawe): confirm email and domain (still placeholders).
+// TODO(vawe): confirm the domain (still a placeholder).
 export const site = {
   name: "Vawe Interiors",
   shortName: "Vawe",
@@ -10,7 +10,7 @@ export const site = {
   phone: "+91 90352 89169",
   phoneHref: "tel:+919035289169",
   whatsapp: "919035289169",
-  email: "hello@vaweinteriors.com",
+  email: "info@vaweinterio.com",
   city: "Bengaluru",
   copyrightYear: 2026,
   studio: {
