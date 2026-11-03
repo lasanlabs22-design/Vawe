@@ -18,23 +18,44 @@ export const ArrowUpRight = (p: P) => (
   </svg>
 );
 
+// Social icons in their official brand colours (app-icon style), not tinted with currentColor.
 export const InstagramIcon = (p: P) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true" {...p}>
-    <rect x="3" y="3" width="18" height="18" rx="5" />
-    <circle cx="12" cy="12" r="4" />
-    <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" />
+  <svg viewBox="0 0 24 24" aria-hidden="true" {...p}>
+    <defs>
+      <radialGradient id="ig-brand" cx="0.3" cy="1.07" r="1.15">
+        <stop offset="0" stopColor="#fdf497" />
+        <stop offset="0.05" stopColor="#fdf497" />
+        <stop offset="0.45" stopColor="#fd5949" />
+        <stop offset="0.6" stopColor="#d6249f" />
+        <stop offset="0.9" stopColor="#285aeb" />
+      </radialGradient>
+    </defs>
+    <rect width="24" height="24" rx="6" fill="url(#ig-brand)" />
+    <g fill="none" stroke="#fff" strokeWidth="1.8">
+      <rect x="5" y="5" width="14" height="14" rx="4.2" />
+      <circle cx="12" cy="12" r="3.4" />
+    </g>
+    <circle cx="16.3" cy="7.7" r="1.05" fill="#fff" />
   </svg>
 );
 
 export const FacebookIcon = (p: P) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}>
-    <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8v3h2.6V21h2.9Z" />
+  <svg viewBox="0 0 24 24" aria-hidden="true" {...p}>
+    <circle cx="12" cy="12" r="12" fill="#1877f2" />
+    <path
+      fill="#fff"
+      d="M16.671 15.469 17.203 12h-3.328V9.75c0-.949.465-1.875 1.956-1.875h1.513V4.922s-1.374-.234-2.686-.234c-2.741 0-4.533 1.66-4.533 4.668V12H7.078v3.469h3.047v8.385a12.09 12.09 0 0 0 3.75 0v-8.385h2.796Z"
+    />
   </svg>
 );
 
 export const YoutubeIcon = (p: P) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}>
-    <path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15V9l5.2 3L10 15Z" />
+  <svg viewBox="0 0 24 24" aria-hidden="true" {...p}>
+    <path
+      fill="#ff0000"
+      d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8Z"
+    />
+    <path fill="#fff" d="M9.6 15.6V8.4l6.3 3.6-6.3 3.6Z" />
   </svg>
 );
 
