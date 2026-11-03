@@ -1,5 +1,5 @@
 // Single source of truth for business details.
-// TODO(vawe): confirm email, domain and social links (still placeholders).
+// TODO(vawe): confirm email and domain (still placeholders).
 export const site = {
   name: "Vawe Interiors",
   shortName: "Vawe",
@@ -24,9 +24,9 @@ export const site = {
       encodeURIComponent("Chintalamadivala Main Rd, Huskur, Karnataka 560099"),
   },
   social: {
-    instagram: "https://instagram.com",
-    facebook: "https://facebook.com",
-    youtube: "https://youtube.com",
+    instagram: "https://www.instagram.com/vaweinterio",
+    facebook: "https://www.facebook.com/share/p/19jkEnaubu/",
+    youtube: "https://youtu.be/UBJLDS6emoE",
   },
 };
 
