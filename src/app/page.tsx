@@ -302,7 +302,8 @@ export default function Home() {
               />
             </div>
             <p className="t-lead reveal" style={d(150)}>
-              The face of a wardrobe sets the tone of a bedroom. Hover to preview each finish, or{" "}
+              The face of a wardrobe sets the tone of a bedroom. <span className="only-hover">Hover</span>
+              <span className="only-touch">Tap</span> to preview each finish, or{" "}
               <Link href="/collections/sliding-wardrobe-shutters" className="link-line" style={{ fontSize: 11 }}>
                 see the collection
               </Link>

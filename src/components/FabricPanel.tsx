@@ -67,7 +67,9 @@ export default function FabricPanel({
       className={`fg-wrap fg-${mode}${backlight ? " is-lit" : ""}${exploded ? " is-exploded" : ""}${frame ? " is-framed" : ""}${info.metal ? " is-metal" : ""}`}
       style={style}
       onPointerMove={onMove}
-      onPointerLeave={() => setLens(null)}
+      onPointerDown={onMove}
+      // A finger "leaves" as soon as it lifts, so on touch the loupe stays where it was tapped.
+      onPointerLeave={(e) => e.pointerType !== "touch" && setLens(null)}
     >
       <div className="fg-scene">
         {Array.from({ length: count }).map((_, i) => (

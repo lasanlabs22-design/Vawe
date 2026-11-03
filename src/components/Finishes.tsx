@@ -4,8 +4,10 @@ import { useRef, useState } from "react";
 import { wardrobeFinishes } from "@/lib/collections";
 
 // Hover list with a material sample that trails the cursor (desktop only).
+// On small screens a tap opens the sample inline instead.
 export default function Finishes() {
   const [hover, setHover] = useState<number | null>(null);
+  const [open, setOpen] = useState(0);
   const floatRef = useRef<HTMLDivElement>(null);
   const pos = useRef({ x: 0, y: 0, tx: 0, ty: 0, raf: 0 });
 
@@ -37,14 +39,18 @@ export default function Finishes() {
         {wardrobeFinishes.map((f, i) => (
           <li
             key={f.name}
+            // data-open, not a class: re-rendering className would drop Motion's "is-in"
             className="finish-row reveal"
+            data-open={open === i}
             style={{ "--d": i * 80 } as React.CSSProperties}
             onMouseEnter={() => setHover(i)}
+            onClick={() => setOpen(i)}
           >
             <span className="t-mono">0{i + 1} / {f.note}</span>
             <span className="finish-name">{f.name}</span>
             <p className="t-body">{f.description}</p>
             <span className={`finish-mini swatch sw-${f.swatch}`} aria-hidden="true" />
+            <span className={`finish-peek swatch sw-${f.swatch}`} aria-hidden="true" />
           </li>
         ))}
       </ul>

@@ -31,7 +31,8 @@
     0.5em 0 1.3em rgba(0, 0, 0, 0.45),
     -0.5em 0 1.3em rgba(0, 0, 0, 0.45);
   cursor: grab;
-  touch-action: none;
+  /* horizontal drags slide the panel; vertical swipes still scroll the page */
+  touch-action: pan-y;
   outline: none;
 }
 .sl-panel:focus-visible {
