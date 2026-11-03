@@ -134,35 +134,38 @@
   background: transparent;
   pointer-events: none;
 }
-/* warm wash from the LED strip */
+/* warm wash on the back panel, glowing in from all four corners and edges */
 .cab-glow {
   inset: 0;
   transform: translateZ(calc(var(--cd) * -1 + 0.05em));
   background:
-    radial-gradient(ellipse 80% 45% at 50% 0%, color-mix(in srgb, var(--glow) 55%, transparent), transparent 70%),
-    linear-gradient(180deg, color-mix(in srgb, var(--glow) 18%, transparent), transparent 60%);
+    radial-gradient(ellipse 55% 40% at 0% 0%, color-mix(in srgb, var(--glow) 50%, transparent), transparent 100%),
+    radial-gradient(ellipse 55% 40% at 100% 0%, color-mix(in srgb, var(--glow) 50%, transparent), transparent 100%),
+    radial-gradient(ellipse 55% 40% at 0% 100%, color-mix(in srgb, var(--glow) 42%, transparent), transparent 100%),
+    radial-gradient(ellipse 55% 40% at 100% 100%, color-mix(in srgb, var(--glow) 42%, transparent), transparent 100%);
+  box-shadow: inset 0 0 3em 0.6em color-mix(in srgb, var(--glow) 40%, transparent);
   opacity: 0;
   transition: opacity 1000ms var(--ease);
 }
 .is-lit .cab-glow {
   opacity: 1;
 }
-/* LED strip: draws out from the centre when switched on */
+/* LED profile around the whole inner edge of the opening; switches on evenly, all at once */
 .cab-led {
-  left: 6%;
-  right: 6%;
-  top: 0.8em;
-  height: 0.16em;
-  border-radius: 0.1em;
-  transform: translateZ(calc(var(--cd) * -0.35)) scaleX(0);
-  background: color-mix(in srgb, var(--glow) 55%, #fff);
+  inset: 0.75em;
+  border: 0.14em solid color-mix(in srgb, var(--glow) 55%, #fff);
+  border-radius: 0.15em;
+  transform: translateZ(-0.2em);
   box-shadow:
-    0 0 0.6em 0.15em color-mix(in srgb, var(--glow) 90%, transparent),
-    0 0 2.4em 0.6em color-mix(in srgb, var(--glow) 45%, transparent);
-  transition: transform 700ms var(--ease-out);
+    0 0 0.6em 0.12em color-mix(in srgb, var(--glow) 85%, transparent),
+    inset 0 0 0.6em 0.12em color-mix(in srgb, var(--glow) 85%, transparent),
+    inset 0 0 2.6em 0.6em color-mix(in srgb, var(--glow) 35%, transparent);
+  opacity: 0;
+  transition: opacity 900ms var(--ease);
+  pointer-events: none;
 }
 .is-lit .cab-led {
-  transform: translateZ(calc(var(--cd) * -0.35)) scaleX(1);
+  opacity: 1;
   animation: led-breathe 4.5s ease-in-out 1s infinite;
 }
 @keyframes led-breathe {
@@ -171,31 +174,7 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.82;
-  }
-}
-/* dust floating in the light */
-.cab-dust {
-  inset: 8% 10% 10%;
-  transform: translateZ(calc(var(--cd) * -0.25));
-  background-image:
-    radial-gradient(circle, rgba(255, 246, 232, 0.95) 0 0.06em, transparent 0.12em),
-    radial-gradient(circle, rgba(255, 246, 232, 0.75) 0 0.045em, transparent 0.1em),
-    radial-gradient(circle, rgba(255, 246, 232, 0.85) 0 0.05em, transparent 0.11em);
-  background-size: 4.3em 6.1em, 3.1em 5.3em, 5.7em 7.9em;
-  background-position: 0 0, 1.3em 2.1em, 2.6em 0.9em;
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 78%, transparent);
-  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 78%, transparent);
-  opacity: 0;
-  transition: opacity 1400ms var(--ease);
-  animation: dust 20s linear infinite;
-}
-.is-lit .cab-dust {
-  opacity: 0.55;
-}
-@keyframes dust {
-  to {
-    background-position: 0 -12.2em, 1.3em -8.5em, 2.6em -14.9em;
+    opacity: 0.85;
   }
 }
 
@@ -917,7 +896,6 @@
   .door,
   .ins-flash,
   .glass-sheen::after,
-  .cab-dust,
   .cab-led {
     transition: none !important;
     animation: none !important;

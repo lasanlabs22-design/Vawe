@@ -84,7 +84,6 @@ export default function Shutter({
         <span className="cab-bottom" />
         <span className="cab-glow" />
         <span className="cab-led" />
-        <span className="cab-dust" />
         <span className="cab-face" />
 
         {/* doors */}
