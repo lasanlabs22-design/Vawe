@@ -844,6 +844,71 @@
     border-left: 0;
     border-top: 1px solid var(--border-inv);
   }
+  /* Phones: a compact preview stays pinned while the options scroll beneath it,
+     so every swatch you tap changes something you can see. */
+  .ss-grid > .ss-stage {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    gap: 14px;
+    padding: 40px 12px 14px;
+    box-shadow: 0 22px 30px -22px rgba(0, 0, 0, 0.9);
+    transition: top 600ms var(--ease-out);
+  }
+  /* sit below the nav while it is showing (it hides on scroll down) */
+  body:has(.nav:not(.is-hidden)) .ss-grid > .ss-stage {
+    top: var(--nav-h);
+  }
+  .ss-grid > .ss-stage:not(.pt-stage, .fg-stage, .bt-stage) {
+    font-size: clamp(6.5px, 1.9vw, 11px);
+  }
+  .ss-grid > .ss-stage .sl-hint {
+    top: 14px;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  .ss-actions {
+    gap: 8px;
+  }
+  .ss-actions .pwr {
+    gap: 8px;
+    padding: 4px 14px 4px 4px;
+  }
+  .ss-actions .pwr-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .ss-actions .pwr-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  .ss-actions .pwr-text b {
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .ss-actions .pwr-text small {
+    display: none;
+  }
+  .ss-actions .seg button {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+  .ss-actions .bt-walkin {
+    padding: 10px 14px;
+    font-size: 10px;
+  }
+  .ss-stage .pt-range {
+    width: 100%;
+  }
+  /* segmented choices fill the row; a wrapped second row reads as intended */
+  .ss-panel .seg {
+    display: flex;
+    border-radius: 22px;
+  }
+  .ss-panel .seg button {
+    flex: 1 1 auto;
+  }
   .sp-stage {
     font-size: clamp(8.5px, 2.4vw, 13px);
   }

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Lines from "./Lines";
 
 const slides = [
@@ -28,8 +28,22 @@ export default function Hero() {
     return () => clearTimeout(t);
   }, [active, cycle, go]);
 
+  // Horizontal swipe changes slide; vertical swipes are left to scroll the page.
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touch.current;
+    touch.current = null;
+    if (!start) return;
+    const dx = e.changedTouches[0].clientX - start.x;
+    const dy = e.changedTouches[0].clientY - start.y;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(active + (dx < 0 ? 1 : -1));
+  };
+
   return (
-    <section className="hero" aria-label="Featured spaces">
+    <section className="hero" aria-label="Featured spaces" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       {slides.map((s, i) => (
         <div key={s.src} className={`hero-slide${i === active ? " is-active" : ""}`} aria-hidden={i !== active}>
           <Image src={s.src} alt="" fill sizes="100vw" preload={i === 0} quality={85} />
