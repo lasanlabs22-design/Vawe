@@ -2142,6 +2142,10 @@ button {
   height: 100%;
   overflow: hidden;
   isolation: isolate;
+  /* iOS Safari skips the rounded overflow clip for transformed children, so the room
+     reflection spilled past the mirror's edge. An opaque mask forces a real clip. */
+  -webkit-mask-image: linear-gradient(#000, #000);
+  mask-image: linear-gradient(#000, #000);
   background: linear-gradient(170deg, #9aa3a9 0%, #d3d9dc 40%, #a9b1b6 70%, #dde2e4 100%);
   transition: filter 900ms var(--ease);
 }
@@ -2153,7 +2157,8 @@ button {
   background: var(--reflect, url(/images/reflect-living.jpg)) center / cover;
   opacity: 0.86;
   filter: saturate(0.8) contrast(0.94);
-  transform: translate3d(calc(var(--px) * -22px), calc(var(--py) * -22px), 0) scale(-1.08, 1.08);
+  /* 2D on purpose: a 3D transform gets its own layer, which escapes the clip on iOS */
+  transform: translate(calc(var(--px) * -22px), calc(var(--py) * -22px)) scale(-1.08, 1.08);
   transition: transform 600ms var(--ease-out), opacity 900ms;
 }
 /* Silver tint, darkened edges, polished rim and a pointer-follow highlight */
