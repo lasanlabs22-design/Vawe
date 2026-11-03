@@ -3541,23 +3541,28 @@ button {
 .socials {
   display: flex;
   gap: 10px;
+  /* the 32px icons sit in 44px tap targets; line the first one up with the text above */
+  margin-left: -6px;
 }
+/* Full-colour brand icons: no ring or fill behind them, just a lift on hover/press */
 .socials a {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--border-inv);
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
-  transition: background 300ms, border-color 300ms;
+  transition: transform 300ms var(--ease-out);
 }
-.socials a:hover {
-  background: var(--pink-cta);
-  border-color: var(--pink-cta);
+.socials a:active {
+  transform: scale(0.94);
+}
+@media (hover: hover) {
+  .socials a:hover {
+    transform: translateY(-3px);
+  }
 }
 .socials svg {
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 32px;
 }
 /* ─── Footer light-box sign ─── */
 .sign-wrap {
