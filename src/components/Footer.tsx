@@ -101,6 +101,10 @@ export default function Footer() {
           <span>
             © {site.copyrightYear} {site.name}. All rights reserved.
           </span>
+          <p className="powered-by">
+            <span>Powered by</span>
+            <span className="lasan-signature">Lasan Labs</span>
+          </p>
           <nav aria-label="Footer">
             <Link href="/#contact">Get a quote</Link>
             <Link href="/#studio">Studio</Link>

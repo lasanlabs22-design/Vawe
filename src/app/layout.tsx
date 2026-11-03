@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Serif_Display, Inter, Italiana, JetBrains_Mono } from "next/font/google";
+import { DM_Serif_Display, Inter, Italiana, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 import "./shutters.css";
@@ -23,6 +23,8 @@ const dmSerif = DM_Serif_Display({
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const italiana = Italiana({ variable: "--font-italiana", weight: "400", subsets: ["latin"] });
 const mono = JetBrains_Mono({ variable: "--font-jetbrains", weight: ["400", "500"], subsets: ["latin"] });
+// Only for the "Powered by Lasan Labs" signature in the footer.
+const grotesk = Space_Grotesk({ variable: "--font-space-grotesk", weight: "600", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -51,7 +53,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${dmSerif.variable} ${inter.variable} ${italiana.variable} ${mono.variable}`}
+      className={`${dmSerif.variable} ${inter.variable} ${italiana.variable} ${mono.variable} ${grotesk.variable}`}
       suppressHydrationWarning
     >
       <head>
