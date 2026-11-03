@@ -127,7 +127,6 @@ export default function Sliding({ panels, positions, onPositions, frame, finish,
         <span className="cab-bottom" />
         <span className="cab-glow" />
         <span className="cab-led" />
-        <span className="cab-dust" />
         <span className="cab-face" />
 
         <span className="sl-panels" ref={trackRef}>
