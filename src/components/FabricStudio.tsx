@@ -98,7 +98,7 @@ export default function FabricStudio() {
           />
         </div>
         <p className="t-lead reveal">
-          Pick a weave and a colour, hover to look closely at the fabric, switch on a backlight to see light pass
+          Pick a weave and a colour, look closely at the fabric, switch on a backlight to see light pass
           through it, or take the panel apart to see how it&apos;s made.
         </p>
       </div>
@@ -111,7 +111,8 @@ export default function FabricStudio() {
                 <circle cx="11" cy="11" r="6" />
                 <path d="m20 20-4.5-4.5" />
               </svg>
-              Hover the glass to see the weave
+              <span className="only-hover">Hover</span>
+              <span className="only-touch">Tap</span> the glass to see the weave
             </span>
           )}
           <FabricPanel

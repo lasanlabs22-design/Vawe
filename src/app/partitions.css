@@ -39,7 +39,8 @@
     inset 0 0 0 0.5em #1b1916,
     inset 0 0.8em 1.2em rgba(0, 0, 0, 0.5);
   cursor: grab;
-  touch-action: none;
+  /* horizontal drags move the panels; vertical swipes still scroll the page */
+  touch-action: pan-y;
   outline: none;
 }
 .pt-opening:active {
@@ -218,11 +219,12 @@
 }
 .pt-range input {
   flex: 1;
-  height: 4px;
-  border-radius: 2px;
+  /* a 4px track inside a taller, finger-sized hit area */
+  height: 28px;
+  margin: 0;
   -webkit-appearance: none;
   appearance: none;
-  background: linear-gradient(90deg, var(--pink) var(--v), rgba(255, 255, 255, 0.18) var(--v));
+  background: linear-gradient(90deg, var(--pink) var(--v), rgba(255, 255, 255, 0.18) var(--v)) center / 100% 4px no-repeat;
   outline: none;
   cursor: pointer;
 }
@@ -278,5 +280,15 @@
   .pt-stage,
   .pt-sec-stage {
     font-size: clamp(6.5px, 1.85vw, 10px);
+  }
+}
+@media (pointer: coarse) {
+  .pt-range input::-webkit-slider-thumb {
+    width: 26px;
+    height: 26px;
+  }
+  .pt-range input::-moz-range-thumb {
+    width: 26px;
+    height: 26px;
   }
 }

@@ -33,18 +33,30 @@ export default function Motion() {
   useEffect(() => {
     if (!window.location.hash) lenis?.scrollTo(0, { immediate: true, force: true });
 
+    const pending = new Set(document.querySelectorAll<HTMLElement>(REVEAL));
+    const show = (el: Element) => {
+      el.classList.add("is-in");
+      io.unobserve(el);
+      pending.delete(el as HTMLElement);
+    };
     const io = new IntersectionObserver(
       (entries) => {
+        let hit = false;
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          entry.target.classList.add("is-in");
-          io.unobserve(entry.target);
+          show(entry.target);
+          hit = true;
         }
+        // Chrome counts a reveal-img's own clip-path, so one cut by the top of the viewport
+        // (after an anchor jump, or scrolling back up) never intersects. Sweep those in too.
+        if (!hit) return;
+        const fold = window.innerHeight;
+        for (const el of pending) if (el.getBoundingClientRect().top < fold) show(el);
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0 },
     );
 
-    document.querySelectorAll<HTMLElement>(REVEAL).forEach((el) => io.observe(el));
+    pending.forEach((el) => io.observe(el));
 
     if (reduced) return () => io.disconnect();
 

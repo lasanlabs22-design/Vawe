@@ -61,9 +61,15 @@ export default function Sliding({ panels, positions, onPositions, frame, finish,
     setDragging(i);
   };
 
-  const onUp = () => {
+  const onUp = (e: React.PointerEvent) => {
     const d = drag.current;
     if (!d) return;
+    // The browser took over to scroll the page: drop the drag, and don't treat it as a tap.
+    if (e.type === "pointercancel" && !d.moved) {
+      drag.current = null;
+      setDragging(null);
+      return;
+    }
     const next = [...positions];
     if (d.moved) {
       // snap to the nearest stop
