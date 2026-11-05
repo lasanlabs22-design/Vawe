@@ -676,7 +676,7 @@ button {
 .brand-tag {
   font-family: var(--font-italic);
   font-size: 10px;
-  letter-spacing: 0.42em;
+  letter-spacing: 0.75em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.66);
   line-height: 1;

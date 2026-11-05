@@ -139,7 +139,7 @@ export default function Home() {
               ]}
             />
             <p className="t-lead reveal">
-              Vawe Interiors brings architectural glass, mirror and aluminium systems into everyday homes, so
+              Vawe Interio brings architectural glass, mirror and aluminium systems into everyday homes, so
               wardrobes, kitchens, bathrooms and living spaces feel calm, bright and considered.
             </p>
             <p className="t-body reveal" style={d(100)}>
@@ -338,7 +338,7 @@ export default function Home() {
             ]}
           />
           <cite className="reveal" style={d(300)}>
-            Vawe Interiors · Studio philosophy
+            Vawe Interio · Studio philosophy
           </cite>
         </div>
       </section>

@@ -88,7 +88,7 @@ export default function Nav() {
             <Image className="brand-mark" src="/brand/vawe-mark.png" alt="" width={904} height={796} preload />
             <span className="brand-text">
               <Image className="brand-word" src="/brand/vawe-wordmark-light.png" alt="Vawe" width={2525} height={625} />
-              <span className="brand-tag">Interiors</span>
+              <span className="brand-tag">Interio</span>
             </span>
           </Link>
 

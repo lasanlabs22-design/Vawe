@@ -65,7 +65,7 @@ export default function Hero() {
       </div>
 
       <div className="container hero-content">
-        <div className="t-eyebrow hero-eyebrow hero-fade">Vawe Interiors · Bengaluru</div>
+        <div className="t-eyebrow hero-eyebrow hero-fade">Vawe Interio · Bengaluru</div>
         <Lines
           as="h1"
           onLoad

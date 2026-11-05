@@ -15,11 +15,11 @@ export default function Footer() {
               <Image className="brand-mark" src="/brand/vawe-mark.png" alt="" width={904} height={796} />
               <span className="brand-text">
                 <Image className="brand-word" src="/brand/vawe-wordmark-light.png" alt="Vawe" width={2525} height={625} />
-                <span className="brand-tag">Interiors</span>
+                <span className="brand-tag">Interio</span>
               </span>
             </Link>
             <p className="t-body">
-              Made-to-measure shutters, sliding systems and mirrors, designed and installed by Vawe Interiors in{" "}
+              Made-to-measure shutters, sliding systems and mirrors, designed and installed by Vawe Interio in{" "}
               {site.city}.
             </p>
             <div className="socials">

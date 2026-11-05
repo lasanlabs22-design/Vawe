@@ -1,12 +1,12 @@
 // Single source of truth for business details.
-// TODO(vawe): confirm the domain (still a placeholder).
+// TODO(vawe): confirm the domain (inferred from the email address).
 export const site = {
-  name: "Vawe Interiors",
+  name: "Vawe Interio",
   shortName: "Vawe",
   tagline: "Glass · Mirror · Shutters",
   description:
-    "Vawe Interiors designs and installs made-to-measure openable shutters, sliding wardrobe shutters, sliding partitions, LED mirrors, bathroom partitions, fabric glass and bevelled mirrors.",
-  url: "https://vaweinteriors.com",
+    "Vawe Interio designs and installs made-to-measure openable shutters, sliding wardrobe shutters, sliding partitions, LED mirrors, bathroom partitions, fabric glass and bevelled mirrors.",
+  url: "https://vaweinterio.com",
   phone: "+91 90352 89169",
   phoneHref: "tel:+919035289169",
   whatsapp: "919035289169",
