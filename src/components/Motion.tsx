@@ -60,6 +60,8 @@ export default function Motion() {
 
     if (reduced) return () => io.disconnect();
 
+    // This can run before React has hydrated the page under the layout, so every [data-parallax]
+    // element carries suppressHydrationWarning for the transform written here.
     const layers = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
     let raf = 0;
     const update = () => {

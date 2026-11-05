@@ -119,7 +119,7 @@ export default function Home() {
       <section className="section">
         <div className="container edit-grid">
           <div className="edit-media reveal-img">
-            <div className="parallax" data-parallax="0.12">
+            <div className="parallax" data-parallax="0.12" suppressHydrationWarning>
               <Image src="/images/about-living.jpg" alt="A light-filled living room with a dark glass partition" fill sizes="(max-width: 900px) 100vw, 50vw" />
             </div>
             <div className="edit-media-badge">
@@ -319,7 +319,7 @@ export default function Home() {
       {/* ─── Quote ─── */}
       <section className="quote">
         <div className="quote-bg">
-          <div className="parallax" data-parallax="0.18">
+          <div className="parallax" data-parallax="0.18" suppressHydrationWarning>
             <Image src="/images/hero-bedroom.jpg" alt="" fill sizes="100vw" />
           </div>
         </div>

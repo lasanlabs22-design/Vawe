@@ -59,7 +59,7 @@ function MechSection({ index }: { index: number }) {
         <span className="ms-num" aria-hidden="true">
           {num}
         </span>
-        <div data-parallax="0.04">
+        <div data-parallax="0.04" suppressHydrationWarning>
           <div className="ms-anim reveal" style={{ "--from": side === "left" ? 1 : -1 } as React.CSSProperties}>
             <Partition
               mech={p.mech}
