@@ -5,16 +5,76 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Lines from "./Lines";
 
-const slides = [
+// pos: focal point kept in frame when the photo is cropped (phones, narrow side panels)
+type Side = { src: string; pos?: string };
+type Slide = {
+  src: string;
+  caption: string;
+  pos?: string;
+  // main photo's width / height: on desktop it is shown whole, flanked by two related photos
+  ratio: string;
+  left: Side;
+  right: Side;
+};
+
+const slides: Slide[] = [
   // Full-screen slides need photos ~1400 px or more on both sides to stay sharp on desktop and phones.
-  { src: "/images/work/openable-45-g-handle.jpg", caption: "Openable · 45 mm · G handle" },
-  { src: "/images/hero-glass-pavilion.jpg", caption: "Telescopic sliding · Living" },
-  { src: "/images/stock/wardrobe-glass-lit.jpg", caption: "Sliding wardrobe · Glass" },
-  { src: "/images/hero-bedroom.jpg", caption: "Sliding wardrobe · Bedroom" },
-  { src: "/images/hero-led-vanity.jpg", caption: "LED mirror · Bath" },
+  {
+    src: "/images/work/openable-45-g-handle.jpg",
+    caption: "Openable · 45 mm · G handle",
+    ratio: "1435 / 1600",
+    left: { src: "/images/stock/cabinet-arched-glass.jpg" },
+    right: { src: "/images/stock/cabinet-glass-lit.jpg" },
+  },
+  {
+    src: "/images/stock/partition-glass-living.jpg",
+    caption: "Telescopic sliding · Living",
+    ratio: "2400 / 1728",
+    left: { src: "/images/stock/partition-steel-bedroom.jpg", pos: "85% center" },
+    right: { src: "/images/stock/partition-glass-marble.jpg", pos: "30% center" },
+  },
+  {
+    src: "/images/stock/wardrobe-glass-lit.jpg",
+    caption: "Sliding wardrobe · Glass",
+    ratio: "2400 / 1800",
+    left: { src: "/images/stock/wardrobe-glass-corridor.jpg", pos: "75% center" },
+    right: { src: "/images/stock/wardrobe-walkin-glass.jpg", pos: "40% center" },
+  },
+  {
+    src: "/images/stock/wardrobe-fluted-bedroom.jpg",
+    caption: "Sliding wardrobe · Bedroom",
+    pos: "85% center",
+    ratio: "2400 / 1686",
+    left: { src: "/images/stock/wardrobe-glass-bedroom-lit.jpg", pos: "30% center" },
+    right: { src: "/images/stock/closet-walkin-lit.jpg", pos: "70% center" },
+  },
+  {
+    src: "/images/hero-led-vanity.jpg",
+    caption: "LED mirror · Bath",
+    pos: "92% center",
+    ratio: "2400 / 1800",
+    left: { src: "/images/stock/mirror-led-round-stone.jpg", pos: "45% center" },
+    right: { src: "/images/stock/mirror-led-round-dark.jpg" },
+  },
 ];
 
 const DURATION = 6500;
+
+// Side photos display about half the screen wide before the narrow panel crops them.
+function HeroSide({ side }: { side: Side }) {
+  return (
+    <div className="hero-side">
+      <Image
+        src={side.src}
+        alt=""
+        fill
+        sizes="50vw"
+        quality={85}
+        style={side.pos ? { objectPosition: side.pos } : undefined}
+      />
+    </div>
+  );
+}
 
 export default function Hero() {
   const [active, setActive] = useState(0);
@@ -48,7 +108,22 @@ export default function Hero() {
     <section className="hero" aria-label="Featured spaces" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       {slides.map((s, i) => (
         <div key={s.src} className={`hero-slide${i === active ? " is-active" : ""}`} aria-hidden={i !== active}>
-          <Image src={s.src} alt="" fill sizes="100vw" preload={i === 0} quality={85} />
+          <div className="hero-trio">
+            <HeroSide side={s.left} />
+            <div className="hero-trio-main" style={{ aspectRatio: s.ratio }}>
+              <Image
+                className="hero-photo"
+                src={s.src}
+                alt=""
+                fill
+                sizes="100vw"
+                preload={i === 0}
+                quality={85}
+                style={s.pos ? { objectPosition: s.pos } : undefined}
+              />
+            </div>
+            <HeroSide side={s.right} />
+          </div>
         </div>
       ))}
       <div className="hero-overlay" />
