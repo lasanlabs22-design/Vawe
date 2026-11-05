@@ -118,6 +118,8 @@ export default function Footer() {
             <Link href="/#contact">Get a quote</Link>
             <Link href="/#studio">Studio</Link>
             <a href={site.phoneHref}>Call us</a>
+            <Link href="/privacy">Privacy policy</Link>
+            <Link href="/terms">Terms &amp; conditions</Link>
           </nav>
         </div>
       </div>

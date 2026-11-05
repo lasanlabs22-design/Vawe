@@ -4584,6 +4584,59 @@ html:not(.js) .lb-smoke {
   }
 }
 
+/* ─── Privacy policy, terms ─── */
+.legal-hero h1 {
+  font-size: clamp(48px, 7vw, 104px);
+}
+.legal-hero .t-mono {
+  color: rgba(245, 241, 236, 0.6);
+}
+.legal > * {
+  max-width: 760px;
+}
+.legal {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--fg-2);
+}
+.legal h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(24px, 2.4vw, 30px);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--fg-1);
+  margin: 56px 0 16px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-soft);
+}
+.legal p {
+  margin: 0 0 14px;
+}
+.legal ul {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+.legal li {
+  margin-bottom: 8px;
+}
+.legal li::marker {
+  color: var(--pink-deep);
+}
+.legal strong {
+  color: var(--fg-1);
+  font-weight: 600;
+}
+.legal a {
+  color: var(--pink-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.legal address {
+  font-style: normal;
+}
+
 /* ─── 404 ─── */
 .nf {
   min-height: 100svh;
