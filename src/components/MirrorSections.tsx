@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Lines from "./Lines";
 import Mirror, { LightButton, type MirrorKind, type MirrorShape, type MirrorTone } from "./Mirror";
+import { focusKey } from "@/lib/series";
 import { whatsappLink } from "@/lib/site";
 
 type Design = {
@@ -16,6 +17,8 @@ type Design = {
   wall: string;
   description: string;
   specs: [string, string][];
+  /** Which item in the nav's Mirrors list this design represents. */
+  focus: string;
 };
 
 const designs: Design[] = [
@@ -23,6 +26,7 @@ const designs: Design[] = [
     name: "Eclipse",
     type: "LED Mirror",
     kind: "eclipse",
+    focus: focusKey("Mirrors", "LED"),
     shape: "round",
     side: "left",
     angle: -16,
@@ -40,6 +44,7 @@ const designs: Design[] = [
     name: "Pebble",
     type: "Plain Mirror",
     kind: "plain",
+    focus: focusKey("Mirrors", "Plain"),
     shape: "pebble",
     side: "right",
     angle: 15,
@@ -57,6 +62,7 @@ const designs: Design[] = [
     name: "Capsule",
     type: "Frame LED Mirror",
     kind: "frame-led",
+    focus: focusKey("Mirrors", "Frame LED"),
     shape: "capsule",
     side: "left",
     angle: -20,
@@ -74,6 +80,7 @@ const designs: Design[] = [
     name: "Frost Arch",
     type: "LED Mirror",
     kind: "frost",
+    focus: focusKey("Mirrors", "LED"),
     shape: "tombstone",
     side: "right",
     angle: 17,
@@ -102,6 +109,7 @@ function DesignSection({ d, index }: { d: Design; index: number }) {
       className={`ms-section ms-${d.side} tone-${tone}${on ? " is-lit" : ""}`}
       style={{ "--wall": d.wall } as React.CSSProperties}
       aria-label={`${d.name} ${d.type}`}
+      data-focus={d.focus}
     >
       <div className="ms-stage">
         <span className="ms-num" aria-hidden="true">

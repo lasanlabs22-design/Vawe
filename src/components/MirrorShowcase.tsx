@@ -120,7 +120,7 @@ export default function MirrorShowcase() {
           ))}
         </ul>
         <div className="reveal" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <Link href="/collections/mirrors" className="btn btn-pink">
+          <Link href="/series/mirrors" className="btn btn-pink">
             Explore mirrors <span className="arrow">→</span>
           </Link>
           <Link href="/gallery/mirrors" className="btn btn-ghost-light">

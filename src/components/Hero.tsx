@@ -6,9 +6,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Lines from "./Lines";
 
 const slides = [
+  // Full-screen slides need photos ~1400 px or more on both sides to stay sharp on desktop and phones.
+  { src: "/images/work/openable-45-g-handle.jpg", caption: "Openable · 45 mm · G handle" },
   { src: "/images/hero-glass-pavilion.jpg", caption: "Telescopic sliding · Living" },
+  { src: "/images/stock/wardrobe-glass-lit.jpg", caption: "Sliding wardrobe · Glass" },
   { src: "/images/hero-bedroom.jpg", caption: "Sliding wardrobe · Bedroom" },
-  { src: "/images/hero-kitchen-glass.jpg", caption: "Openable shutters · Kitchen" },
   { src: "/images/hero-led-vanity.jpg", caption: "LED mirror · Bath" },
 ];
 
@@ -79,13 +81,9 @@ export default function Hero() {
           ]}
         />
         <div className="hero-bottom">
-          <p className="hero-lead hero-fade" style={{ "--d": 450 } as React.CSSProperties}>
-            Openable and sliding shutters, sliding partitions, LED and bevelled mirrors, bathroom partitions and
-            fabric glass, all made to measure and installed by our own team.
-          </p>
           <div className="hero-actions hero-fade" style={{ "--d": 600 } as React.CSSProperties}>
-            <Link href="/#collections" className="btn btn-ghost-light">
-              Explore collections
+            <Link href="/#series" className="btn btn-ghost-light">
+              Explore our series
             </Link>
             <Link href="/#contact" className="btn btn-pink on-dark-btn">
               Book a consultation <span className="arrow">→</span>

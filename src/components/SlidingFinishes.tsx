@@ -5,6 +5,7 @@ import Lines from "./Lines";
 import Sliding, { homePositions, revealPositions } from "./Sliding";
 import { ActionButton } from "./Shutter";
 import { FinishSwatch } from "./SlidingStudio";
+import { focusKey } from "@/lib/series";
 import { finishKinds, finishOptions, optionLabel, slidingFrames, type FinishKind } from "@/lib/sliding";
 import { whatsappLink } from "@/lib/site";
 
@@ -16,6 +17,14 @@ const frameFor: Record<FinishKind, string> = {
   print: "graphite",
 };
 const walls = ["#171513", "#131416", "#161412", "#141514", "#151416"];
+
+const focusFor: Record<FinishKind, string> = {
+  tinted: focusKey("Finishes", "Tinted / Fluted"),
+  lacquer: focusKey("Finishes", "Lacquered"),
+  fabric: focusKey("Finishes", "Fabric"),
+  cane: focusKey("Finishes", "Cane"),
+  print: focusKey("Finishes", "Digital Print"),
+};
 
 function FinishSection({ kind, index }: { kind: FinishKind; index: number }) {
   const info = finishOptions[kind];
@@ -32,6 +41,7 @@ function FinishSection({ kind, index }: { kind: FinishKind; index: number }) {
       className={`ms-section ms-${side} tone-warm${light ? " is-lit" : ""}`}
       style={{ "--wall": walls[index] } as React.CSSProperties}
       aria-label={`${info.label} sliding wardrobe shutters`}
+      data-focus={focusFor[kind]}
     >
       <div className="ms-stage sp-stage">
         <span className="ms-num" aria-hidden="true">

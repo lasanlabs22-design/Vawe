@@ -18,7 +18,7 @@ export default function MirrorGalleryPage() {
           <nav className="crumbs hero-fade" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <i>/</i>
-            <Link href="/collections/mirrors">Mirrors</Link>
+            <Link href="/series/mirrors">Mirrors</Link>
             <i>/</i>
             <span>Gallery</span>
           </nav>

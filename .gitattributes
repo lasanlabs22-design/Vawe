@@ -1,0 +1,8 @@
+# Never line-ending-convert or diff these as text (a CRLF rewrite corrupts PDFs on checkout).
+*.pdf binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.avif binary
+*.ico binary

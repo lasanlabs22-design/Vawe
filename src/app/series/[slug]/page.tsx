@@ -16,8 +16,12 @@ import ShutterProfiles from "@/components/ShutterProfiles";
 import ShutterStudio from "@/components/ShutterStudio";
 import SlidingFinishes from "@/components/SlidingFinishes";
 import SlidingStudio from "@/components/SlidingStudio";
+import CatalogueBand from "@/components/CatalogueBand";
+import SeriesWork from "@/components/SeriesWork";
 import { collections, getCollection } from "@/lib/collections";
+import { rangeFor } from "@/lib/series";
 import { whatsappLink } from "@/lib/site";
+import { workFor } from "@/lib/work";
 
 const d = (ms: number) => ({ "--d": ms }) as React.CSSProperties;
 
@@ -25,11 +29,11 @@ export function generateStaticParams() {
   return collections.map((c) => ({ slug: c.slug }));
 }
 
-// Every collection is prerendered above, and the whole page depends on the slug, so a navigation can
+// Every series is prerendered above, and the whole page depends on the slug, so a navigation can
 // wait for the finished page rather than flash a Suspense placeholder over all of it.
 export const instant = false;
 
-export async function generateMetadata({ params }: PageProps<"/collections/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/series/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const c = getCollection(slug);
   if (!c) return {};
@@ -40,12 +44,14 @@ export async function generateMetadata({ params }: PageProps<"/collections/[slug
   };
 }
 
-export default async function CollectionPage({ params }: PageProps<"/collections/[slug]">) {
+export default async function CollectionPage({ params }: PageProps<"/series/[slug]">) {
   const { slug } = await params;
   const c = getCollection(slug);
   if (!c) notFound();
 
   const others = collections.filter((o) => o.slug !== c.slug);
+  const photos = workFor(c.slug);
+  const range = rangeFor(c.slug);
   const [titleA, ...titleRest] = c.name.split(" ");
 
   return (
@@ -53,14 +59,14 @@ export default async function CollectionPage({ params }: PageProps<"/collections
       <section className="c-hero">
         <div className="c-hero-bg">
           <div className="parallax" data-parallax="0.15" suppressHydrationWarning>
-            <Image src={c.image} alt="" fill sizes="100vw" preload quality={85} />
+            <Image src={c.cover ?? c.image} alt="" fill sizes="100vw" preload quality={85} />
           </div>
         </div>
         <div className="container">
           <nav className="crumbs hero-fade" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <i>/</i>
-            <Link href="/#collections">Collections</Link>
+            <Link href="/#series">Series</Link>
             <i>/</i>
             <span>{c.index}</span>
           </nav>
@@ -76,7 +82,9 @@ export default async function CollectionPage({ params }: PageProps<"/collections
         </div>
       </section>
 
-      <section className="section">
+      {(photos.length > 0 || range.length > 0) && <SeriesWork photos={photos} range={range} />}
+
+      <section className="section" id={photos.length || range.length ? undefined : "work"}>
         <div className="container c-intro">
           <div>
             <div className="t-eyebrow reveal" style={{ marginBottom: 26 }}>
@@ -101,6 +109,7 @@ export default async function CollectionPage({ params }: PageProps<"/collections
         <>
           <FabricStudio />
           <FabricSections />
+          <CatalogueBand />
         </>
       ) : c.slug === "bathroom-partitions" ? (
         <>
@@ -199,6 +208,8 @@ export default async function CollectionPage({ params }: PageProps<"/collections
       </section>
       )}
 
+      {/* Stock photos stand in only where the client has not sent their own yet */}
+      {photos.length === 0 && (
       <section className="section">
         <div className="container">
           <div className="gallery">
@@ -215,6 +226,7 @@ export default async function CollectionPage({ params }: PageProps<"/collections
           </div>
         </div>
       </section>
+      )}
 
       <section className="section-sm strip">
         <div className="container cta-band">
@@ -252,7 +264,7 @@ export default async function CollectionPage({ params }: PageProps<"/collections
                 className="t-h2"
                 lines={[
                   <>
-                    More <em>collections.</em>
+                    More <em>series.</em>
                   </>,
                 ]}
               />
@@ -260,7 +272,7 @@ export default async function CollectionPage({ params }: PageProps<"/collections
           </div>
           <div className="rail" data-lenis-prevent-horizontal>
             {others.map((o) => (
-              <Link href={`/collections/${o.slug}`} className="tile" key={o.slug} aria-label={o.name}>
+              <Link href={`/series/${o.slug}`} className="tile" key={o.slug} aria-label={o.name}>
                 <Image src={o.image} alt="" fill sizes="(max-width: 560px) 80vw, 25vw" />
                 <div className="tile-grad" />
                 <span className="cat-num">{o.index}</span>

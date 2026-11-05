@@ -4,6 +4,7 @@ import { useState } from "react";
 import Lines from "./Lines";
 import Shutter, { ActionButton } from "./Shutter";
 import { frameColors, hingeFinishes, profiles, type InsertId, type ProfileId } from "@/lib/shutters";
+import { focusKey } from "@/lib/series";
 import { whatsappLink } from "@/lib/site";
 
 const presets: { profile: ProfileId; frame: string; hinge: string; insert: InsertId; side: "left" | "right"; angle: number; wall: string }[] = [
@@ -11,6 +12,8 @@ const presets: { profile: ProfileId; frame: string; hinge: string; insert: Inser
   { profile: "slim", frame: "black", hinge: "black", insert: "tinted", side: "right", angle: 16, wall: "#131416" },
   { profile: "cnc", frame: "graphite", hinge: "nickel", insert: "lacquer-ivory", side: "left", angle: -14, wall: "#161514" },
 ];
+
+const focusFor: Record<ProfileId, string> = { regular: focusKey("45 mm"), slim: focusKey("20 mm"), cnc: focusKey("CNC") };
 
 function ProfileSection({ index }: { index: number }) {
   const p = presets[index];
@@ -27,6 +30,7 @@ function ProfileSection({ index }: { index: number }) {
       className={`ms-section ms-${p.side} tone-warm${light ? " is-lit" : ""}`}
       style={{ "--wall": p.wall } as React.CSSProperties}
       aria-label={info.label}
+      data-focus={focusFor[p.profile]}
     >
       <div className="ms-stage sp-stage">
         <span className="ms-num" aria-hidden="true">
