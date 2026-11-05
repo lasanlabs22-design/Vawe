@@ -1,6 +1,6 @@
-# Vawe Interiors website
+# Vawe Interio website
 
-Premium marketing site for Vawe Interiors, built with Next.js 16 (App Router, TypeScript) and plain CSS.
+Premium marketing site for Vawe Interio, built with Next.js 16 (App Router, TypeScript) and plain CSS.
 
 ## Run it
 
