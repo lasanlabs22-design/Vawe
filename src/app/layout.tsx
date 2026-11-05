@@ -26,8 +26,13 @@ const mono = JetBrains_Mono({ variable: "--font-jetbrains", weight: ["400", "500
 // Only for the "Powered by Lasan Labs" signature in the footer.
 const grotesk = Space_Grotesk({ variable: "--font-space-grotesk", weight: "600", subsets: ["latin"] });
 
+// Link previews (WhatsApp, Facebook, X) need the card image on a host that serves it. vaweinterio.com
+// is still a parked domain, so on Vercel use the project's production domain, which switches to the
+// custom domain once one is attached.
+const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: new URL(productionHost ? `https://${productionHost}` : site.url),
   title: {
     default: `${site.name} | Shutters, Sliding Partitions & Mirrors`,
     template: `%s | ${site.name}`,
