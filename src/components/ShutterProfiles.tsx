@@ -32,7 +32,7 @@ function ProfileSection({ index }: { index: number }) {
         <span className="ms-num" aria-hidden="true">
           {num}
         </span>
-        <div data-parallax="0.05">
+        <div data-parallax="0.05" suppressHydrationWarning>
           <div className="ms-anim reveal" style={{ "--from": p.side === "left" ? 1 : -1 } as React.CSSProperties}>
             <Shutter
               doors={2}

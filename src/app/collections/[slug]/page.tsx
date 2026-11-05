@@ -25,6 +25,10 @@ export function generateStaticParams() {
   return collections.map((c) => ({ slug: c.slug }));
 }
 
+// Every collection is prerendered above, and the whole page depends on the slug, so a navigation can
+// wait for the finished page rather than flash a Suspense placeholder over all of it.
+export const instant = false;
+
 export async function generateMetadata({ params }: PageProps<"/collections/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const c = getCollection(slug);
@@ -48,7 +52,7 @@ export default async function CollectionPage({ params }: PageProps<"/collections
     <>
       <section className="c-hero">
         <div className="c-hero-bg">
-          <div className="parallax" data-parallax="0.15">
+          <div className="parallax" data-parallax="0.15" suppressHydrationWarning>
             <Image src={c.image} alt="" fill sizes="100vw" preload quality={85} />
           </div>
         </div>
@@ -199,12 +203,12 @@ export default async function CollectionPage({ params }: PageProps<"/collections
         <div className="container">
           <div className="gallery">
             <div className="tile reveal-img">
-              <div className="parallax" data-parallax="0.08">
+              <div className="parallax" data-parallax="0.08" suppressHydrationWarning>
                 <Image src={c.gallery[0]} alt={`${c.name} in a finished interior`} fill sizes="(max-width: 760px) 100vw, 58vw" />
               </div>
             </div>
             <div className="tile reveal-img" style={d(150)}>
-              <div className="parallax" data-parallax="0.14">
+              <div className="parallax" data-parallax="0.14" suppressHydrationWarning>
                 <Image src={c.gallery[1]} alt={`${c.name} detail`} fill sizes="(max-width: 760px) 100vw, 42vw" />
               </div>
             </div>

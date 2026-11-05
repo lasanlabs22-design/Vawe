@@ -107,7 +107,7 @@ function DesignSection({ d, index }: { d: Design; index: number }) {
         <span className="ms-num" aria-hidden="true">
           {num}
         </span>
-        <div data-parallax="0.06">
+        <div data-parallax="0.06" suppressHydrationWarning>
           <div className="ms-anim reveal" style={{ "--from": d.side === "left" ? 1 : -1 } as React.CSSProperties}>
             <Mirror
               kind={d.kind}
