@@ -5,6 +5,7 @@ import Lines from "./Lines";
 import Shower, { enclosureTypes, hardware, showerGlass, type EnclosureType, type ShowerGlass } from "./Shower";
 import { ShowerControls } from "./ShowerStudio";
 import { getCollection } from "@/lib/collections";
+import { focusKey } from "@/lib/series";
 import { whatsappLink } from "@/lib/site";
 
 const presets: { type: EnclosureType; glass: ShowerGlass; hw: string; wall: string }[] = [
@@ -12,6 +13,12 @@ const presets: { type: EnclosureType; glass: ShowerGlass; hw: string; wall: stri
   { type: "hinged", glass: "band", hw: "gold", wall: "#141516" },
   { type: "sliding", glass: "fluted", hw: "chrome", wall: "#151413" },
 ];
+
+const focusFor: Record<EnclosureType, string> = {
+  fixed: focusKey("Bathroom Partition", "Fixed"),
+  hinged: focusKey("Bathroom Partition", "Openable"),
+  sliding: focusKey("Bathroom Partition", "Slide"),
+};
 
 const variants = getCollection("bathroom-partitions")!.variants;
 
@@ -26,7 +33,7 @@ function TypeSection({ index }: { index: number }) {
   const hwInfo = hardware.find((h) => h.id === hw)!;
 
   return (
-    <section className={`ms-section ms-${side} bt-section`} style={{ "--wall": p.wall } as React.CSSProperties} aria-label={info.label}>
+    <section className={`ms-section ms-${side} bt-section`} style={{ "--wall": p.wall } as React.CSSProperties} aria-label={info.label} data-focus={focusFor[p.type]}>
       <div className="ms-stage bt-sec-stage">
         <span className="ms-num" aria-hidden="true">
           {num}

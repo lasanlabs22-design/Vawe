@@ -7,6 +7,7 @@ import { mechanisms, OpenSlider } from "./PartitionStudio";
 import { ActionButton } from "./Shutter";
 import { slidingSystems } from "@/lib/collections";
 import { slidingFrames } from "@/lib/sliding";
+import { focusKey } from "@/lib/series";
 import { whatsappLink } from "@/lib/site";
 
 const presets: { mech: Mechanism; frame: string; glass: GlassId; view: string; wall: string }[] = [
@@ -15,6 +16,12 @@ const presets: { mech: Mechanism; frame: string; glass: GlassId; view: string; w
   { mech: "bifold", frame: "graphite", glass: "grid", view: "dining", wall: "#161412" },
   { mech: "slidefold", frame: "bronze", glass: "fluted", view: "office", wall: "#141514" },
 ];
+
+const focusFor: Partial<Record<Mechanism, string>> = {
+  synchro: focusKey("Partitions", "Synchro"),
+  telescopic: focusKey("Partitions", "Telescopic"),
+  bifold: focusKey("Partitions", "Bi-Fold"),
+};
 
 function MechSection({ index }: { index: number }) {
   const p = presets[index];
@@ -54,6 +61,7 @@ function MechSection({ index }: { index: number }) {
       className={`ms-section ms-${side} tone-warm${evening ? " is-lit" : ""}`}
       style={{ "--wall": p.wall } as React.CSSProperties}
       aria-label={info.label}
+      data-focus={focusFor[p.mech]}
     >
       <div className="ms-stage sp-stage pt-sec-stage">
         <span className="ms-num" aria-hidden="true">

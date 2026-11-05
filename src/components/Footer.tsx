@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { collections, slidingSystems } from "@/lib/collections";
+import { catalogue } from "@/lib/series";
 import { site, whatsappLink } from "@/lib/site";
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from "./Icons";
 import FooterSign from "./FooterSign";
@@ -36,11 +37,11 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4>Collections</h4>
+            <h4>Series</h4>
             <ul>
               {collections.map((c) => (
                 <li key={c.slug}>
-                  <Link href={`/collections/${c.slug}`}>{c.name}</Link>
+                  <Link href={`/series/${c.slug}`}>{c.name}</Link>
                 </li>
               ))}
             </ul>
@@ -51,12 +52,20 @@ export default function Footer() {
             <ul>
               {slidingSystems.map((s) => (
                 <li key={s.name}>
-                  <Link href="/collections/sliding-partitions">{s.name}</Link>
+                  <Link href="/series/sliding-partitions">{s.name}</Link>
                 </li>
               ))}
             </ul>
             <h4 style={{ marginTop: 36 }}>Explore</h4>
             <ul>
+              <li>
+                <Link href="/#work">Our installs</Link>
+              </li>
+              <li>
+                <a href={catalogue.href} download={catalogue.fileName}>
+                  Fabric glass catalogue (PDF)
+                </a>
+              </li>
               <li>
                 <Link href="/gallery/mirrors">Mirror gallery</Link>
               </li>

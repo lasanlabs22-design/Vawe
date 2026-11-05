@@ -7,8 +7,12 @@ import ContactForm from "@/components/ContactForm";
 import Counter from "@/components/Counter";
 import { ArrowUpRight, FinishIcon, MeasureIcon, ProfileIcon } from "@/components/Icons";
 import MirrorShowcase from "@/components/MirrorShowcase";
+import CatalogueBand from "@/components/CatalogueBand";
+import WorkGrid from "@/components/WorkGrid";
 import { collections, slidingSystems } from "@/lib/collections";
+import { series } from "@/lib/series";
 import { site, whatsappLink } from "@/lib/site";
+import { featuredWork } from "@/lib/work";
 
 const d = (ms: number) => ({ "--d": ms }) as React.CSSProperties;
 
@@ -17,16 +21,19 @@ const pillars = [
     title: "Precision profiles",
     body: "Aluminium frames in 45 mm, 20 mm and CNC-routed profiles, chosen for the size and weight of every door.",
     Icon: ProfileIcon,
+    image: "/images/work/openable-cnc-d-20.jpg",
   },
   {
     title: "Finishes without limits",
     body: "Tinted, lacquered, fabric, cane, mirror or your own artwork printed on glass. The surface is yours to choose.",
     Icon: FinishIcon,
+    image: "/images/stock/wardrobe-fluted-bedroom.jpg",
   },
   {
     title: "Measure to handover",
     body: "We measure on site, build to the millimetre and install with our own team, so there's one point of contact from start to finish.",
     Icon: MeasureIcon,
+    image: "/images/work/openable-leather-1.jpg",
   },
 ];
 
@@ -56,6 +63,34 @@ export default function Home() {
     <>
       <Hero />
 
+      {/* ─── Client installs ─── */}
+      <section className="section" id="work">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="t-eyebrow reveal">Our installs</div>
+              <Lines
+                className="t-h2"
+                lines={[
+                  <>Real homes.</>,
+                  <>
+                    <em>Real</em> Vawe.
+                  </>,
+                ]}
+              />
+            </div>
+          </div>
+          <WorkGrid items={featuredWork} />
+          <div className="work-foot reveal">
+            {series.map((s) => (
+              <Link key={s.label} href={`${s.href}#work`} className="btn">
+                {s.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── Value ─── */}
       <section className="section" id="about">
         <div className="container">
@@ -79,8 +114,11 @@ export default function Home() {
           </div>
 
           <div className="pillars">
-            {pillars.map(({ title, body, Icon }, i) => (
+            {pillars.map(({ title, body, Icon, image }, i) => (
               <article className="pillar reveal" key={title} style={d(i * 120)}>
+                <div className="pillar-img">
+                  <Image src={image} alt="" fill sizes="(max-width: 900px) 100vw, 33vw" quality={85} />
+                </div>
                 <span className="pillar-num">0{i + 1}</span>
                 <h3 className="t-h3">{title}</h3>
                 <p className="t-body">{body}</p>
@@ -120,7 +158,7 @@ export default function Home() {
         <div className="container edit-grid">
           <div className="edit-media reveal-img">
             <div className="parallax" data-parallax="0.12" suppressHydrationWarning>
-              <Image src="/images/about-living.jpg" alt="A light-filled living room with a dark glass partition" fill sizes="(max-width: 900px) 100vw, 50vw" />
+              <Image src="/images/stock/partition-steel-door.jpg" alt="A steel-framed glass door beside a fluted timber wall" fill sizes="(max-width: 900px) 100vw, 58vw" quality={85} />
             </div>
             <div className="edit-media-badge">
               <Image src="/brand/vawe-mark.png" alt="" width={904} height={796} />
@@ -152,7 +190,7 @@ export default function Home() {
                 { n: 45, u: "mm", l: "Regular profile" },
                 { n: 20, u: "mm", l: "Slim profile" },
                 { n: 4, u: "", l: "Sliding systems", pad: 2 },
-                { n: 7, u: "", l: "Collections", pad: 2 },
+                { n: 7, u: "", l: "Series", pad: 2 },
               ].map((s, i) => (
                 <div className="stat reveal" key={s.l} style={d(i * 100)}>
                   <div className="stat-num">
@@ -168,11 +206,11 @@ export default function Home() {
       </section>
 
       {/* ─── Collections ─── */}
-      <section className="section strip" id="collections">
+      <section className="section strip" id="series">
         <div className="container">
           <div className="section-head">
             <div>
-              <div className="t-eyebrow reveal">Seven collections</div>
+              <div className="t-eyebrow reveal">Seven series</div>
               <Lines
                 className="t-h2"
                 lines={[
@@ -184,14 +222,14 @@ export default function Home() {
               />
             </div>
             <p className="t-lead reveal" style={d(150)}>
-              From the wardrobe door to the shower screen, explore the collections our clients ask for most.
+              From the wardrobe door to the shower screen, explore the series our clients ask for most.
             </p>
           </div>
 
           <div className="cat-grid">
             {collections.map((c, i) => (
               <Link
-                href={`/collections/${c.slug}`}
+                href={`/series/${c.slug}`}
                 className="tile reveal-img"
                 key={c.slug}
                 style={d((i % 4) * 90)}
@@ -252,7 +290,7 @@ export default function Home() {
 
           <div className="systems">
             {slidingSystems.map((s, i) => (
-              <Link href="/collections/sliding-partitions" className="system reveal" key={s.name} style={d(i * 110)}>
+              <Link href="/series/sliding-partitions" className="system reveal" key={s.name} style={d(i * 110)}>
                 <div className="tile">
                   <Image src={s.image!} alt={`${s.name} glass partition`} fill sizes="(max-width: 560px) 80vw, (max-width: 1100px) 50vw, 25vw" />
                   <div className="tile-grad" />
@@ -274,7 +312,7 @@ export default function Home() {
               Not sure which system fits? Send us a photo of the opening and we&apos;ll recommend one.
             </p>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <Link href="/collections/sliding-partitions" className="btn btn-ghost-light">
+              <Link href="/series/sliding-partitions" className="btn btn-ghost-light">
                 Explore partitions
               </Link>
               <a href={whatsappLink("Hi Vawe, I'd like help choosing a sliding partition system.")} className="btn btn-pink" target="_blank" rel="noopener noreferrer">
@@ -304,7 +342,7 @@ export default function Home() {
             <p className="t-lead reveal" style={d(150)}>
               The face of a wardrobe sets the tone of a bedroom. <span className="only-hover">Hover</span>
               <span className="only-touch">Tap</span> to preview each finish, or{" "}
-              <Link href="/collections/sliding-wardrobe-shutters" className="link-line" style={{ fontSize: 11 }}>
+              <Link href="/series/sliding-wardrobe-shutters" className="link-line" style={{ fontSize: 11 }}>
                 see the collection
               </Link>
             </p>
@@ -315,6 +353,8 @@ export default function Home() {
 
       {/* ─── Mirrors spotlight ─── */}
       <MirrorShowcase />
+
+      <CatalogueBand />
 
       {/* ─── Quote ─── */}
       <section className="quote">

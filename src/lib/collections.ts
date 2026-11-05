@@ -20,6 +20,8 @@ export type Collection = {
   tag: string;
   tagline: string;
   image: string;
+  /** Full-screen hero photo when the tile photo is too small to stay sharp at that size. */
+  cover?: string;
   gallery: [string, string];
   intro: string;
   body: string;
@@ -36,7 +38,7 @@ export const collections: Collection[] = [
     short: "Openable Shutters",
     tag: "Shutters",
     tagline: "Hinged doors, drawn in fine lines.",
-    image: "/images/openable-shutters.jpg",
+    image: "/images/work/openable-45-g-handle.jpg",
     gallery: ["/images/about-dark-bedroom.jpg", "/images/wardrobe-alt.jpg"],
     intro: "Aluminium-framed shutters that turn storage into architecture.",
     body: "Every Vawe openable shutter is built to the exact opening it will live in. Choose a frame weight to suit the room, then pair it with glass, mirror, lacquer, fabric or cane, so wardrobes, kitchens and crockery units all read as one considered surface.",
@@ -70,7 +72,8 @@ export const collections: Collection[] = [
     short: "Sliding Wardrobes",
     tag: "Wardrobes",
     tagline: "The wardrobe, re-surfaced.",
-    image: "/images/wardrobe-shutters.jpg",
+    image: "/images/work/sliding-highlighter.jpg",
+    cover: "/images/stock/wardrobe-glass-lit.jpg",
     gallery: ["/images/hero-bedroom.jpg", "/images/wardrobe-alt.jpg"],
     intro: "Floor-to-ceiling sliders that save space and set the mood of a room.",
     body: "Sliding shutters glide on concealed tracks, so the wardrobe never fights the bed or the walkway. The face is where it gets personal: five finishes, each made for a different kind of room.",
@@ -91,16 +94,17 @@ export const collections: Collection[] = [
     short: "Sliding Partitions",
     tag: "Partitions",
     tagline: "Rooms that open on cue.",
-    image: "/images/sliding-partitions.jpg",
+    image: "/images/work/partition-synchro.jpg",
+    cover: "/images/stock/partition-steel-kitchen.jpg",
     gallery: ["/images/slide-telescopic.jpg", "/images/slide-bifold.jpg"],
     intro: "Glass walls that divide a space when you need it, and disappear when you don't.",
     body: "Separate the kitchen from the living room, close off a study, or open a home onto its balcony. Our sliding partitions come in four mechanisms, each tuned for a different opening width and stacking need.",
     variantsTitle: "Four systems.",
     variants: [
-      { name: "Synchro Sliding", note: "Synchro", image: "/images/slide-synchro.jpg", description: "Linked panels move together. Pull one, and its partner glides open in sync from the opposite side." },
-      { name: "Telescopic Sliding", note: "Telescopic", image: "/images/slide-telescopic.jpg", description: "Panels stack neatly behind one another on parallel tracks for wide, uninterrupted openings." },
-      { name: "Bi-Fold", note: "Bi-Fold", image: "/images/slide-bifold.jpg", description: "Panels fold in pairs like a concertina, opening almost the full width of the frame." },
-      { name: "Slide cum Fold", note: "Slide & Fold", image: "/images/slide-cum-fold.jpg", description: "Panels slide along the track, then fold flat against the wall, leaving a clear, column-free opening." },
+      { name: "Synchro Sliding", note: "Synchro", image: "/images/work/partition-synchro.jpg", description: "Linked panels move together. Pull one, and its partner glides open in sync from the opposite side." },
+      { name: "Telescopic Sliding", note: "Telescopic", image: "/images/work/partition-telescopic-2.jpg", description: "Panels stack neatly behind one another on parallel tracks for wide, uninterrupted openings." },
+      { name: "Bi-Fold", note: "Bi-Fold", image: "/images/stock/bifold-open.jpg", description: "Panels fold in pairs like a concertina, opening almost the full width of the frame." },
+      { name: "Slide cum Fold", note: "Slide & Fold", image: "/images/work/partition-slide-fold-1.jpg", description: "Panels slide along the track, then fold flat against the wall, leaving a clear, column-free opening." },
     ],
     applications: ["Kitchen-living", "Home offices", "Balconies", "Conference rooms", "Retail & hospitality"],
   },
@@ -149,7 +153,7 @@ export const collections: Collection[] = [
     short: "Fabric Glass",
     tag: "Textile",
     tagline: "Textile, sealed in glass.",
-    image: "/images/fabric-glass.jpg",
+    image: "/images/stock/partition-frosted.jpg",
     gallery: ["/images/about-living.jpg", "/images/studio-interior.jpg"],
     intro: "The softness of fabric, with the durability and easy care of glass.",
     body: "Fabric glass laminates real textiles between glass, giving you the warmth of linen or silk with a surface you can simply wipe down. It diffuses light beautifully, offering privacy without darkness.",
