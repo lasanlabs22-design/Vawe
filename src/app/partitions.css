@@ -292,3 +292,142 @@
     height: 26px;
   }
 }
+
+/* Photo-based, single-view partition configurator. Photo pixels stay stationary;
+   only glass and aluminium leaves move over the restored interior. */
+.partition-room { padding: 55px 0 65px; background: #191c19; }
+.partition-heading { display: flex; justify-content: space-between; align-items: end; gap: 35px; margin-bottom: 32px; }
+.partition-heading .t-lead { max-width: 360px; }
+.partition-layout { display: grid; grid-template-columns: minmax(0, 1fr) 335px; gap: 38px; align-items: start; }
+.partition-preview { min-width: 0; }
+.partition-photo-wrap { background: #10120f; display: flex; justify-content: center; align-items: center; height: min(680px, 75svh); overflow: hidden; border-radius: 3px; }
+.partition-photo { position: relative; height: auto; width: 100%; max-height: 100%; max-width: 100%; container-type: inline-size; overflow: hidden; }
+.partition-photo.mechanism-synchro { width: min(100%, calc(min(680px, 75svh) * 1200 / 1208)); }
+.partition-photo.mechanism-ghost { width: min(100%, calc(min(680px, 75svh) * 814 / 998)); }
+.partition-photo.mechanism-pooja { width: min(100%, calc(min(680px, 75svh) * 360 / 640)); }
+.partition-photo.mechanism-slidefold { width: min(100%, min(680px, 75svh)); }
+.partition-photo > img { object-fit: contain; pointer-events: none; }
+.partition-opening { position: absolute; perspective: 1800px; }
+.partition-leaf { position: absolute; top: 0; height: 100%; border: .65cqw solid var(--frame); background: linear-gradient(115deg, #ffffff14, #ffffff03 40%, #ffffff1b 70%, #00000008); box-shadow: inset 1px 0 #ffffff55, 1px 0 2px #0008; backface-visibility: visible; }
+.partition-glass { position: absolute; inset: 0; background: linear-gradient(115deg, #fff1, transparent 45%, #fff2 75%, transparent); }
+
+.glass-frosted .partition-glass { background: #e9eee969; backdrop-filter: blur(7px); }
+
+
+.partition-crossbar { position: absolute; left: 0; right: 0; height: .55cqw; background: var(--frame); box-shadow: 0 1px #ffffff25; }
+.crossbar-one { top: 33%; } .crossbar-two { top: 66%; }
+.mechanism-synchro .crossbar-one { top: 52%; } .mechanism-synchro .crossbar-two { top: 61%; }
+.partition-handle { position: absolute; right: 5%; top: 51%; width: .5cqw; height: 7%; background: var(--frame); box-shadow: 1px 0 #ffffff60, 1px 2px 2px #0005; }
+.mechanism-synchro .partition-leaf:nth-child(3) .partition-handle { right: auto; left: 5%; }
+.mechanism-synchro .partition-leaf:first-child .partition-handle, .mechanism-synchro .partition-leaf:last-child .partition-handle { display: none; }
+.partition-drag { position: absolute; inset: 0; z-index: 10; cursor: ew-resize; touch-action: pan-y; }
+.partition-photo-label { position: absolute; bottom: 14px; left: 14px; padding: 7px 12px; background: #161916ba; color: #fff; font-size: 11px; pointer-events: none; z-index: 11; }
+.partition-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 18px; }
+.partition-toolbar > span, .partition-note, .partition-range { font-size: 12px; color: #b7bbb2; }
+.partition-buttons { display: flex; gap: 9px; }
+.partition-buttons button { border: 1px solid #ffffff40; padding: 12px 17px; border-radius: 3px; font-size: 13px; }
+.partition-buttons button:first-child { background: #eeeae0; color: #191c19; }
+.partition-buttons button span { margin-left: 12px; }
+.partition-range { display: flex; gap: 14px; align-items: center; margin-top: 20px; }
+.partition-range input { flex: 1; min-width: 0; accent-color: var(--pink); cursor: ew-resize; }
+.partition-note { margin-top: 10px; text-align: center; }
+.partition-options { display: grid; gap: 25px; }
+.partition-options .ss-group { min-width: 0; }
+.partition-options legend { font-size: 12px; flex-wrap: wrap; gap: 8px; }
+.partition-mechanisms { display: grid; gap: 6px; }
+.partition-mechanisms button { display: flex; align-items: center; gap: 14px; text-align: left; border: 1px solid #ffffff26; padding: 12px 14px; border-radius: 3px; font-size: 14px; }
+.partition-mechanisms button > span:first-child { font-size: 10px; opacity: .55; }
+.partition-mechanisms button > span:last-child { margin-left: auto; }
+.partition-mechanisms button[aria-pressed="true"] { background: #eeeae0; color: #191c19; border-color: #eeeae0; }
+.partition-description { font-size: 12px; line-height: 1.65; color: #b7bbb2; margin-top: 12px; min-height: 40px; }
+.partition-glass-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.partition-glass-options button { font-size: 10px; display: grid; justify-items: center; gap: 7px; padding: 7px 4px; border: 1px solid transparent; border-radius: 3px; }
+.partition-glass-options button[aria-pressed="true"] { border-color: #ede9df; background: #ffffff0b; }
+.partition-glass-sample { display: block; position: relative; width: 42px; height: 49px; border: 2px solid #aaa99e; background: linear-gradient(65deg, #2f3630, #b9ab8d, #414f44); overflow: hidden; }
+.partition-room button:hover { border-color: #e9e5d7; }
+.partition-room button:focus-visible, .partition-room a:focus-visible, .partition-room input:focus-visible, .partition-drag:focus-visible { outline: 2px solid #f0ad75; outline-offset: 3px; }
+@media (max-width: 1000px) { .partition-layout { grid-template-columns: minmax(0, 1fr) 285px; gap: 24px; } }
+@media (max-width: 760px) { .partition-layout { grid-template-columns: 1fr; } .partition-heading { display: block; } .partition-heading .t-lead { margin-top: 16px; } .partition-photo-wrap { height: min(560px, 70svh); } .partition-photo.mechanism-synchro { width: min(100%, calc(min(560px, 70svh) * 1200 / 1208)); } .partition-photo.mechanism-ghost { width: min(100%, calc(min(560px, 70svh) * 814 / 998)); } .partition-photo.mechanism-pooja { width: min(100%, calc(min(560px, 70svh) * 360 / 640)); } .partition-photo.mechanism-slidefold { width: min(100%, min(560px, 70svh)); } .partition-buttons button { padding: 12px; } .partition-options { gap: 22px; } }
+.partition-opening::before { content: ""; position: absolute; top: -.45cqw; left: 0; right: 0; height: .6cqw; background: var(--frame); box-shadow: 0 1px #ffffff50; }
+.mechanism-ghost .partition-opening::before { display: none; }
+/* The Slide & Fold photo has a black jamb around the opening; repaint it in the chosen frame colour. */
+.partition-surround { position: absolute; left: 14.15%; top: 12.9%; width: 67.3%; height: 74.9%; border: solid var(--frame); border-width: 1.8cqw 1.6cqw 0 1.85cqw; pointer-events: none; }
+.partition-photo.mechanism-synchro { width: min(100%, min(680px, 75svh)); }
+@media (max-width: 760px) { .partition-photo.mechanism-synchro { width: min(100%, min(560px, 70svh)); } }
+.partition-room { scroll-margin-top: 85px; }
+
+/* Ten finishes from the client's partition glass sample card. */
+.partition-room .glass-brown-tinted .partition-glass { background: linear-gradient(115deg, #b88f6940, #62432c80 60%, #c7a17a50); }
+.partition-room .glass-grey-tinted .partition-glass { background: linear-gradient(115deg, #839d9c35, #183438a6 60%, #53686d65); }
+.partition-room .glass-mirror .partition-glass { background: linear-gradient(120deg, #707c80 0%, #c3ced0 22%, #f0f4f2 29%, #a2adae 38%, #647476 60%, #cbd4d3 80%, #8b989b 100%); }
+.partition-room .glass-brown-mirror .partition-glass { background: linear-gradient(120deg, #4f4035 0%, #99826b 22%, #c6af91 29%, #806953 38%, #493e34 60%, #a18d75 80%, #655343 100%); }
+.partition-room .glass-line-fluted .partition-glass { background: repeating-linear-gradient(90deg, #ffffff18 0, #ffffff70 1px, #3d444448 2px, #ffffff0a 4px); backdrop-filter: blur(1px); }
+.partition-room .glass-clear-fluted .partition-glass { background: repeating-linear-gradient(90deg, #ffffff08 0, #ffffff10 9px, #ffffff65 11px, #4d59594a 13px, #ffffff12 15px, #ffffff08 18px); backdrop-filter: blur(1.5px); }
+.partition-room .glass-brown-fluted .partition-glass { background: repeating-linear-gradient(90deg, #ffffff00 0, #ffffff08 9px, #efc79f66 11px, #39231770 13px, #ffffff08 15px, transparent 18px), linear-gradient(115deg, #b48b614a, #633a228c); backdrop-filter: blur(1.5px); }
+.partition-room .glass-grey-fluted .partition-glass { background: repeating-linear-gradient(90deg, #ffffff00 0, #ffffff08 9px, #c3dedc60 11px, #102d3670 13px, #ffffff08 15px, transparent 18px), linear-gradient(115deg, #74928e50, #16343bb0); backdrop-filter: blur(1.5px); }
+.partition-glass-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px 4px; }
+.partition-glass-options button { min-width: 0; align-content: start; line-height: 1.35; text-align: center; padding: 7px 2px; }
+.partition-glass-sample { width: 40px; max-width: 100%; }
+
+/* Keep the photo, opening controls and every finish in one shared frame. */
+.partition-room { padding: 24px 0; --partition-scene-height: clamp(280px, calc(100svh - var(--nav-h) - 260px), 570px); }
+.partition-card { padding: 20px; background: #1d211d; border: 1px solid #ffffff20; border-radius: 8px; }
+.partition-heading { align-items: center; margin-bottom: 18px; gap: 24px; }
+.partition-heading .t-eyebrow { font-size: 10px; margin-bottom: 7px; }
+.partition-heading .t-h2 { font-size: clamp(25px, 2.7vw, 38px); line-height: 1.1; }
+.partition-heading .t-lead { font-size: 12px; line-height: 1.5; max-width: 290px; }
+.partition-layout { grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: stretch; }
+.partition-preview { display: flex; flex-direction: column; min-width: 0; }
+.partition-photo-wrap { height: var(--partition-scene-height); flex: 1 0 var(--partition-scene-height); min-height: 0; }
+.partition-room .partition-photo { width: min(100%, calc(var(--partition-scene-height) * var(--photo-ratio))); }
+.partition-toolbar { margin-top: 12px; }
+.partition-buttons button { padding: 9px 14px; border-radius: 24px; font-size: 12px; min-height: 36px; }
+.partition-range { margin-top: 12px; font-size: 11px; }
+.partition-options { gap: 14px; align-content: start; }
+.partition-options .ss-group legend { font-size: 10px; margin-bottom: 9px; }
+.partition-mechanisms { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.partition-mechanisms button { justify-content: center; padding: 9px 6px; min-height: 36px; font-size: 11px; line-height: 1.3; border-radius: 20px; text-align: center; }
+.partition-mechanisms button > span { display: none; }
+.partition-description { min-height: 0; margin-top: 8px; font-size: 11px; line-height: 1.4; }
+.partition-options .swatches { gap: 12px; }
+.partition-options .sw-metal { width: 30px; height: 30px; }
+.partition-glass-options { gap: 5px; }
+.partition-glass-options button { padding: 5px 2px; font-size: 10px; gap: 5px; }
+.partition-glass-sample { height: 36px; width: 32px; }
+.partition-options .ss-summary { padding-top: 12px; gap: 7px; }
+.partition-options .ss-summary .t-mono { font-size: 9px; }
+.partition-options .ss-summary p { font-family: inherit; font-size: 12px; line-height: 1.4; margin: 0; }
+.partition-options .ss-summary .btn { min-height: 36px; padding: 10px 14px; font-size: 10px; }
+/* Larger scene: the heading moves beside the photo and the opening controls share one row. */
+.partition-room { --partition-scene-height: clamp(280px, calc(100svh - var(--nav-h) - 150px), 780px); }
+.partition-layout { grid-template-areas: "preview heading" "preview options"; grid-template-rows: auto 1fr; row-gap: 16px; }
+.partition-heading { grid-area: heading; display: block; margin: 0; }
+.partition-heading .t-h2 { font-size: clamp(24px, 2.1vw, 32px); }
+.partition-heading .t-lead { margin-top: 8px; max-width: none; }
+.partition-preview { grid-area: preview; display: grid; grid-template-columns: 1fr auto minmax(0, 260px) auto 1fr; grid-template-rows: 1fr auto; column-gap: 16px; }
+.partition-photo-wrap { grid-column: 1 / -1; height: auto; min-height: var(--partition-scene-height); }
+.partition-toolbar { display: contents; }
+.partition-toolbar > span { grid-column: 4; grid-row: 2; align-self: center; margin-top: 12px; min-width: 64px; }
+.partition-buttons { grid-column: 2; grid-row: 2; margin-top: 12px; }
+.partition-range { grid-column: 3; grid-row: 2; margin-top: 12px; }
+.partition-options { grid-area: options; }
+@media (max-width: 1050px) and (min-width: 761px) { .partition-layout { grid-template-columns: minmax(0, 1fr) 310px; gap: 16px; } .partition-heading .t-lead { max-width: 220px; } }
+@media (max-width: 760px) {
+  .partition-room { --partition-scene-height: clamp(230px, 38svh, 360px); padding: 16px 0; }
+  .partition-card { padding: 14px; }
+  .partition-heading { margin-bottom: 14px; }
+  .partition-heading .t-h2 { font-size: 25px; }
+  .partition-heading .t-lead { margin-top: 8px; max-width: none; font-size: 11px; }
+  .partition-layout { grid-template-columns: 1fr; grid-template-areas: "heading" "preview" "options"; grid-template-rows: none; gap: 18px; }
+  .partition-preview { grid-template-columns: auto minmax(0, 1fr); }
+  .partition-buttons { grid-column: 1; }
+  .partition-toolbar > span { grid-column: 2; text-align: right; }
+  .partition-range { grid-column: 1 / -1; grid-row: 3; }
+  .partition-options { gap: 14px; }
+  .partition-mechanisms button { min-height: 40px; }
+  .partition-options .ss-summary { grid-template-columns: 1fr auto; align-items: center; }
+  .partition-options .ss-summary .t-mono { grid-column: 1 / -1; }
+  .partition-options .ss-summary .btn { padding: 10px; }
+}
+.partition-buttons button { white-space: nowrap; }
+@media (max-width: 760px) { .partition-buttons { gap: 6px; } .partition-buttons button { padding: 9px 11px; } .partition-buttons button span { margin-left: 6px; } }
