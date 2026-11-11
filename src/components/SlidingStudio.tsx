@@ -51,7 +51,7 @@ export default function SlidingStudio() {
     `${finishOptions[finish.kind].label}: ${optionLabel(finish)}`,
   ];
 
-  const slots = panels === 2 ? ["Left", "Right"] : ["Left", "Centre", "Right"];
+  const slots = panels === 2 ? ["Left", "Right"] : panels === 3 ? ["Left", "Centre", "Right"] : ["Section 1", "Section 2", "Section 3", "Section 4"];
 
   return (
     <section className="ss dark on-dark tone-warm" id="sliding-config">
@@ -121,7 +121,7 @@ export default function SlidingStudio() {
           <fieldset className="ss-group">
             <legend>Panels</legend>
             <div className="seg">
-              {[2, 3].map((n) => (
+              {[2, 3, 4].map((n) => (
                 <button key={n} type="button" className={panels === n ? "is-active" : ""} aria-pressed={panels === n} onClick={() => changePanels(n)}>
                   {n} panels
                 </button>
