@@ -171,6 +171,16 @@ export default function Nav() {
               <p className="mega-uses">
                 <span>Made for</span> {active.uses.join(" · ")}
               </p>
+              {active.options && (
+                <p className="mega-uses mega-options">
+                  <span>{active.options.label}</span>
+                  {active.options.items.map((o) => (
+                    <Link key={o.name} href={o.href} onClick={(e) => pick(e, o.href)}>
+                      {o.name}
+                    </Link>
+                  ))}
+                </p>
+              )}
               <ul className="mega-cards">
                 {active.cards.map((c) => (
                   <li key={c.name}>
@@ -209,6 +219,16 @@ export default function Nav() {
                   <p className="mega-uses">
                     <span>Made for</span> {s.uses.join(" · ")}
                   </p>
+                  {s.options && (
+                    <p className="mega-uses mega-options">
+                      <span>{s.options.label}</span>
+                      {s.options.items.map((o) => (
+                        <Link key={o.name} href={o.href} onClick={(e) => pick(e, o.href)}>
+                          {o.name}
+                        </Link>
+                      ))}
+                    </p>
+                  )}
                   <div className="mobile-cards" data-lenis-prevent-horizontal>
                     {s.cards.map((c) => (
                       <Link key={c.name} className="mobile-card" href={c.href} onClick={(e) => pick(e, c.href)}>

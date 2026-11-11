@@ -809,6 +809,34 @@ button {
   text-transform: uppercase;
   color: var(--pink-light);
 }
+/* Extra choices, such as door layouts, as small outlined pills. */
+.mega-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: -8px;
+}
+.mega-options span {
+  margin-right: 4px;
+}
+.mega-options a {
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  transition: border-color 300ms, color 300ms;
+}
+.mega-options a:hover {
+  border-color: var(--pink);
+  color: #fff;
+}
+.mobile-sub .mega-options {
+  justify-content: flex-start;
+  margin-top: 0;
+}
 .mobile-sub .mega-uses {
   font-size: 12px;
   line-height: 1.6;

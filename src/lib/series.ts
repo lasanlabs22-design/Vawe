@@ -17,8 +17,10 @@ export type Series = {
   tagline: string;
   /** Where customers use this series, shown above the nav tiles. */
   uses: string[];
-  /** The nav menu: one picture per product a customer can choose, linked to that pick on its page. */
+  /** The nav menu: one picture per product a customer can choose, linked to that pick in its studio. */
   cards: SeriesCard[];
+  /** A small row of extra choices under the "Made for" line, such as door layouts. */
+  options?: { label: string; items: { name: string; href: string }[] };
   groups: SeriesGroup[];
 };
 
@@ -32,9 +34,9 @@ export const series: Series[] = [
     tagline: "Hinged aluminium shutters, by profile and handle.",
     uses: ["Wardrobes", "Modular kitchens", "Crockery units", "TV & display units"],
     cards: [
-      { name: "45 mm Profile", href: `${openable}#45-mm`, image: "/images/work/openable-45-g-handle.jpg" },
-      { name: "20 mm Profile", href: `${openable}#20-mm`, image: "/images/work/openable-20-i-handle.jpg" },
-      { name: "CNC Profile", href: `${openable}#cnc`, image: "/images/work/openable-cnc-20.jpg" },
+      { name: "45 mm Profile", href: `${openable}#bella--45-mm`, image: "/images/work/openable-45-g-handle.jpg" },
+      { name: "20 mm Profile", href: `${openable}#bella--20-mm`, image: "/images/work/openable-20-i-handle.jpg" },
+      { name: "CNC Profile", href: `${openable}#bella--cnc`, image: "/images/work/openable-cnc-20.jpg" },
     ],
     groups: [
       { title: "45 mm", href: openable, items: [{ name: "I Handle" }, { name: "G Handle" }] },
@@ -60,11 +62,19 @@ export const series: Series[] = [
     tagline: "Floor-to-ceiling sliders, by handle and finish.",
     uses: ["Bedroom wardrobes", "Walk-in closets", "Kids' rooms", "Utility storage"],
     cards: [
-      { name: "Tinted / Fluted", href: `${sliding}#finishes--tinted-fluted`, image: "/images/work/sliding-fluted.jpg" },
-      { name: "Lacquered", href: `${sliding}#finishes--lacquered`, image: "/images/work/sliding-lacquered-highlighter.jpg" },
-      { name: "Highlighter", href: `${sliding}#finishes--highlighter`, image: "/images/work/sliding-highlighter.jpg" },
-      { name: "Digital Print", href: `${sliding}#finishes--digital-print`, image: "/images/sliding-rooms/IMG-20261015-WA0018.jpg" },
+      { name: "Tinted / Fluted", href: `${sliding}#sliding--tinted`, image: "/images/work/sliding-fluted.jpg" },
+      { name: "Lacquered", href: `${sliding}#sliding--lacquered`, image: "/images/work/sliding-lacquered-highlighter.jpg" },
+      { name: "Highlighter", href: `${sliding}#sliding--highlighter`, image: "/images/work/sliding-highlighter.jpg" },
+      { name: "Digital Print", href: `${sliding}#sliding--digital-print`, image: "/images/sliding-rooms/IMG-20261015-WA0018.jpg" },
     ],
+    options: {
+      label: "Layouts",
+      items: [
+        { name: "2 doors", href: `${sliding}#sliding--2-doors` },
+        { name: "3 doors", href: `${sliding}#sliding--3-doors` },
+        { name: "4 doors", href: `${sliding}#sliding--4-doors` },
+      ],
+    },
     groups: [
       { title: "Handles", href: sliding, items: [{ name: "C Handle" }, { name: "H Handle" }, { name: "T / L Handle" }] },
       {
@@ -92,7 +102,7 @@ export const series: Series[] = [
       { name: "Ghost", href: "/series/sliding-partitions#partitions--ghost", image: "/images/work/partition-ghost-1.jpg" },
       { name: "Pooja Bi-Fold", href: "/series/sliding-partitions#partitions--pooja-bi-fold", image: "/images/partition-rooms/pooja.png" },
       { name: "Slide & Fold", href: "/series/sliding-partitions#partitions--slide-fold", image: "/images/work/partition-slide-fold-1.jpg" },
-      { name: "Bathroom Partitions", href: "/series/bathroom-partitions#bathroom-partition", image: "/images/shower-rooms/fixed.jpg" },
+      { name: "Bathroom Partitions", href: "/series/bathroom-partitions#shower-studio", image: "/images/shower-rooms/fixed.jpg" },
     ],
     groups: [
       {
@@ -111,12 +121,13 @@ export const series: Series[] = [
     label: "Glass & Mirror",
     href: "/series/mirrors",
     tagline: "Mirrors that light a room.",
-    uses: ["Bathroom vanities", "Dressing areas", "Bedrooms", "Entryways"],
+    uses: ["Bathroom vanities", "Dressing areas", "Bedrooms", "Entryways", "Feature walls"],
     cards: [
       { name: "Front Lit", href: "/series/mirrors#mirrors--front-lit", image: "/images/hero/mirrors.jpg", focus: "84% 40%" },
       { name: "Backlit", href: "/series/mirrors#mirrors--backlit", image: "/images/stock/mirror-led-round-stone.jpg", focus: "50% 35%" },
       { name: "Framed Front Lit", href: "/series/mirrors#mirrors--framed-front-lit", image: "/images/mirrors-led.jpg", focus: "0% 30%" },
       { name: "Framed Backlit", href: "/series/mirrors#mirrors--framed-backlit", image: "/images/nav/mirror-framed-backlit.jpg", focus: "56% 30%" },
+      { name: "Bevelled Mirror", href: "/series/bevelled-mirror#work", image: "/images/work/bevel-diamond-backlit-wall.jpg", focus: "50% 40%" },
     ],
     groups: [
       {

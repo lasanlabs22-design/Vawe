@@ -7,6 +7,7 @@ import { FinishSwatch } from "./SlidingStudio";
 import { finishKinds, finishOptions, optionLabel, type Finish } from "@/lib/sliding";
 import { whatsappLink } from "@/lib/site";
 import { roomImage, roomOffsets, slidingRooms, type DoorCount, type RevealSide, type RoomRender } from "@/lib/slidingRooms";
+import { useHash } from "@/lib/focus";
 
 const quad = (p: [number, number][]) => p.map(([x, y]) => `${x},${y}`).join(" ");
 
@@ -100,12 +101,35 @@ function RoomScene({ room, progress, side, lit, finish, edge }: { room: RoomRend
   </svg>;
 }
 
+// Nav links pick a finish: /series/sliding-wardrobe-shutters#sliding--lacquered opens the studio on it.
+// Highlighter is a design rather than a finish here, so it opens the room render whose doors carry it.
+const pickFor: Record<string, { room?: number; finish?: Finish["kind"] }> = {
+  "sliding--tinted": { finish: "tinted" },
+  "sliding--lacquered": { finish: "lacquer" },
+  "sliding--digital-print": { finish: "print" },
+  "sliding--highlighter": { room: 34 },
+  "sliding--2-doors": { room: slidingRooms.find(r => r.doors === 2)!.id },
+  "sliding--3-doors": { room: slidingRooms.find(r => r.doors === 3)!.id },
+  "sliding--4-doors": { room: slidingRooms.find(r => r.doors === 4)!.id },
+};
+
 export default function SlidingRoomStudio() {
-  const [selected, setSelected] = useState(slidingRooms[0]);
+  const hash = useHash();
+  const pick = pickFor[hash];
+  useEffect(() => {
+    if (hash in pickFor) document.getElementById("sliding-studio")?.scrollIntoView({ block: "start" });
+  }, [hash]);
+  const room = slidingRooms.find(r => r.id === pick?.room) ?? slidingRooms[0];
+  const finish = pick?.finish ? { kind: pick.finish, value: finishOptions[pick.finish].options[0].value } : null;
+  return <SlidingRooms key={hash} initialRoom={room} initialFinish={finish} />;
+}
+
+function SlidingRooms({ initialRoom, initialFinish }: { initialRoom: RoomRender; initialFinish: Finish | null }) {
+  const [selected, setSelected] = useState(initialRoom);
   const [progress, setProgress] = useState(0);
-  const [side, setSide] = useState<RevealSide>("left");
+  const [side, setSide] = useState<RevealSide>(initialRoom.doors === 2 ? "left" : "centre");
   const [lit, setLit] = useState(false);
-  const [finish, setFinish] = useState<Finish | null>(null); // null: the render's own design
+  const [finish, setFinish] = useState<Finish | null>(initialFinish); // null: the render's own design
   const [custom, setCustom] = useState<string | null>(null);
   const [edgeId, setEdgeId] = useState<string | null>(null); // null: the render's own frame
   const edge = edgeColors.find(e => e.id === edgeId) ?? null;
@@ -128,7 +152,7 @@ export default function SlidingRoomStudio() {
   const finishLabel = finish ? `${finishOptions[finish.kind].label}: ${optionLabel(finish)}` : "Original design";
   const summary = [`${selected.doors} sliding doors`, `${selected.name} room`, finishLabel, `${edge ? edge.label : "Original"} edge profile`];
 
-  return <section className="sl-room-studio dark on-dark tone-warm" aria-label="Sliding room studio">
+  return <section className="sl-room-studio dark on-dark tone-warm" id="sliding-studio" aria-label="Sliding room studio">
     <div className="container sl-room-heading"><div><div className="t-eyebrow">Sliding collection · In your space</div><h2 className="t-h2">Two. Three. Four.<br /><em>A smooth move.</em></h2></div><p className="t-lead">Choose a door layout, a room and a finish. Slide the panels to explore the space behind them, and switch the light on.</p></div>
     <div className="container sl-room-stage">
       <div className="sl-room-view">

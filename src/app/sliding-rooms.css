@@ -1,4 +1,4 @@
-.sl-room-studio { padding: 54px 0; background: #181c19; }
+.sl-room-studio { padding: 54px 0; background: #181c19; scroll-margin-top: var(--nav-h); }
 .sl-room-heading { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 60px; margin-bottom: 28px; }
 .sl-room-heading .t-h2 { font-size: clamp(34px, 4vw, 58px); }
 .sl-room-heading .t-lead { max-width: 440px; font-size: 15px; }
