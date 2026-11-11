@@ -22,6 +22,8 @@ export type Collection = {
   image: string;
   /** Full-screen hero photo when the tile photo is too small to stay sharp at that size. */
   cover?: string;
+  /** Where the cover's subject sits, so narrow screens crop around it (CSS object-position). */
+  coverFocus?: string;
   gallery: [string, string];
   intro: string;
   body: string;
@@ -39,6 +41,7 @@ export const collections: Collection[] = [
     tag: "Shutters",
     tagline: "Hinged doors, drawn in fine lines.",
     image: "/images/work/openable-45-g-handle.jpg",
+    cover: "/images/hero/openable-shutters.jpg", coverFocus: "25% 50%",
     gallery: ["/images/about-dark-bedroom.jpg", "/images/wardrobe-alt.jpg"],
     intro: "Aluminium-framed shutters that turn storage into architecture.",
     body: "Every Vawe openable shutter is built to the exact opening it will live in. Choose a frame weight to suit the room, then pair it with glass, mirror, lacquer, fabric or cane, so wardrobes, kitchens and crockery units all read as one considered surface.",
@@ -73,7 +76,7 @@ export const collections: Collection[] = [
     tag: "Wardrobes",
     tagline: "The wardrobe, re-surfaced.",
     image: "/images/work/sliding-highlighter.jpg",
-    cover: "/images/stock/wardrobe-glass-lit.jpg",
+    cover: "/images/hero/sliding-wardrobe-shutters.jpg", coverFocus: "88% 50%",
     gallery: ["/images/hero-bedroom.jpg", "/images/wardrobe-alt.jpg"],
     intro: "Floor-to-ceiling sliders that save space and set the mood of a room.",
     body: "Sliding shutters glide on concealed tracks, so the wardrobe never fights the bed or the walkway. The face is where it gets personal: five finishes, each made for a different kind of room.",
@@ -95,16 +98,17 @@ export const collections: Collection[] = [
     tag: "Partitions",
     tagline: "Rooms that open on cue.",
     image: "/images/work/partition-synchro.jpg",
-    cover: "/images/stock/partition-steel-kitchen.jpg",
+    cover: "/images/hero/sliding-partitions.jpg",
     gallery: ["/images/slide-telescopic.jpg", "/images/slide-bifold.jpg"],
     intro: "Glass walls that divide a space when you need it, and disappear when you don't.",
-    body: "Separate the kitchen from the living room, close off a study, or open a home onto its balcony. Our sliding partitions come in four mechanisms, each tuned for a different opening width and stacking need.",
-    variantsTitle: "Four systems.",
+    body: "Separate the kitchen from the living room, close off a study, or open a home onto its balcony. Our sliding partitions come in five mechanisms, each tuned for a different opening width and stacking need.",
+    variantsTitle: "Five mechanisms.",
     variants: [
       { name: "Synchro Sliding", note: "Synchro", image: "/images/work/partition-synchro.jpg", description: "Linked panels move together. Pull one, and its partner glides open in sync from the opposite side." },
       { name: "Telescopic Sliding", note: "Telescopic", image: "/images/work/partition-telescopic-2.jpg", description: "Panels stack neatly behind one another on parallel tracks for wide, uninterrupted openings." },
-      { name: "Bi-Fold", note: "Bi-Fold", image: "/images/stock/bifold-open.jpg", description: "Panels fold in pairs like a concertina, opening almost the full width of the frame." },
-      { name: "Slide cum Fold", note: "Slide & Fold", image: "/images/work/partition-slide-fold-1.jpg", description: "Panels slide along the track, then fold flat against the wall, leaving a clear, column-free opening." },
+      { name: "Ghost", note: "Ghost", image: "/images/partition-rooms/ghost.png", description: "A single glass leaf slides across the wall with concealed hardware." },
+      { name: "Pooja Bi-Fold", note: "Pooja Bi-Fold", image: "/images/partition-rooms/pooja.png", description: "Paired glass leaves fold to the side to open your pooja space." },
+      { name: "Slide & Fold", note: "Slide & Fold", image: "/images/work/partition-slide-fold-1.jpg", description: "Panels slide along the track, then fold flat against the wall, leaving a clear, column-free opening." },
     ],
     applications: ["Kitchen-living", "Home offices", "Balconies", "Conference rooms", "Retail & hospitality"],
   },
@@ -116,14 +120,15 @@ export const collections: Collection[] = [
     tag: "Mirrors",
     tagline: "Light, reflected.",
     image: "/images/mirrors-led.jpg",
+    cover: "/images/hero/mirrors.jpg", coverFocus: "82% 50%",
     gallery: ["/images/hero-led-vanity.jpg", "/images/mirror-round.jpg"],
-    intro: "From clean plain glass to backlit statement pieces, mirrors that light a room.",
-    body: "A mirror doubles the light in a room and halves the visual clutter. Ours are cut and finished to size, with integrated LED options for vanities, dressers and entryways.",
+    intro: "One reflection. A completely different room.",
+    body: "Choose a sculptural shape, then find your light: a crisp front-lit edge, a soft backlit halo, or a refined metal frame with either lighting style. Every mirror is cut and finished to your space.",
     variantsTitle: "Three ways to reflect.",
     variants: [
-      { name: "Plain Mirror", note: "Classic", mirror: { kind: "plain", shape: "tombstone" }, description: "Distortion-free mirror glass cut to any size or shape, from full walls to wardrobe insets." },
-      { name: "LED Mirror", note: "Backlit", mirror: { kind: "led", shape: "round" }, description: "Soft, even backlighting that makes a vanity glow, with no visible fittings." },
-      { name: "Frame LED Mirror", note: "Framed", mirror: { kind: "frame-led", shape: "capsule" }, description: "A slim metal frame with integrated light, a finishing touch for dressers and powder rooms." },
+      { name: "Front Lit", note: "Front Lit", mirror: { kind: "plain", shape: "tombstone" }, description: "An illuminated inset edge brings even light to the face of the mirror." },
+      { name: "Backlit", note: "Backlit", mirror: { kind: "led", shape: "round" }, description: "Soft, even backlighting that makes a vanity glow, with no visible fittings." },
+      { name: "Framed", note: "Front Lit / Backlit", mirror: { kind: "frame-led", shape: "capsule" }, description: "A slim metal frame with integrated light, a finishing touch for dressers and powder rooms." },
     ],
     applications: ["Vanities", "Dressing areas", "Entryways", "Gyms & studios", "Salons"],
   },
@@ -135,6 +140,7 @@ export const collections: Collection[] = [
     tag: "Bath",
     tagline: "Water, framed in glass.",
     image: "/images/bathroom-partition.jpg",
+    cover: "/images/hero/bathroom-partitions.jpg",
     gallery: ["/images/bathroom-partition-2.jpg", "/images/hero-led-vanity.jpg"],
     intro: "Toughened glass shower partitions that keep the wet zone in and the room open.",
     body: "A glass partition makes even a compact bathroom feel generous. Each enclosure is measured on site and fitted with hardware chosen for daily, wet use.",
@@ -154,6 +160,7 @@ export const collections: Collection[] = [
     tag: "Textile",
     tagline: "Textile, sealed in glass.",
     image: "/images/stock/partition-frosted.jpg",
+    cover: "/images/hero/fabric-glass.jpg",
     gallery: ["/images/about-living.jpg", "/images/studio-interior.jpg"],
     intro: "The softness of fabric, with the durability and easy care of glass.",
     body: "Fabric glass laminates real textiles between glass, giving you the warmth of linen or silk with a surface you can simply wipe down. It diffuses light beautifully, offering privacy without darkness.",
@@ -173,6 +180,7 @@ export const collections: Collection[] = [
     tag: "Mirrors",
     tagline: "An edge that catches the light.",
     image: "/images/bevelled-mirror.jpg",
+    cover: "/images/hero/bevelled-mirror.jpg",
     gallery: ["/images/mirror-round-2.jpg", "/images/founder-living.jpg"],
     intro: "Mirrors with precision-ground, angled edges that frame themselves in light.",
     body: "A bevel is a small detail that changes everything: the angled edge refracts light into a fine, prismatic outline. Use it as a single statement piece or as tiled panels across a wall.",
@@ -190,3 +198,4 @@ export const getCollection = (slug: string) => collections.find((c) => c.slug ==
 
 export const slidingSystems = collections.find((c) => c.slug === "sliding-partitions")!.variants;
 export const wardrobeFinishes = collections.find((c) => c.slug === "sliding-wardrobe-shutters")!.variants;
+
