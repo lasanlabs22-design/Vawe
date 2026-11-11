@@ -4346,54 +4346,6 @@ html:not(.js) .lb-smoke {
   }
 }
 
-/* ─── Catalogue download ─── */
-.catalogue {
-  display: grid;
-  grid-template-columns: minmax(180px, 280px) 1fr;
-  gap: clamp(32px, 6vw, 96px);
-  align-items: center;
-}
-.catalogue-cover {
-  position: relative;
-  aspect-ratio: 716 / 1012;
-  overflow: hidden;
-  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
-  transform: rotate(-2deg);
-  transition: transform 700ms var(--ease-out);
-}
-.catalogue-cover:hover {
-  transform: rotate(0deg) scale(1.02);
-}
-.catalogue-cover img {
-  object-fit: cover;
-}
-.catalogue-body .t-eyebrow {
-  margin-bottom: 22px;
-}
-.catalogue .c-apps span {
-  border-color: var(--border-inv);
-  color: rgba(245, 241, 236, 0.78);
-}
-.catalogue-actions {
-  margin-top: 36px;
-  display: flex;
-  align-items: center;
-  gap: 12px 18px;
-  flex-wrap: wrap;
-}
-.catalogue-actions .t-mono {
-  color: rgba(245, 241, 236, 0.6);
-}
-@media (max-width: 760px) {
-  .catalogue {
-    grid-template-columns: 1fr;
-  }
-  .catalogue-cover {
-    width: 60%;
-    max-width: 240px;
-  }
-}
-
 /* ─── Privacy policy, terms ─── */
 .legal-hero h1 {
   font-size: clamp(48px, 7vw, 104px);
