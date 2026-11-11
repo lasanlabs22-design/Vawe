@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { setFocusHash } from "@/lib/focus";
-import { catalogue, focusKey, series } from "@/lib/series";
+import { series } from "@/lib/series";
 import { site } from "@/lib/site";
 import { getLenis } from "./Motion";
 
@@ -79,7 +79,7 @@ export default function Nav() {
 
   const cls = [
     "nav",
-    scrolled || menu !== null || open ? "is-scrolled" : "",
+    pathname === "/" || scrolled || menu !== null || open ? "is-scrolled" : "",
     hidden && menu === null && !open ? "is-hidden" : "",
   ]
     .filter(Boolean)
@@ -168,70 +168,23 @@ export default function Nav() {
         {active && (
           <div className="mega" id="mega-menu" onMouseEnter={() => openMenu(menu!)}>
             <div className="container mega-grid">
-              <div className="mega-groups">
-                {active.groups
-                  .filter((g) => g.items.length)
-                  .map((g) => {
-                    const groupHref = `${g.href}#${focusKey(g.title)}`;
-                    return (
-                      <div className="mega-group" key={g.title}>
-                        <Link className="mega-group-title" href={groupHref} onClick={(e) => pick(e, groupHref)}>
-                          {g.title}
-                        </Link>
-                        <ul>
-                          {g.items.map((it) => {
-                            const href = `${g.href}#${focusKey(g.title, it.name)}`;
-                            return (
-                              <li key={it.name}>
-                                <Link href={href} onClick={(e) => pick(e, href)}>
-                                  {it.name}
-                                  {it.note && <small>{it.note}</small>}
-                                </Link>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    );
-                  })}
-                {/* Single-page groups (no sub-items) share one column */}
-                {active.groups.some((g) => !g.items.length) && (
-                  <div className="mega-group mega-stack">
-                    {active.groups
-                      .filter((g) => !g.items.length)
-                      .map((g) => (
-                        <Link key={g.title} className="mega-group-title" href={`${g.href}#work`} onClick={() => setMenu(null)}>
-                          {g.title}
-                        </Link>
-                      ))}
-                  </div>
-                )}
-                {active.catalogue && (
-                  <div className="mega-group">
-                    <span className="mega-group-title">Catalogue</span>
-                    <ul>
-                      <li>
-                        <a href={catalogue.href} download={catalogue.fileName}>
-                          Download PDF
-                          <small>{catalogue.size}</small>
-                        </a>
-                      </li>
-                      <li>
-                        <Link href="/gallery/mirrors" onClick={() => setMenu(null)}>
-                          Mirror gallery
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-              <Link className="mega-feature" href={`${active.href}#work`} onClick={() => setMenu(null)}>
-                <Image key={active.image} src={active.image} alt={active.label} fill sizes="30vw" />
-                <div className="tile-grad" />
-                <div className="tile-cap">
-                  <div className="cat-tagline">{active.tagline}</div>
-                  <span className="mega-more">View {active.label} →</span>
-                </div>
+              <p className="mega-uses">
+                <span>Made for</span> {active.uses.join(" · ")}
+              </p>
+              <ul className="mega-cards">
+                {active.cards.map((c) => (
+                  <li key={c.name}>
+                    <Link className="mega-card" href={c.href} onClick={(e) => pick(e, c.href)}>
+                      <span className="mega-card-img">
+                        <Image src={c.image} alt="" fill sizes="150px" style={{ objectPosition: c.focus }} />
+                      </span>
+                      <span className="mega-card-name">{c.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link className="mega-more" href={active.href} onClick={() => setMenu(null)}>
+                View all {active.label} →
               </Link>
             </div>
           </div>
@@ -253,32 +206,24 @@ export default function Nav() {
               </button>
               {sub === i && (
                 <div className="mobile-sub">
-                  <Link className="mobile-view-all" href={s.href} onClick={() => setOpen(false)}>
-                    View all {s.label} →
-                  </Link>
-                  {s.groups.map((g) => {
-                    const groupHref = g.items.length ? `${g.href}#${focusKey(g.title)}` : `${g.href}#work`;
-                    return (
-                      <div className="mobile-group" key={g.title}>
-                        <Link className="mobile-group-title" href={groupHref} onClick={(e) => pick(e, groupHref)}>
-                          {g.title}
-                        </Link>
-                        {g.items.map((it) => {
-                          const href = `${g.href}#${focusKey(g.title, it.name)}`;
-                          return (
-                            <Link key={it.name} href={href} onClick={(e) => pick(e, href)}>
-                              {it.name}
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-                  {s.catalogue && (
-                    <a href={catalogue.href} download={catalogue.fileName}>
-                      Catalogue PDF ↓
-                    </a>
-                  )}
+                  <p className="mega-uses">
+                    <span>Made for</span> {s.uses.join(" · ")}
+                  </p>
+                  <div className="mobile-cards" data-lenis-prevent-horizontal>
+                    {s.cards.map((c) => (
+                      <Link key={c.name} className="mobile-card" href={c.href} onClick={(e) => pick(e, c.href)}>
+                        <span className="mega-card-img">
+                          <Image src={c.image} alt="" fill sizes="40vw" style={{ objectPosition: c.focus }} />
+                        </span>
+                        <span className="mega-card-name">{c.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="mobile-sub-links">
+                    <Link className="mobile-view-all" href={s.href} onClick={() => setOpen(false)}>
+                      View all {s.label} →
+                    </Link>
+                  </div>
                 </div>
               )}
             </li>

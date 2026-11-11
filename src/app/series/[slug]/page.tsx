@@ -5,18 +5,9 @@ import { notFound } from "next/navigation";
 import Lines from "@/components/Lines";
 import { ArrowUpRight } from "@/components/Icons";
 import FabricSections from "@/components/FabricSections";
-import FabricStudio from "@/components/FabricStudio";
+import SeriesExplorer from "@/components/SeriesExplorer";
 import MirrorCard from "@/components/MirrorCard";
-import MirrorSections from "@/components/MirrorSections";
-import PartitionSections from "@/components/PartitionSections";
-import PartitionStudio from "@/components/PartitionStudio";
-import ShowerSections from "@/components/ShowerSections";
-import ShowerStudio from "@/components/ShowerStudio";
-import ShutterProfiles from "@/components/ShutterProfiles";
-import ShutterStudio from "@/components/ShutterStudio";
-import SlidingFinishes from "@/components/SlidingFinishes";
-import SlidingStudio from "@/components/SlidingStudio";
-import CatalogueBand from "@/components/CatalogueBand";
+
 import SeriesWork from "@/components/SeriesWork";
 import { collections, getCollection } from "@/lib/collections";
 import { rangeFor } from "@/lib/series";
@@ -59,7 +50,7 @@ export default async function CollectionPage({ params }: PageProps<"/series/[slu
       <section className="c-hero">
         <div className="c-hero-bg">
           <div className="parallax" data-parallax="0.15" suppressHydrationWarning>
-            <Image src={c.cover ?? c.image} alt="" fill sizes="100vw" preload quality={85} />
+            <Image src={c.cover ?? c.image} alt="" fill sizes="100vw" preload quality={85} style={{ objectPosition: c.coverFocus }} />
           </div>
         </div>
         <div className="container">
@@ -79,10 +70,13 @@ export default async function CollectionPage({ params }: PageProps<"/series/[slu
           <p className="c-hero-tagline hero-fade" style={d(200)}>
             {c.tagline}
           </p>
+          <a href="#explore-series" className="btn btn-pink" style={{ marginTop: 24 }}>Try all series <span aria-hidden="true">↓</span></a>
         </div>
       </section>
 
-      {(photos.length > 0 || range.length > 0) && <SeriesWork photos={photos} range={range} />}
+      <SeriesExplorer key={c.slug} initialSlug={c.slug} />
+
+      {c.slug !== "sliding-partitions" && c.slug !== "mirrors" && (photos.length > 0 || range.length > 0) && <SeriesWork photos={photos} range={range} />}
 
       <section className="section" id={photos.length || range.length ? undefined : "work"}>
         <div className="container c-intro">
@@ -106,72 +100,12 @@ export default async function CollectionPage({ params }: PageProps<"/series/[slu
       </section>
 
       {c.slug === "fabric-glass" ? (
+        <FabricSections />
+      ) : c.slug === "bathroom-partitions" ? null : c.slug === "sliding-partitions" ? (
         <>
-          <FabricStudio />
-          <FabricSections />
-          <CatalogueBand />
+          
         </>
-      ) : c.slug === "bathroom-partitions" ? (
-        <>
-          <ShowerStudio />
-          <ShowerSections />
-        </>
-      ) : c.slug === "sliding-partitions" ? (
-        <>
-          <PartitionStudio />
-          <PartitionSections />
-        </>
-      ) : c.slug === "sliding-wardrobe-shutters" ? (
-        <>
-          <SlidingStudio />
-          <SlidingFinishes />
-        </>
-      ) : c.slug === "openable-shutters" ? (
-        <>
-          <ShutterStudio />
-          <ShutterProfiles />
-        </>
-      ) : c.slug === "mirrors" ? (
-        <>
-          <section className="section-sm dark on-dark ms-intro">
-            <div className="container section-head" style={{ marginBottom: 0 }}>
-              <div>
-                <div className="t-eyebrow reveal">Signature designs</div>
-                <Lines
-                  className="t-h2"
-                  lines={[
-                    <>Four mirrors.</>,
-                    <>
-                      <em>Switch</em> them on.
-                    </>,
-                  ]}
-                />
-              </div>
-              <p className="t-lead reveal" style={d(150)}>
-                Plain, LED and frame-LED mirrors, each with its own character. Press the light button in any section
-                to see how it glows, and pick a warm, neutral or cool tone.
-              </p>
-            </div>
-          </section>
-          <MirrorSections />
-          <section className="section-sm dark on-dark">
-            <div className="container cta-band">
-              <Lines
-                className="t-h2"
-                lines={[
-                  <>48 designs.</>,
-                  <>
-                    One <em>gallery.</em>
-                  </>,
-                ]}
-              />
-              <Link href="/gallery/mirrors" className="btn btn-pink reveal">
-                Browse the mirror gallery <span className="arrow">→</span>
-              </Link>
-            </div>
-          </section>
-        </>
-      ) : (
+      ) : c.slug === "sliding-wardrobe-shutters" || c.slug === "openable-shutters" ? null : c.slug === "mirrors" || c.slug === "bevelled-mirror" ? null : (
       <section className="section dark on-dark">
         <div className="container">
           <div className="section-head">
@@ -209,7 +143,7 @@ export default async function CollectionPage({ params }: PageProps<"/series/[slu
       )}
 
       {/* Stock photos stand in only where the client has not sent their own yet */}
-      {photos.length === 0 && (
+      {c.slug !== "sliding-partitions" && c.slug !== "mirrors" && photos.length === 0 && (
       <section className="section">
         <div className="container">
           <div className="gallery">
@@ -291,3 +225,4 @@ export default async function CollectionPage({ params }: PageProps<"/series/[slu
     </>
   );
 }
+

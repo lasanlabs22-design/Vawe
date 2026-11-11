@@ -8,24 +8,18 @@ export type SeriesGroup = {
   items: SeriesItem[];
 };
 
+/** focus: where the product sits in the photo, so the square tile crops around it (CSS object-position). */
+export type SeriesCard = { name: string; href: string; image: string; focus?: string };
+
 export type Series = {
   label: string;
   href: string;
-  image: string;
   tagline: string;
+  /** Where customers use this series, shown above the nav tiles. */
+  uses: string[];
+  /** The nav menu: one picture per product a customer can choose, linked to that pick on its page. */
+  cards: SeriesCard[];
   groups: SeriesGroup[];
-  /** Shows the catalogue download in this menu. */
-  catalogue?: boolean;
-};
-
-export const catalogue = {
-  title: "Fabric Glass Catalogue 2026",
-  href: "/downloads/vawe-fabric-glass-catalogue-2026.pdf",
-  fileName: "Vawe-Fabric-Glass-Catalogue-2026.pdf",
-  cover: "/images/work/catalogue-cover.jpg",
-  size: "22 MB PDF",
-  pages: 121,
-  ranges: ["Fabric", "Rattan", "Wiremesh", "Interior film"],
 };
 
 const openable = "/series/openable-shutters";
@@ -35,8 +29,13 @@ export const series: Series[] = [
   {
     label: "Openable Series",
     href: openable,
-    image: "/images/work/openable-45-g-handle.jpg",
     tagline: "Hinged aluminium shutters, by profile and handle.",
+    uses: ["Wardrobes", "Modular kitchens", "Crockery units", "TV & display units"],
+    cards: [
+      { name: "45 mm Profile", href: `${openable}#45-mm`, image: "/images/work/openable-45-g-handle.jpg" },
+      { name: "20 mm Profile", href: `${openable}#20-mm`, image: "/images/work/openable-20-i-handle.jpg" },
+      { name: "CNC Profile", href: `${openable}#cnc`, image: "/images/work/openable-cnc-20.jpg" },
+    ],
     groups: [
       { title: "45 mm", href: openable, items: [{ name: "I Handle" }, { name: "G Handle" }] },
       { title: "20 mm", href: openable, items: [{ name: "I Handle" }] },
@@ -58,8 +57,14 @@ export const series: Series[] = [
   {
     label: "Sliding Shutter Series",
     href: sliding,
-    image: "/images/stock/wardrobe-glass-lit.jpg",
     tagline: "Floor-to-ceiling sliders, by handle and finish.",
+    uses: ["Bedroom wardrobes", "Walk-in closets", "Kids' rooms", "Utility storage"],
+    cards: [
+      { name: "Tinted / Fluted", href: `${sliding}#finishes--tinted-fluted`, image: "/images/work/sliding-fluted.jpg" },
+      { name: "Lacquered", href: `${sliding}#finishes--lacquered`, image: "/images/work/sliding-lacquered-highlighter.jpg" },
+      { name: "Highlighter", href: `${sliding}#finishes--highlighter`, image: "/images/work/sliding-highlighter.jpg" },
+      { name: "Digital Print", href: `${sliding}#finishes--digital-print`, image: "/images/sliding-rooms/IMG-20261015-WA0018.jpg" },
+    ],
     groups: [
       { title: "Handles", href: sliding, items: [{ name: "C Handle" }, { name: "H Handle" }, { name: "T / L Handle" }] },
       {
@@ -79,13 +84,21 @@ export const series: Series[] = [
   {
     label: "Partition Series",
     href: "/series/sliding-partitions",
-    image: "/images/work/partition-synchro.jpg",
     tagline: "Glass walls that slide, stack, fold or stay put.",
+    uses: ["Kitchen & living", "Home offices", "Pooja rooms", "Balconies", "Showers"],
+    cards: [
+      { name: "Synchro", href: "/series/sliding-partitions#partitions--synchro", image: "/images/work/partition-synchro.jpg" },
+      { name: "Telescopic", href: "/series/sliding-partitions#partitions--telescopic", image: "/images/work/partition-telescopic-2.jpg" },
+      { name: "Ghost", href: "/series/sliding-partitions#partitions--ghost", image: "/images/work/partition-ghost-1.jpg" },
+      { name: "Pooja Bi-Fold", href: "/series/sliding-partitions#partitions--pooja-bi-fold", image: "/images/partition-rooms/pooja.png" },
+      { name: "Slide & Fold", href: "/series/sliding-partitions#partitions--slide-fold", image: "/images/work/partition-slide-fold-1.jpg" },
+      { name: "Bathroom Partitions", href: "/series/bathroom-partitions#bathroom-partition", image: "/images/shower-rooms/fixed.jpg" },
+    ],
     groups: [
       {
         title: "Partitions",
         href: "/series/sliding-partitions",
-        items: [{ name: "Synchro" }, { name: "Telescopic" }, { name: "Bi-Fold" }, { name: "Ghost" }, { name: "Fixed" }],
+        items: [{ name: "Synchro" }, { name: "Telescopic" }, { name: "Ghost" }, { name: "Pooja Bi-Fold" }, { name: "Slide & Fold" }],
       },
       {
         title: "Bathroom Partition",
@@ -97,14 +110,19 @@ export const series: Series[] = [
   {
     label: "Glass & Mirror",
     href: "/series/mirrors",
-    image: "/images/mirrors-led.jpg",
-    tagline: "Mirrors that light a room, and glass with texture.",
-    catalogue: true,
+    tagline: "Mirrors that light a room.",
+    uses: ["Bathroom vanities", "Dressing areas", "Bedrooms", "Entryways"],
+    cards: [
+      { name: "Front Lit", href: "/series/mirrors#mirrors--front-lit", image: "/images/hero/mirrors.jpg", focus: "84% 40%" },
+      { name: "Backlit", href: "/series/mirrors#mirrors--backlit", image: "/images/stock/mirror-led-round-stone.jpg", focus: "50% 35%" },
+      { name: "Framed Front Lit", href: "/series/mirrors#mirrors--framed-front-lit", image: "/images/mirrors-led.jpg", focus: "0% 30%" },
+      { name: "Framed Backlit", href: "/series/mirrors#mirrors--framed-backlit", image: "/images/nav/mirror-framed-backlit.jpg", focus: "56% 30%" },
+    ],
     groups: [
       {
         title: "Mirrors",
         href: "/series/mirrors",
-        items: [{ name: "Plain" }, { name: "LED" }, { name: "Frame" }, { name: "Frame LED" }],
+        items: [{ name: "Front Lit" }, { name: "Backlit" }, { name: "Framed" }],
       },
       { title: "Fabric Glass", href: "/series/fabric-glass", items: [] },
       { title: "Bevelled Mirror", href: "/series/bevelled-mirror", items: [] },
@@ -126,3 +144,4 @@ export const focusGroup = (key: string) => key.split("--")[0];
 /** Groups from the client's tree that belong on a given collection page. */
 export const rangeFor = (slug: string) =>
   series.flatMap((s) => s.groups).filter((g) => g.href === `/series/${slug}` && g.items.length);
+

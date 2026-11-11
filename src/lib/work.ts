@@ -62,12 +62,17 @@ export const work: Work[] = [
   w("stock/partition-steel-double", "2400x1600", "Glass double doors", "Hallway", pa),
 
   w("fabric-glass-doors", "638x902", "Fabric Glass", "Sliding doors", "fabric-glass"),
-  w("fabric-swatch-gold-strand", "1065x1200", "Gold strand", "From the catalogue", "fabric-glass"),
-  w("fabric-swatch-linen-stripe", "1065x1200", "Linen stripe", "From the catalogue", "fabric-glass"),
-  w("fabric-swatch-crush", "1065x1200", "Crushed silk", "From the catalogue", "fabric-glass"),
-  w("fabric-swatch-grid", "1065x1200", "Woven grid", "From the catalogue", "fabric-glass"),
-  w("fabric-swatch-ripple", "1065x1200", "Ripple", "From the catalogue", "fabric-glass"),
-  w("fabric-swatch-chevron", "1065x1200", "Chevron", "From the catalogue", "fabric-glass"),
+  w("fabric-swatch-gold-strand", "1065x1200", "Gold strand", "Fabric glass sample", "fabric-glass"),
+  w("fabric-swatch-linen-stripe", "1065x1200", "Linen stripe", "Fabric glass sample", "fabric-glass"),
+  w("fabric-swatch-crush", "1065x1200", "Crushed silk", "Fabric glass sample", "fabric-glass"),
+  w("fabric-swatch-grid", "1065x1200", "Woven grid", "Fabric glass sample", "fabric-glass"),
+  w("fabric-swatch-ripple", "1065x1200", "Ripple", "Fabric glass sample", "fabric-glass"),
+  w("fabric-swatch-chevron", "1065x1200", "Chevron", "Fabric glass sample", "fabric-glass"),
+
+  w("bevel-diamond-backlit-wall", "1200x1499", "Diamond bevelled wall", "Backlit entry feature", "bevelled-mirror"),
+  w("bevel-tv-wall-triangles", "970x1200", "Bevelled TV wall", "Triangle-cut panels", "bevelled-mirror"),
+  w("bevel-tv-wall-strips", "1007x1007", "Bevelled side panels", "Living room TV unit", "bevelled-mirror"),
+  w("bevel-diamond-partition", "800x800", "Diamond bevelled partition", "Living & dining", "bevelled-mirror"),
 ];
 
 export const workFor = (slug: string) => work.filter((p) => p.collection === slug);

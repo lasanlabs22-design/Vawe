@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { collections, slidingSystems } from "@/lib/collections";
-import { catalogue } from "@/lib/series";
 import { site, whatsappLink } from "@/lib/site";
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from "./Icons";
 import FooterSign from "./FooterSign";
@@ -62,15 +61,7 @@ export default function Footer() {
                 <Link href="/#work">Our installs</Link>
               </li>
               <li>
-                <a href={catalogue.href} download={catalogue.fileName}>
-                  Fabric glass catalogue (PDF)
-                </a>
-              </li>
-              <li>
-                <Link href="/gallery/mirrors">Mirror gallery</Link>
-              </li>
-              <li>
-                <Link href="/#finishes">Wardrobe finishes</Link>
+                <Link href="/series/sliding-wardrobe-shutters">Wardrobe finishes</Link>
               </li>
               <li>
                 <Link href="/#process">How we work</Link>

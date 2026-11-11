@@ -1,0 +1,58 @@
+.mirror-studio { padding: 24px 0; background: #111a1f; scroll-margin-top: 85px; }
+.mirror-studio-card { padding: 20px; border: 1px solid #ffffff20; border-radius: 8px; background: #162126; }
+.mirror-studio-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; padding-bottom: 18px; }
+.mirror-studio-heading .t-eyebrow { font-size: 10px; }
+.mirror-studio-heading h2 { font: 400 clamp(24px, 2.7vw, 38px)/1.1 var(--font-dm-serif), serif; margin-top: 6px; }
+.mirror-studio-heading em { color: #e8bc8c; }
+.mirror-studio-count { color: #c3b49e; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; white-space: nowrap; }
+.mirror-studio-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; }
+.mirror-studio-view { position: relative; display: grid; place-items: center; background: radial-gradient(ellipse at 50% 40%, #28343b, #090e11 80%); border-radius: 4px; overflow: hidden; min-width: 0; }
+.mirror-room-scene { width: 100%; height: clamp(460px, calc(100svh - var(--nav-h) - 190px), 720px); display: block; }
+.mirror-light-layer { transition: opacity .4s ease; }
+.mirror-scene-toolbar { position: absolute; bottom: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; pointer-events: none; }
+.mirror-scene-toolbar button { pointer-events: auto; padding: 10px 16px; min-height: 40px; border: 1px solid #ffffff45; border-radius: 24px; background: #102029e6; backdrop-filter: blur(10px); font-size: 12px; }
+.mirror-scene-toolbar button[aria-pressed="true"] { background: #f3e8d8; color: #172126; }
+.mirror-scene-toolbar button span { font-size: 17px; margin-right: 6px; }
+.mirror-scene-toolbar > span { font-size: 10px; background: #102029d9; color: #f8efdf; padding: 8px 10px; border-radius: 4px; }
+.mirror-studio-options { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.mirror-studio-options fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.mirror-studio-options legend { display: flex; justify-content: space-between; width: 100%; margin-bottom: 9px; color: #e8bc8c; text-transform: uppercase; font-size: 10px; letter-spacing: .12em; }
+.mirror-studio-options legend span { color: #bcc5c5; text-transform: none; letter-spacing: 0; }
+.mirror-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.mirror-pills button { border: 1px solid #ffffff30; padding: 9px 12px; min-height: 36px; border-radius: 22px; font-size: 11px; line-height: 1.2; }
+.mirror-pills button[aria-pressed="true"] { background: #f3e8d8; color: #172126; border-color: #f3e8d8; }
+.mirror-shape-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+.mirror-shape-options button { display: grid; place-items: center; gap: 5px; padding: 6px 2px; border-radius: 4px; border: 1px solid #ffffff16; min-width: 0; }
+.mirror-shape-options button svg { height: 32px; fill: #c5c8bf22; stroke: #b8c4c7; stroke-width: 2; }
+.mirror-shape-options button span { font-size: 9px; }
+.mirror-shape-options button[aria-pressed="true"] { background: #e8bc8c15; border-color: #e8bc8c; }
+.mirror-shape-options button[aria-pressed="true"] svg { stroke: #e8bc8c; fill: #e8bc8c30; }
+.mirror-frame-options { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; }
+.mirror-frame-options > button { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(130deg, #ffffff40, transparent 40%), var(--metal); border: 1px solid #ffffff55; outline: 1px solid transparent; outline-offset: 3px; }
+.mirror-frame-options > button[aria-pressed="true"] { outline-color: #e8bc8c; }
+.mirror-frame-options .mirror-pills { margin-left: auto; }
+.mirror-frame-options .mirror-pills button { padding: 8px 10px; font-size: 10px; }
+.mirror-tones button { display: flex; align-items: center; gap: 6px; }
+.mirror-tones i { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 4px #ffffff50; }
+.mirror-brightness { display: flex; gap: 10px; align-items: center; font-size: 10px; color: #c4cece; margin-top: 12px; }
+.mirror-brightness input { flex: 1; min-width: 40px; accent-color: #e8bc8c; }
+.mirror-brightness > span { min-width: 30px; font-variant-numeric: tabular-nums; }
+.mirror-studio-summary { border-top: 1px solid #ffffff20; padding-top: 12px; display: grid; gap: 10px; }
+.mirror-studio-summary p { font-size: 11px; line-height: 1.4; color: #c4cece; }
+.mirror-studio-summary .btn { justify-self: start; padding: 10px 15px; font-size: 10px; }
+.mirror-studio button:focus-visible, .mirror-studio a:focus-visible, .mirror-studio input:focus-visible { outline: 2px solid #e8bc8c; outline-offset: 3px; }
+.mirror-studio button:hover { border-color: #e8bc8c; }
+@media (max-width: 1000px) { .mirror-studio-layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; } }
+@media (max-width: 760px) { .mirror-studio-card { padding: 14px; } .mirror-studio-layout { grid-template-columns: 1fr; } .mirror-studio-count { display: none; } .mirror-room-scene { height: min(65svh, 570px); min-height: 340px; } .mirror-studio-heading h2 { font-size: 26px; } .mirror-pills button { min-height: 40px; } }
+@media (prefers-reduced-motion: reduce) { .mirror-light-layer { transition: none; } }
+.mirror-studio-heading h2 { margin-bottom: 0; }
+.mirror-studio-summary p { margin: 0; }
+.mirror-studio-options { gap: 12px; }
+.mirror-shape-options button { line-height: 1.2; }
+.mirror-shape-options button svg { height: 28px; }
+.mirror-studio-heading { align-items: center; }
+
+/* Whole room, never cropped: a soft blurred copy of it fills the space either side. */
+.mirror-studio-view::before { content: ""; position: absolute; inset: -40px; background: url("/images/mirror-studio/room.png") center / cover; filter: blur(32px) brightness(.38) saturate(1.15); }
+.mirror-room-scene { position: relative; filter: drop-shadow(0 18px 40px #000a); }
+@media (max-width: 760px) { .mirror-room-scene { height: auto; min-height: 0; aspect-ratio: 1122 / 1402; } }

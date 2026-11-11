@@ -7,9 +7,13 @@ const nextConfig: NextConfig = {
     qualities: [75, 85],
     formats: ["image/avif", "image/webp"],
   },
-  // "Collections" was renamed to "Series"; keep old links and search results working.
+  // Keep old links and search results working: "Collections" was renamed to "Series", and the
+  // mirror gallery was retired in favour of the mirrors series page.
   async redirects() {
-    return [{ source: "/collections/:slug", destination: "/series/:slug", permanent: true }];
+    return [
+      { source: "/collections/:slug", destination: "/series/:slug", permanent: true },
+      { source: "/gallery/mirrors", destination: "/series/mirrors", permanent: true },
+    ];
   },
 };
 

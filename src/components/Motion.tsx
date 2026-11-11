@@ -35,7 +35,18 @@ export default function Motion() {
 
     const pending = new Set(document.querySelectorAll<HTMLElement>(REVEAL));
     const show = (el: Element) => {
-      el.classList.add("is-in");
+      // Animate presentation without mutating React-owned class attributes before
+      // streamed client components hydrate (which caused hydration mismatches).
+      const timing: KeyframeAnimationOptions = { duration: reduced ? 0 : 900, fill: "both", easing: "cubic-bezier(.22,.68,.18,1)" };
+      if (el.matches(".reveal")) el.animate([{ opacity: 0, transform: "translateY(28px)" }, { opacity: 1, transform: "none" }], timing);
+      if (el.matches(".reveal-img")) {
+        el.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], timing);
+        el.querySelectorAll("img").forEach(img => img.animate([{ transform: "scale(1.18)" }, { transform: "scale(1)" }], timing));
+      }
+      if (el.matches(".reveal-lines")) el.querySelectorAll(".line > span").forEach((line, i) => line.animate([{ transform: "translateY(110%)" }, { transform: "none" }], { ...timing, delay: reduced ? 0 : i * 110 }));
+      // These restyle their children once in view (the footer sign's power-on, studio slide-ins), so they
+      // still need the class. They sit well below the fold, so they are only reached after hydration.
+      if (el.matches(".sign, .ms-anim, .pcut")) el.classList.add("is-in");
       io.unobserve(el);
       pending.delete(el as HTMLElement);
     };
