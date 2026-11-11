@@ -58,25 +58,3 @@ export const YoutubeIcon = (p: P) => (
     <path fill="#fff" d="M9.6 15.6V8.4l6.3 3.6-6.3 3.6Z" />
   </svg>
 );
-
-// Pillar icons: thin-line, architectural.
-export const ProfileIcon = (p: P) => (
-  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true" {...p}>
-    <rect x="8" y="5" width="32" height="38" />
-    <rect x="13" y="10" width="22" height="28" />
-    <path d="M31 22v4" strokeWidth="2" />
-  </svg>
-);
-export const FinishIcon = (p: P) => (
-  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true" {...p}>
-    <circle cx="17" cy="17" r="11" />
-    <circle cx="31" cy="17" r="11" />
-    <circle cx="24" cy="30" r="11" />
-  </svg>
-);
-export const MeasureIcon = (p: P) => (
-  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true" {...p}>
-    <path d="M4 34 34 4l10 10-30 30L4 34Z" />
-    <path d="m12 26 4 4M17 21l3 3M22 16l4 4M27 11l3 3" />
-  </svg>
-);
