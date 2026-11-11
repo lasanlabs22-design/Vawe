@@ -100,16 +100,16 @@
   transform: rotateX(90deg);
   background: linear-gradient(0deg, #ece8e2, #c9c3bb);
 }
-/* the interior brightens once the strip has lit all the way round (see .cab-led) */
+/* Interior illumination fades on with the LED, with no startup delay. */
 .is-lit .cab-back {
   filter: brightness(1.04) saturate(1.04);
-  transition-delay: 1.6s;
+  transition-delay: 0s;
 }
 .is-lit .cab-side,
 .is-lit .cab-top,
 .is-lit .cab-bottom {
   filter: brightness(1);
-  transition-delay: 1.6s;
+  transition-delay: 0s;
 }
 /* carcass face frame */
 .cab-face {
@@ -121,26 +121,20 @@
   background: transparent;
   pointer-events: none;
 }
-/* warm wash on the back panel, glowing in from all four corners and edges */
+/* A steady, soft warm wash across the interior. */
 .cab-glow {
   inset: 0;
   transform: translateZ(calc(var(--cd) * -1 + 0.05em));
-  background:
-    radial-gradient(ellipse 55% 40% at 0% 0%, color-mix(in srgb, var(--glow) 50%, transparent), transparent 100%),
-    radial-gradient(ellipse 55% 40% at 100% 0%, color-mix(in srgb, var(--glow) 50%, transparent), transparent 100%),
-    radial-gradient(ellipse 55% 40% at 0% 100%, color-mix(in srgb, var(--glow) 42%, transparent), transparent 100%),
-    radial-gradient(ellipse 55% 40% at 100% 100%, color-mix(in srgb, var(--glow) 42%, transparent), transparent 100%);
+  background: radial-gradient(ellipse at 50% 20%, color-mix(in srgb, var(--glow) 35%, transparent), transparent 85%);
   box-shadow: inset 0 0 3em 0.6em color-mix(in srgb, var(--glow) 40%, transparent);
   opacity: 0;
-  transition: opacity 1000ms var(--ease);
+  transition: opacity 450ms var(--ease);
 }
 .is-lit .cab-glow {
   opacity: 1;
-  transition-delay: 1.5s;
+  transition-delay: 0s;
 }
-/* LED strip in an aluminium channel around the inner edge of the opening.
-   The channel is always visible; switching on lights the chips from the top-left corner,
-   clockwise through all four corners, and then the interior glows. */
+/* The entire LED channel fades on and off together. */
 .cab-led {
   --lw: 0.32em;
   --chip: color-mix(in srgb, var(--glow) 35%, #fff);
@@ -170,36 +164,8 @@
 }
 .is-lit .cab-led::before {
   opacity: 1;
-  transition-duration: 0s;
-  animation:
-    led-trace 1800ms linear both,
-    led-breathe 4.5s ease-in-out 3s infinite;
-}
-@keyframes led-trace {
-  0% {
-    background-size: 0% var(--lw), var(--lw) 0%, 0% var(--lw), var(--lw) 0%;
-  }
-  25% {
-    background-size: 100% var(--lw), var(--lw) 0%, 0% var(--lw), var(--lw) 0%;
-  }
-  50% {
-    background-size: 100% var(--lw), var(--lw) 100%, 0% var(--lw), var(--lw) 0%;
-  }
-  75% {
-    background-size: 100% var(--lw), var(--lw) 100%, 100% var(--lw), var(--lw) 0%;
-  }
-  100% {
-    background-size: 100% var(--lw), var(--lw) 100%, 100% var(--lw), var(--lw) 100%;
-  }
-}
-@keyframes led-breathe {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.85;
-  }
+  transition-duration: 450ms;
+  animation: none;
 }
 
 /* ─── doors ─── */
@@ -505,7 +471,7 @@
 }
 .is-open.is-lit .cab-floor::after {
   opacity: 1;
-  transition-delay: 1.5s;
+  transition-delay: 0s;
 }
 
 /* ─── inserts (also used for swatches) ─── */
