@@ -15,8 +15,8 @@ const choices = [
   { slug: "sliding-wardrobe-shutters", label: "Sliding Shutter Series", detail: "Sliding doors · Finishes" },
   { slug: "sliding-partitions", label: "Partition Series", detail: "Sliding · Folding systems" },
   { slug: "mirrors", label: "Glass & Mirror", detail: "Illuminated · Signature mirrors" },
-  { slug: "fabric-glass", label: "Fabric Glass", detail: "Textures · Decorative inserts" },
   { slug: "bathroom-partitions", label: "Shower Partitions", detail: "Glass · Bathroom systems" },
+  { slug: "fabric-glass", label: "Fabric Glass", detail: "Textures · Decorative inserts" },
 ];
 
 export default function SeriesExplorer({ initialSlug, mode = "room" }: { initialSlug: string; mode?: "room" | "studio" }) {
