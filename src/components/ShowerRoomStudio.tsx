@@ -110,7 +110,7 @@ export default function ShowerRoomStudio() {
   const hash = useHash();
   const initial = showerLayouts.find((l) => focusKey("Bathroom Partition", l.navItem) === hash)?.id ?? showerLayouts[0].id;
   useEffect(() => {
-    if (hash === "bathroom-partition" || hash.startsWith("bathroom-partition--")) document.getElementById("shower-studio")?.scrollIntoView({ block: "start" });
+    if (hash === "shower-studio" || hash === "bathroom-partition" || hash.startsWith("bathroom-partition--")) document.getElementById("shower-studio")?.scrollIntoView({ block: "start" });
   }, [hash]);
   return <ShowerStudio key={hash} initial={initial} />;
 }

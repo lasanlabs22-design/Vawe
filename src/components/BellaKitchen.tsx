@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useHash } from "@/lib/focus";
 import { ActionButton } from "./Shutter";
 import { colorsFor, fabrics, texUrl, type FabricId } from "@/lib/fabric";
 import { findLabel, frameColors, profiles, type ProfileId } from "@/lib/shutters";
@@ -69,10 +70,21 @@ function pane(kind: Kind, opt?: Option, fabricColor = ""): string {
   }
 }
 
+// Nav links pick a profile: /series/openable-shutters#bella--20-mm opens the studio on 20 mm.
+const profileFor: Record<string, ProfileId> = { "bella--45-mm": "regular", "bella--20-mm": "slim", "bella--cnc": "cnc" };
+
 export default function BellaKitchen() {
+  const hash = useHash();
+  useEffect(() => {
+    if (hash in profileFor) document.getElementById("bella-studio")?.scrollIntoView({ block: "start" });
+  }, [hash]);
+  return <Bella key={hash} initialProfile={profileFor[hash] ?? "regular"} />;
+}
+
+function Bella({ initialProfile }: { initialProfile: ProfileId }) {
   const [opened, setOpened] = useState<boolean[]>(Array(7).fill(false));
   const [lit, setLit] = useState(true);
-  const [profile, setProfile] = useState<ProfileId>("regular");
+  const [profile, setProfile] = useState<ProfileId>(initialProfile);
   const [frame, setFrame] = useState("graphite");
   const [kind, setKind] = useState<Kind>("tinted");
   const [picks, setPicks] = useState<Record<string, string>>({ tinted: "grey", lacquer: "ivory", fabric: "linen", fabricColor: "ivory", cane: "natural", print: "arches" });
@@ -94,7 +106,7 @@ export default function BellaKitchen() {
     "--pane-opacity": kind === "fabric" ? (picks.fabric === "sheer" ? 0.6 : metal ? 0.8 : 0.92) : 1,
   } as React.CSSProperties;
   return (
-    <section className="bella dark on-dark">
+    <section className="bella dark on-dark" id="bella-studio">
       <div className="container bella-heading">
         <div><div className="t-eyebrow">Bella · Kitchen collection</div><h2 className="t-h2">A little movement.<br /><em>A different space.</em></h2></div>
         <p className="t-lead">Explore Bella in a real kitchen. Pick a profile, frame colour and glass or insert, then open the shutters and switch the warm lighting on.</p>
