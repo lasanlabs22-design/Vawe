@@ -1,579 +1,76 @@
-/* ──────────────────────────────────────────────────────────────
-   Bathroom partitions: working shower-enclosure model
-   ────────────────────────────────────────────────────────────── */
-.bt-wrap {
-  --W: 40em;
-  --H: 30em;
-  --D: 14em;
-  --gt: 3.2em;
-  --hw-hi: color-mix(in srgb, var(--hw) 50%, #fff);
-  --hw-lo: color-mix(in srgb, var(--hw) 58%, #000);
-  --metal-v: linear-gradient(90deg, var(--hw-lo), var(--hw-hi) 30%, var(--hw) 55%, var(--hw-lo));
-  --metal-h: linear-gradient(180deg, var(--hw-lo), var(--hw-hi) 30%, var(--hw) 55%, var(--hw-lo));
-  --tile: url(/images/prints/marble.jpg);
-  position: relative;
-  display: inline-block;
-  padding: 3.2em 3.2em 1.2em;
+/* Bathroom partition studio: one real bathroom, with the partition drawn on its glass line. */
+.shower-room { padding: 24px 0; background: #131716; scroll-margin-top: 85px; --shower-h: clamp(400px, calc(100svh - var(--nav-h) - 180px), 760px); }
+.shower-room-card { padding: 20px; border: 1px solid #ffffff20; border-radius: 8px; background: #1a1f1e; }
+.shower-room-layout { display: grid; grid-template-columns: auto minmax(300px, 400px); grid-template-areas: "view heading" "view options"; grid-template-rows: auto 1fr; justify-content: center; column-gap: 48px; row-gap: 16px; }
+.shower-room-heading { grid-area: heading; }
+.shower-room-heading .t-eyebrow { font-size: 10px; }
+.shower-room-heading h2 { font: 400 clamp(24px, 2.1vw, 32px)/1.1 var(--font-dm-serif), serif; margin: 6px 0 0; }
+.shower-room-heading em { color: var(--pink-light); }
+.shower-room-heading p { margin: 8px 0 0; font-size: 12px; line-height: 1.5; color: #c2c8c5; }
+.shower-room-view { grid-area: view; min-width: 0; width: calc(var(--shower-h) * 1150 / 1442); }
+.shower-room-photo { position: relative; overflow: hidden; border-radius: 4px; background: #0d100f; }
+.shower-room-scene { display: block; width: 100%; height: auto; aspect-ratio: 1150 / 1442; }
+.shower-room-label { position: absolute; left: 12px; bottom: 12px; padding: 7px 12px; background: #161916ba; color: #fff; font-size: 11px; pointer-events: none; }
+.shower-room-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 12px; min-height: 36px; font-size: 11px; color: #b7bbb2; }
+.shower-room-buttons { display: flex; gap: 8px; }
+.shower-room-buttons button { border: 1px solid #ffffff40; padding: 9px 14px; min-height: 36px; border-radius: 24px; font-size: 12px; white-space: nowrap; color: #f2efe8; }
+.shower-room-buttons button:first-child { background: #eeeae0; color: #191c19; }
+.shower-room-buttons button span { margin-left: 8px; }
+/* The slider gets its own full-width row, so it is never squeezed by the buttons. */
+.shower-room-range { flex: 1 0 100%; order: 3; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.shower-room-range input { flex: 1; min-width: 40px; accent-color: var(--pink); cursor: ew-resize; }
+.shower-room-status { margin-left: auto; min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
+.shower-room-walkin { padding: 9px 14px; border: 1px dashed #ffffff45; border-radius: 999px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.shower-room-options { grid-area: options; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.shower-room-options fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.shower-room-options legend { display: flex; justify-content: space-between; width: 100%; margin-bottom: 9px; color: var(--pink-light); text-transform: uppercase; font-size: 10px; letter-spacing: .12em; }
+.shower-room-options legend span { color: #c2c8c5; text-transform: none; letter-spacing: 0; }
+.shower-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.shower-pills button { border: 1px solid #ffffff30; padding: 9px 16px; min-height: 36px; border-radius: 22px; font-size: 12px; }
+.shower-pills button[aria-pressed="true"] { background: #eeeae0; color: #191c19; border-color: #eeeae0; }
+.shower-room-note { margin: 10px 0 0; font-size: 12px; line-height: 1.5; color: #c2c8c5; }
+.shower-room-note strong { color: #f2efe8; font-weight: 500; }
+.shower-frame-mode { margin-bottom: 12px; }
+.shower-glass-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+.shower-glass-options button { display: grid; justify-items: center; align-content: start; gap: 5px; padding: 6px 2px; border: 1px solid transparent; border-radius: 3px; font-size: 10px; line-height: 1.3; text-align: center; min-width: 0; }
+.shower-glass-options button[aria-pressed="true"] { border-color: #ede9df; background: #ffffff0b; }
+.shower-glass-sample { display: block; position: relative; width: 34px; height: 40px; border: 2px solid #aaa99e; overflow: hidden; background: url("/images/shower-rooms/room.jpg") 42% 40% / 520px; }
+.shower-glass-sample::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, #fff3, transparent 45%, #fff2 75%, transparent); }
+.shower-glass-sample.is-frosted::after { background: #eef3f199; backdrop-filter: blur(4px); }
+.shower-glass-sample.is-fluted::after { background: repeating-linear-gradient(90deg, #ffffff10 0, #ffffff80 2px, #20302e40 4px, #ffffff10 6px); backdrop-filter: blur(1.5px); }
+.shower-glass-sample.is-brown::after { background: linear-gradient(115deg, #b88f6940, #6b4a3099 60%, #c7a17a60); }
+.shower-glass-sample.is-grey::after { background: linear-gradient(115deg, #839d9c40, #22363aa6 60%, #53686d70); }
+.shower-room-options .bt-specs { gap: 7px; }
+.shower-room-options .bt-specs li { font-size: 12px; }
+.shower-room-summary { border-top: 1px solid #ffffff20; padding-top: 12px; display: grid; gap: 8px; }
+.shower-room-summary .t-mono { font-size: 9px; color: var(--pink-light); }
+.shower-room-summary p { margin: 0; font-size: 12px; line-height: 1.4; color: #f2efe8; }
+.shower-room-summary .btn { justify-self: start; min-height: 36px; padding: 10px 14px; font-size: 10px; }
+.shower-room button:hover { border-color: #eeeae0; }
+.shower-room button:focus-visible, .shower-room a:focus-visible, .shower-room input:focus-visible { outline: 2px solid var(--pink-light); outline-offset: 3px; }
+@media (max-width: 1000px) and (min-width: 761px) { .shower-room-layout { column-gap: 24px; } }
+/* Short laptop screens: tighten the options so the studio still fits one screen. */
+@media (max-height: 800px) and (min-width: 761px) {
+  .shower-room { padding: 12px 0; --shower-h: clamp(400px, calc(100svh - var(--nav-h) - 150px), 760px); }
+  .shower-room-card { padding: 14px 20px; }
+  .shower-room-layout { row-gap: 10px; }
+  .shower-room-heading p { display: none; }
+  .shower-room-options { gap: 9px; }
+  .shower-room-options legend { margin-bottom: 6px; }
+  .shower-room-note { margin-top: 6px; }
+  .shower-frame-mode { margin-bottom: 8px; }
+  .shower-room-options .bt-specs { gap: 3px; }
+  .shower-room-summary { padding-top: 8px; gap: 5px; }
 }
-.bt-room {
-  position: relative;
-  width: var(--W);
-  height: var(--H);
-  transform-style: preserve-3d;
-  transform: perspective(1500px) rotateY(var(--ang)) rotateX(-3deg);
-}
-.bt-room > span {
-  position: absolute;
-  display: block;
-}
-
-/* ─── alcove: marble-look tiles ─── */
-.bt-back {
-  inset: 0;
-  transform: translateZ(calc(var(--D) * -1));
-  background:
-    repeating-linear-gradient(0deg, rgba(60, 55, 50, 0.32) 0 1px, transparent 1px 5em),
-    repeating-linear-gradient(90deg, rgba(60, 55, 50, 0.28) 0 1px, transparent 1px 10em),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.28)),
-    var(--tile) center / 62em auto;
-  filter: brightness(0.86);
-}
-.bt-side {
-  top: 0;
-  width: var(--D);
-  height: 100%;
-  background:
-    repeating-linear-gradient(0deg, rgba(60, 55, 50, 0.32) 0 1px, transparent 1px 5em),
-    repeating-linear-gradient(90deg, rgba(60, 55, 50, 0.28) 0 1px, transparent 1px 7em),
-    var(--tile) 20% 40% / 48em auto;
-}
-.bt-left {
-  left: 0;
-  transform-origin: left center;
-  transform: rotateY(90deg);
-  filter: brightness(0.95);
-}
-.bt-right {
-  right: 0;
-  transform-origin: right center;
-  transform: rotateY(-90deg);
-  filter: brightness(0.75);
-}
-.bt-ceiling {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--D);
-  transform-origin: top center;
-  transform: rotateX(-90deg);
-  background: linear-gradient(180deg, #e8e4de, #c9c3bb);
-}
-.bt-floor {
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: var(--D);
-  transform-origin: bottom center;
-  transform: rotateX(90deg);
-  background:
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0 1px, transparent 1px 7em),
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 7em),
-    linear-gradient(0deg, #6f6a64, #4e4a45);
-}
-.bt-downlight {
-  left: 50%;
-  top: 0;
-  width: 26em;
-  height: 20em;
-  margin-left: -13em;
-  transform: translateZ(calc(var(--D) * -0.98));
-  background: radial-gradient(ellipse 50% 60% at 50% 0%, rgba(255, 242, 224, 0.4), transparent 70%);
-  pointer-events: none;
+@media (max-width: 760px) {
+  .shower-room { padding: 16px 0; }
+  .shower-room-card { padding: 14px; }
+  .shower-room-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "heading" "view" "options"; grid-template-rows: none; row-gap: 16px; }
+  .shower-room-view { width: auto; }
+  .shower-pills button { min-height: 40px; }
 }
 
-/* ─── fixtures ─── */
-.bt-niche {
-  left: 66%;
-  top: 34%;
-  width: 7em;
-  height: 8.5em;
-  display: flex !important;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0.6em;
-  padding-bottom: 0.7em;
-  transform: translateZ(calc(var(--D) * -1 + 0.02em));
-  background: linear-gradient(180deg, #d6d0c8, #aaa49c);
-  box-shadow:
-    inset 0 0.7em 1em rgba(0, 0, 0, 0.45),
-    inset 0.4em 0 0.8em rgba(0, 0, 0, 0.22);
-}
-.bt-bottle {
-  display: block;
-  border-radius: 0.35em 0.35em 0.2em 0.2em;
-  box-shadow:
-    inset 0.25em 0 0.3em rgba(255, 255, 255, 0.35),
-    0.1em 0.2em 0.3em rgba(0, 0, 0, 0.3);
-}
-.bt-bottle.b1 {
-  width: 1.4em;
-  height: 3.8em;
-  background: linear-gradient(90deg, #8d5d2c, #c38a4c 40%, #9a6833);
-}
-.bt-bottle.b2 {
-  width: 1.6em;
-  height: 3.1em;
-  background: linear-gradient(90deg, #cfcac2, #f4f1ec 40%, #d8d3cb);
-}
-.bt-bottle.b3 {
-  width: 1.2em;
-  height: 4.3em;
-  background: linear-gradient(90deg, #2e4538, #557a64 40%, #34503f);
-}
-.bt-mixer {
-  left: calc(50% - 1.4em);
-  top: 52%;
-  width: 2.8em;
-  height: 2.8em;
-  border-radius: 50%;
-  transform: translateZ(calc(var(--D) * -1 + 0.1em));
-  background: radial-gradient(circle at 35% 30%, var(--hw-hi), var(--hw) 55%, var(--hw-lo));
-  box-shadow: 0.2em 0.3em 0.5em rgba(0, 0, 0, 0.4);
-}
-.bt-mixer i {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 2.6em;
-  height: 0.42em;
-  margin: -0.21em 0 0 -0.3em;
-  border-radius: 0.21em;
-  transform-origin: 0.3em 50%;
-  transform: rotate(-24deg);
-  background: var(--metal-h);
-  box-shadow: 0.15em 0.25em 0.35em rgba(0, 0, 0, 0.4);
-}
-.bt-arm {
-  left: calc(50% - 0.2em);
-  top: 3.5em;
-  width: 0.4em;
-  height: calc(var(--D) * 0.5);
-  transform-origin: top center;
-  transform: translateZ(calc(var(--D) * -0.5)) rotateX(-90deg);
-  background: var(--metal-v);
-}
-.bt-head {
-  left: calc(50% - 4em);
-  top: 3.2em;
-  width: 8em;
-  height: 1em;
-  border-radius: 50%;
-  transform: translateZ(calc(var(--D) * -0.5));
-  background: radial-gradient(ellipse at 50% 25%, var(--hw-hi), var(--hw) 55%, var(--hw-lo));
-  box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.4);
-}
-.bt-drain {
-  left: 25%;
-  right: 25%;
-  bottom: 0;
-  height: 0.9em;
-  transform-origin: bottom center;
-  transform: translateZ(calc(var(--D) * -0.86)) rotateX(90deg);
-  background:
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0 0.15em, transparent 0.15em 0.45em),
-    var(--metal-h);
-}
-
-/* ─── water, splash and steam ─── */
-.bt-water {
-  left: calc(50% - 3.6em);
-  width: 7.2em;
-  top: 4.1em;
-  bottom: 0;
-  transform: translateZ(calc(var(--D) * -0.5));
-  clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
-  opacity: 0;
-  transition: opacity 500ms var(--ease);
-  pointer-events: none;
-}
-.bt-water i {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(90deg, transparent 0 0.32em, rgba(225, 238, 246, 0.6) 0.32em 0.38em, transparent 0.38em 0.62em);
-  -webkit-mask-image: repeating-linear-gradient(180deg, #000 0 1.3em, transparent 1.3em 2.3em);
-  mask-image: repeating-linear-gradient(180deg, #000 0 1.3em, transparent 1.3em 2.3em);
-  -webkit-mask-size: 100% 2.3em;
-  mask-size: 100% 2.3em;
-  animation: bt-fall 0.34s linear infinite;
-}
-.bt-water i + i {
-  background-position: 0.3em 0;
-  opacity: 0.7;
-  animation-duration: 0.42s;
-  animation-delay: -0.2s;
-}
-@keyframes bt-fall {
-  from {
-    -webkit-mask-position: 0 0;
-    mask-position: 0 0;
-  }
-  to {
-    -webkit-mask-position: 0 2.3em;
-    mask-position: 0 2.3em;
-  }
-}
-.bt-splash {
-  left: calc(50% - 5em);
-  width: 10em;
-  height: 2em;
-  bottom: -1em;
-  transform: translateZ(calc(var(--D) * -0.5));
-  background: radial-gradient(ellipse at 50% 50%, rgba(235, 245, 250, 0.6), transparent 65%);
-  opacity: 0;
-  transition: opacity 500ms;
-  pointer-events: none;
-}
-.bt-steam {
-  left: 4%;
-  right: 4%;
-  top: 0;
-  height: 78%;
-  transform: translateZ(calc(var(--D) * -0.25));
-  background:
-    radial-gradient(ellipse 40% 30% at 30% 60%, rgba(255, 255, 255, 0.3), transparent 70%),
-    radial-gradient(ellipse 35% 28% at 66% 45%, rgba(255, 255, 255, 0.26), transparent 70%),
-    radial-gradient(ellipse 55% 30% at 50% 18%, rgba(255, 255, 255, 0.22), transparent 70%);
-  filter: blur(1em);
-  opacity: 0;
-  transition: opacity 6s var(--ease);
-  animation: bt-steam 10s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-@keyframes bt-steam {
-  from {
-    background-position: 0 1em, 0 0, 0 0;
-  }
-  to {
-    background-position: 1em -1.5em, -1em -1em, 0 -0.6em;
-  }
-}
-.is-on .bt-water,
-.is-on .bt-splash {
-  opacity: 1;
-}
-.is-on .bt-splash {
-  animation: bt-splash 0.5s ease-in-out infinite alternate;
-}
-@keyframes bt-splash {
-  from {
-    transform: translateZ(calc(var(--D) * -0.5)) scaleX(0.92);
-  }
-  to {
-    transform: translateZ(calc(var(--D) * -0.5)) scaleX(1.05);
-  }
-}
-.is-on .bt-steam {
-  opacity: 1;
-  transition-delay: 0.8s;
-}
-
-/* ─── the wall the alcove is set into ─── */
-.bt-front {
-  inset: -3.2em -3.2em -1.2em;
-  border: solid #e6e1d9;
-  border-width: 3.2em 3.2em 1.2em;
-  box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, 0.2),
-    inset 0 0 2em rgba(0, 0, 0, 0.28);
-  background: transparent;
-  pointer-events: none;
-}
-
-/* ─── glass enclosure ─── */
-.bt-enclosure {
-  left: 0;
-  right: 0;
-  top: var(--gt);
-  bottom: 0;
-  transform: translateZ(0.1em);
-  transform-style: preserve-3d;
-}
-.bt-enclosure > span {
-  position: absolute;
-  display: block;
-}
-.bt-channel {
-  top: 0;
-  bottom: 0;
-  width: 0.45em;
-  background: var(--metal-v);
-}
-.bt-channel-l {
-  left: 0;
-}
-.bt-channel-r {
-  right: 0;
-}
-.bt-panel {
-  top: 0;
-  bottom: 0.35em;
-}
-.t-fixed .bt-fixed {
-  left: 0.45em;
-  width: 60%;
-}
-.t-hinged .bt-half {
-  left: 0.45em;
-  width: calc(50% - 0.45em);
-}
-.bt-door {
-  left: 50%;
-  width: calc(50% - 0.45em);
-  transform-origin: left center;
-  transition: transform 1100ms cubic-bezier(0.45, 0, 0.2, 1);
-  cursor: pointer;
-  outline: none;
-}
-.is-open .bt-door {
-  transform: rotateY(-58deg);
-}
-/* keep the open glass readable: brighter edge + reflection */
-.is-open .bt-door .bt-glass {
-  box-shadow:
-    inset 0 0 0 0.26em rgba(140, 190, 170, 0.65),
-    inset 0 0 2em rgba(170, 210, 195, 0.2);
-  background-color: rgba(215, 232, 228, 0.14);
-}
-.bt-door .bt-glass {
-  transition: box-shadow 1100ms, background-color 1100ms;
-}
-.bt-back-track {
-  left: 0.45em;
-  width: calc(52% - 0.45em);
-  transform: translateZ(-0.5em);
-}
-.bt-slider {
-  left: 48%;
-  width: calc(52% - 0.45em);
-  transition: left 1100ms cubic-bezier(0.45, 0, 0.2, 1);
-  cursor: pointer;
-  outline: none;
-}
-.is-open .bt-slider {
-  left: 1.3em;
-}
-.bt-door:focus-visible .bt-glass,
-.bt-slider:focus-visible .bt-glass {
-  outline: 2px solid var(--pink);
-}
-.bt-rail {
-  left: 0;
-  right: 0;
-  top: -0.75em;
-  height: 0.55em;
-  background: var(--metal-h);
-  transform: translateZ(0.3em);
-  box-shadow: 0 0.2em 0.4em rgba(0, 0, 0, 0.35);
-}
-.bt-support {
-  left: calc(0.45em + 60% - 0.2em);
-  top: 0.8em;
-  width: 0.4em;
-  height: calc(var(--D) * 0.98);
-  transform-origin: top center;
-  transform: rotateX(-90deg);
-  background: var(--metal-v);
-}
-.bt-threshold {
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 0.35em;
-  background: var(--metal-h);
-}
-/* hardware on the glass */
-.bt-hinge,
-.bt-pull,
-.bt-roller {
-  position: absolute;
-  display: block;
-}
-.bt-hinge {
-  left: -0.65em;
-  width: 1.3em;
-  height: 2em;
-  border-radius: 0.18em;
-  background: var(--metal-v);
-  box-shadow: 0.15em 0.2em 0.4em rgba(0, 0, 0, 0.4);
-}
-.bt-hinge.h1 {
-  top: 10%;
-}
-.bt-hinge.h2 {
-  bottom: 10%;
-}
-.bt-pull {
-  top: 50%;
-  height: 9em;
-  margin-top: -4.5em;
-  width: 0.45em;
-  border-radius: 0.22em;
-  background: var(--metal-v);
-  box-shadow: 0.3em 0.2em 0.5em rgba(0, 0, 0, 0.45);
-}
-.bt-door .bt-pull {
-  right: 1.4em;
-}
-.bt-slider .bt-pull {
-  left: 1.4em;
-}
-.bt-roller {
-  top: 0.15em;
-  width: 1.1em;
-  height: 1.1em;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--hw-hi), var(--hw) 55%, var(--hw-lo));
-  box-shadow: 0 0.15em 0.3em rgba(0, 0, 0, 0.4);
-}
-.bt-roller.r1 {
-  left: 1.2em;
-}
-.bt-roller.r2 {
-  right: 1.2em;
-}
-
-/* ─── glass ─── */
-.bt-glass {
-  position: absolute;
-  inset: 0;
-  display: block;
-  overflow: visible;
-  box-shadow:
-    inset 0 0 0 0.2em rgba(140, 190, 170, 0.4),
-    inset 0 0 1.6em rgba(140, 190, 170, 0.08);
-}
-.bt-glass > span {
-  position: absolute;
-  display: block;
-  pointer-events: none;
-}
-.bg-clear {
-  background: rgba(215, 232, 228, 0.06);
-}
-.bg-band {
-  background: rgba(215, 232, 228, 0.06);
-}
-.bt-band {
-  left: 0;
-  right: 0;
-  top: 34%;
-  height: 36%;
-  background: rgba(240, 244, 246, 0.45);
-  -webkit-backdrop-filter: blur(0.55em);
-  backdrop-filter: blur(0.55em);
-  border-top: 1px solid rgba(255, 255, 255, 0.35);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-}
-.bg-frosted {
-  background: rgba(240, 244, 246, 0.4);
-  -webkit-backdrop-filter: blur(0.55em);
-  backdrop-filter: blur(0.55em);
-}
-.bg-fluted {
-  background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 0.12em, rgba(255, 255, 255, 0.04) 0.12em 0.36em, rgba(0, 0, 0, 0.08) 0.36em 0.48em),
-    rgba(225, 232, 234, 0.12);
-  -webkit-backdrop-filter: blur(0.25em);
-  backdrop-filter: blur(0.25em);
-}
-.bg-bronze {
-  background: rgba(92, 68, 46, 0.34);
-}
-.bt-sheen {
-  inset: 0;
-  background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.16) 28%, rgba(255, 255, 255, 0.04) 36%, transparent 44%, transparent 62%, rgba(255, 255, 255, 0.08) 68%, transparent 74%);
-}
-/* condensation builds slowly while the shower runs, and clears slowly after */
-.bt-fog {
-  inset: 0;
-  background: linear-gradient(180deg, rgba(236, 240, 242, 0.6), rgba(236, 240, 242, 0.42) 70%, rgba(236, 240, 242, 0.2));
-  -webkit-backdrop-filter: blur(0.45em);
-  backdrop-filter: blur(0.45em);
-  opacity: 0;
-  transition: opacity 7s ease;
-}
-.bt-drops {
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.8) 0 0.07em, rgba(110, 130, 140, 0.3) 0.09em 0.13em, transparent 0.15em),
-    radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.7) 0 0.1em, rgba(110, 130, 140, 0.28) 0.12em 0.18em, transparent 0.2em),
-    radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.6) 0 0.05em, transparent 0.1em);
-  background-size: 1.3em 1.7em, 2.3em 2.9em, 0.9em 1.15em;
-  background-position: 0 0, 0.7em 1.1em, 0.3em 0.5em;
-  opacity: 0;
-  transition: opacity 7s ease;
-}
-.is-on .bt-fog {
-  opacity: 1;
-  transition: opacity 5s ease 1.2s;
-}
-.is-on .bt-drops {
-  opacity: 0.9;
-  transition: opacity 5s ease 2.4s;
-}
-
-/* ─── stage + controls ─── */
-.bt-stage {
-  --glow: #f3e6d4;
-  font-size: clamp(8px, 0.95vw, 14px);
-}
-.bt-section {
-  --glow: #f3e6d4;
-}
-.bt-sec-stage {
-  font-size: clamp(7.5px, 0.82vw, 12px);
-}
-.bt-tap {
-  --glow: #bfe3ff;
-}
-.bt-walkin {
-  display: inline-flex;
-  align-items: center;
-  padding: 14px 18px;
-  border: 1px dashed rgba(255, 255, 255, 0.25);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-}
-.bt-swatch {
-  position: relative;
-  display: block;
-  width: 44px;
-  height: 56px;
-  border-radius: 6px;
-  overflow: hidden;
-  font-size: 10px;
-  background: url(/images/prints/marble.jpg) center / cover;
-  box-shadow:
-    inset 0 0 0 3px #3a3a3e,
-    0 4px 10px -4px rgba(0, 0, 0, 0.6);
-}
-.bt-swatch::before {
-  content: "";
-  position: absolute;
-  left: 30%;
-  top: 25%;
-  width: 40%;
-  height: 50%;
-  border-radius: 0.3em;
-  background: #8a7c6e;
-}
-.bt-swatch .bt-glass {
-  inset: 3px;
-}
+/* Tick list, shared with the fabric studio. */
 .bt-specs {
   list-style: none;
   margin: 0;
@@ -597,17 +94,4 @@
   border-left: 2px solid var(--pink-light);
   border-bottom: 2px solid var(--pink-light);
   transform: rotate(-45deg);
-}
-@media (max-width: 900px) {
-  .bt-stage,
-  .bt-sec-stage {
-    font-size: clamp(6px, 1.8vw, 10px);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .bt-water i,
-  .bt-steam,
-  .is-on .bt-splash {
-    animation: none !important;
-  }
 }
