@@ -138,7 +138,8 @@ export default function SeriesWork({ photos, range }: { photos: Work[]; range: S
         {photos.length > 0 && (
           <div
             className={`work-masonry${count ? " has-focus" : ""}`}
-            style={{ "--cols": Math.min(4, Math.max(2, Math.ceil(photos.length / 2))) } as React.CSSProperties}
+            // Up to four photos sit in one row, so small originals are never enlarged past their pixels.
+            style={{ "--cols": Math.min(4, Math.max(2, photos.length <= 4 ? photos.length : Math.ceil(photos.length / 2))) } as React.CSSProperties}
           >
             {photos.map((p, i) => (
               // Match state lives in a data attribute: React rewriting className would drop the
