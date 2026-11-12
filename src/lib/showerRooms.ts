@@ -27,12 +27,14 @@ export const showerLayouts: { id: ShowerLayoutId; label: string; navItem: string
   { id: "fixed", label: "Fixed", navItem: "Fixed", variant: "Fixed Panel" },
 ];
 
-// deep → base → light: a frame's own light and shade are mapped onto this ramp.
+// The client's four frame colours (same hex values as the sliding shutter edge profiles). They also colour
+// the hinges and fittings of frameless glass. deep → base → light: a frame's own light and shade are mapped
+// onto this ramp; black keeps the photographed frame as it is.
 export const showerFrames = [
-  { id: "black", label: "Matte Black", swatch: "#1f1f21", ramp: null },
-  { id: "gold", label: "Brush Gold", swatch: "#c9a14e", ramp: ["#5a4318", "#a98236", "#d9b866", "#f3e2ad"] },
-  { id: "rose", label: "Rose Gold", swatch: "#c39486", ramp: ["#7d5448", "#b88a7d", "#ddb4a7", "#f6dcd2"] },
-  { id: "chrome", label: "Chrome", swatch: "#b9bec3", ramp: ["#3c4146", "#878e94", "#c9ced2", "#f5f7f8"] },
+  { id: "black", label: "Black", swatch: "#080707", ramp: null },
+  { id: "rose", label: "Rose Gold", swatch: "#eda8a8", ramp: ["#8f5a58", "#cf8f8d", "#f2bcbb", "#fde6e4"] },
+  { id: "electro-champagne", label: "Electro Champagne", swatch: "#815d22", ramp: ["#2e1f08", "#6a4b1a", "#9a7432", "#d9b878"] },
+  { id: "champagne", label: "Champagne", swatch: "#e8d6b3", ramp: ["#6e5e40", "#c4b088", "#ecdcbc", "#fbf4e6"] },
 ] as const;
 
 export const showerGlass = [

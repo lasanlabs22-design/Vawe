@@ -34,6 +34,11 @@ function Bars({ id, p, bars }: { id: string; p: Place; bars: Box[] }) {
   return <>{bars.map((b) => <polygon key={b.join()} points={quad(p, b)} fill={`url(#${id}-${b[2] - b[0] > b[3] - b[1] ? "rail" : "post"})`} />)}</>;
 }
 
+/** Frameless hardware (rollers, track, hinges, handles, wall clamps), in the chosen colour. */
+function Fittings({ id, p, boxes }: { id: string; p: Place; boxes: Box[] }) {
+  return <>{boxes.map((b) => <polygon key={b.join()} points={quad(p, b)} fill={`url(#${id}-clamp)`} stroke="#00000040" />)}</>;
+}
+
 /** A pane of glass: what is behind it is softened for frosted and fluted, coloured for tints, and always catches a little light. */
 function Pane({ id, name, p, box, glass, edge = false }: { id: string; name: string; p: Place; box: Box; glass: GlassId; edge?: boolean }) {
   const points = quad(p, box), tint = tints[glass];
@@ -75,19 +80,24 @@ function Scene({ layout, frame, frameless, glass, progress, label }: { layout: S
         <clipPath id={`${id}-frames`}>{R.frames.map((f) => <polygon key={f} points={f} />)}</clipPath>
         {(["post", "rail"] as const).map((k) => <linearGradient key={k} id={`${id}-${k}`} x1="0" y1="0" x2={k === "post" ? 1 : 0} y2={k === "post" ? 0 : 1}><stop stopColor="#141415" /><stop offset=".3" stopColor="#262628" /><stop offset=".5" stopColor="#444447" /><stop offset=".72" stopColor="#242426" /><stop offset="1" stopColor="#121213" /></linearGradient>)}
         <linearGradient id={`${id}-sheen`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#fff" stopOpacity=".12" /><stop offset=".38" stopColor="#fff" stopOpacity=".02" /><stop offset=".62" stopColor="#fff" stopOpacity=".1" /><stop offset="1" stopColor="#fff" stopOpacity=".02" /></linearGradient>
-        <linearGradient id={`${id}-clamp`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#f3f5f6" /><stop offset=".5" stopColor="#9aa1a6" /><stop offset="1" stopColor="#d9dde0" /></linearGradient>
+        <linearGradient id={`${id}-clamp`} x1="0" y1="0" x2="1" y2="1">{(frame.ramp ? [frame.ramp[3], frame.ramp[1], frame.ramp[2]] : ["#5c5c60", "#0d0d0e", "#343437"]).map((c, i) => <stop key={i} offset={i / 2} stopColor={c} />)}</linearGradient>
       </defs>
 
       <image href={R.image} width={R.width} height={R.height} />
 
+      {/* Frameless doors are bare toughened glass: the sliding one hangs from two rollers, the openable one swings on two wall hinges. */}
       {layout === "sliding" && <g>
-        <Pane id={id} name="door" p={slideP} box={[t, top + 20, slideW - t, bottom - t]} glass={glass} />
-        <g filter={tint}><Bars id={id} p={slideP} bars={[[0, top + 20, t, bottom], [slideW - t, top + 20, slideW, bottom], [0, bottom - t, slideW, bottom], handle(slideW)]} /></g>
+        <Pane id={id} name="door" p={slideP} box={frameless ? [2, top + 20, slideW - 2, bottom - 4] : [t, top + 20, slideW - t, bottom - t]} glass={glass} edge={frameless} />
+        {frameless
+          ? <Fittings id={id} p={slideP} boxes={[[34, top + 2, 76, top + 32], [slideW - 76, top + 2, slideW - 34, top + 32], handle(slideW)]} />
+          : <g filter={tint}><Bars id={id} p={slideP} bars={[[0, top + 20, t, bottom], [slideW - t, top + 20, slideW, bottom], [0, bottom - t, slideW, bottom], handle(slideW)]} /></g>}
       </g>}
 
       {layout === "openable" && <g>
-        <Pane id={id} name="door" p={swingP} box={[t, doorTop + t, doorWidth - t, bottom - t]} glass={glass} />
-        <g filter={tint}><Bars id={id} p={swingP} bars={[[0, doorTop, t, bottom], [doorWidth - t, doorTop, doorWidth, bottom], [0, doorTop, doorWidth, doorTop + t], [0, bottom - t, doorWidth, bottom], handle(doorWidth)]} /></g>
+        <Pane id={id} name="door" p={swingP} box={frameless ? [2, doorTop + 2, doorWidth - 2, bottom - 4] : [t, doorTop + t, doorWidth - t, bottom - t]} glass={glass} edge={frameless} />
+        {frameless
+          ? <Fittings id={id} p={swingP} boxes={[[0, doorTop + 110, 34, doorTop + 160], [0, bottom - 190, 34, bottom - 140], handle(doorWidth)]} />
+          : <g filter={tint}><Bars id={id} p={swingP} bars={[[0, doorTop, t, bottom], [doorWidth - t, doorTop, doorWidth, bottom], [0, doorTop, doorWidth, doorTop + t], [0, bottom - t, doorWidth, bottom], handle(doorWidth)]} /></g>}
       </g>}
 
       {/* The fixed panel, in every layout: its photographed frame, or bare glass edges and wall clamps. */}
@@ -96,10 +106,12 @@ function Scene({ layout, frame, frameless, glass, progress, label }: { layout: S
         ? [250, 640].map((y) => <rect key={y} x={left - 4} y={y} width="30" height="34" rx="3" fill={`url(#${id}-clamp)`} stroke="#00000040" />)
         : <image href={R.framed} width={R.width} height={R.height} clipPath={`url(#${id}-frames)`} filter={tint} />}
 
-      <g filter={tint}>
-        {layout === "sliding" && <Bars id={id} p={flat(0)} bars={[[left - 8, top - 16, right + 4, top + 22]]} />}
-        {layout === "openable" && <Bars id={id} p={flat(0)} bars={[[split - 1, top, right, top + t]]} />}
-      </g>
+      {frameless
+        ? layout === "sliding" && <Fittings id={id} p={flat(0)} boxes={[[left - 8, top - 8, right + 4, top + 8]]} />
+        : <g filter={tint}>
+            {layout === "sliding" && <Bars id={id} p={flat(0)} bars={[[left - 8, top - 16, right + 4, top + 22]]} />}
+            {layout === "openable" && <Bars id={id} p={flat(0)} bars={[[split - 1, top, right, top + t]]} />}
+          </g>}
 
       <image href={R.front} width={R.width} height={R.height} />
     </svg>
@@ -119,14 +131,13 @@ function ShowerStudio({ initial }: { initial: ShowerLayoutId }) {
   const [layoutId, setLayoutId] = useState(initial);
   const [frameId, setFrameId] = useState<Frame["id"]>("black");
   const [glass, setGlass] = useState<GlassId>("clear");
-  const [wantFrameless, setWantFrameless] = useState(false);
+  const [frameless, setFrameless] = useState(false);
   const { progress, set, animate } = useOpening();
   const layout = showerLayouts.find((l) => l.id === layoutId)!;
   const frame = showerFrames.find((f) => f.id === frameId)!;
-  const frameless = wantFrameless && layoutId === "fixed";
   const hasDoor = layoutId !== "fixed";
   const variant = variants.find((v) => v.name === layout.variant)!;
-  const finish = frameless ? "Frameless" : `${frame.label} frame`;
+  const finish = frameless ? `Frameless, ${frame.label} hinges` : `${frame.label} frame`;
   const glassLabel = showerGlass.find((g) => g.id === glass)!.label;
   const summary = `${variant.name} · ${finish} · ${glassLabel} glass`;
   const percentage = Math.round(progress * 100);
@@ -160,9 +171,10 @@ function ShowerStudio({ initial }: { initial: ShowerLayoutId }) {
             <p className="shower-room-note"><strong>{variant.name}.</strong> {variant.description}</p>
           </fieldset>
           <fieldset>
-            <legend>02 / Frame <span>{frameless ? "Frameless" : frame.label}</span></legend>
-            {layoutId === "fixed" && <div className="shower-pills shower-frame-mode">{[false, true].map((f) => <button key={String(f)} type="button" aria-pressed={wantFrameless === f} onClick={() => setWantFrameless(f)}>{f ? "Frameless" : "With frame"}</button>)}</div>}
-            {!frameless && <div className="swatches">{showerFrames.map((f) => <button key={f.id} type="button" className={`sw-metal${frameId === f.id ? " is-active" : ""}`} style={{ "--c": f.swatch } as CSSProperties} aria-label={`${f.label} frame`} title={f.label} aria-pressed={frameId === f.id} onClick={() => setFrameId(f.id)} />)}</div>}
+            <legend>02 / Frame <span>{frameless ? `Frameless · ${frame.label} hinges` : frame.label}</span></legend>
+            <div className="shower-pills shower-frame-mode">{[false, true].map((f) => <button key={String(f)} type="button" aria-pressed={frameless === f} onClick={() => setFrameless(f)}>{f ? "Frameless" : "With frame"}</button>)}</div>
+            {/* The same four colours colour the frame, or the hinges and fittings when frameless. */}
+            <div className="swatches">{showerFrames.map((f) => <button key={f.id} type="button" className={`sw-metal${frameId === f.id ? " is-active" : ""}`} style={{ "--c": f.swatch } as CSSProperties} aria-label={`${f.label} ${frameless ? "hinges" : "frame"}`} title={f.label} aria-pressed={frameId === f.id} onClick={() => setFrameId(f.id)} />)}</div>
           </fieldset>
           <fieldset>
             <legend>03 / Glass <span>{glassLabel}</span></legend>
