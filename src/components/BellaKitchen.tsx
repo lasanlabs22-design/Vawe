@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useHash } from "@/lib/focus";
 import { ActionButton } from "./Shutter";
-import { colorsFor, fabrics, texUrl, type FabricId } from "@/lib/fabric";
-import { findLabel, frameColors, profiles, type ProfileId } from "@/lib/shutters";
+import { findLabel, profiles, type ProfileId } from "@/lib/shutters";
 import { finishOptions } from "@/lib/sliding";
 
 // Pixel boundaries in the supplied photograph. Door frames and the interior behind them use these exact pixels.
@@ -16,18 +15,27 @@ const glassW = 0.82, glassH = 0.92;
 // Photo pixels to on-screen length (the room is 1545 photo pixels wide).
 const px = (n: number) => `calc(${n.toFixed(1)} * 100cqw / 1545)`;
 
-// Frame colours tint the photographed frame (graphite is the frame as photographed).
-const tints: Record<string, [string, string]> = {
-  black: ["#6a6a6a", "multiply"],
-  champagne: ["#c8b48d", "screen"],
-  gold: ["#c9a14e", "screen"],
-  bronze: ["#6e4f37", "screen"],
-  silver: ["#b9bec3", "screen"],
-  rose: ["#c39486", "screen"],
+// Frame finishes from the client's profile board. The photographed frame is already ceramic black; each
+// other finish screens a tint over it, chosen so the result lands on the board colour (`hex`, the swatch).
+const finishes: { id: string; label: string; hex: string; tint?: string }[] = [
+  { id: "ceramic-black", label: "Ceramic Black", hex: "#2b2c2f" },
+  { id: "rose-gold", label: "Rose Gold", hex: "#b88a7c", tint: "#a46957" },
+  { id: "brush-gold", label: "Brush Gold", hex: "#a08a5e", tint: "#856931" },
+  { id: "glossy-gold", label: "Glossy Gold", hex: "#d4ac3c", tint: "#c89505" },
+  { id: "grey", label: "Grey", hex: "#8a9298", tint: "#69737b" },
+  { id: "cp-brush", label: "CP Brush", hex: "#c4ccd2", tint: "#b4bec6" },
+  { id: "aluminium", label: "Aluminium", hex: "#e4e9ed", tint: "#dce3e8" },
+  { id: "electro-champagne", label: "Electro Champagne", hex: "#7d694b", tint: "#583f18" },
+];
+// The finishes each profile comes in, in the client's order.
+const finishesFor: Record<ProfileId, string[]> = {
+  regular: finishes.map((f) => f.id),
+  slim: ["ceramic-black", "rose-gold", "brush-gold", "glossy-gold"],
+  cnc: ["ceramic-black", "brush-gold", "rose-gold"],
 };
 
-// Every glass and insert the client offers, with the options already used by the sliding and fabric-glass studios.
-type Kind = "clear" | "tinted" | "fluted" | "frosted" | "mirror" | "lacquer" | "highlighter" | "fabric" | "cane" | "print";
+// Every glass and insert the client offers. Tints, lacquers and prints reuse the sliding studio's options.
+type Kind = "clear" | "tinted" | "fluted" | "frosted" | "mirror" | "lacquer" | "fabric" | "cane" | "print";
 type Option = { id: string; label: string; value: string };
 const inserts: { id: Kind; label: string }[] = [
   { id: "clear", label: "Clear" },
@@ -36,36 +44,50 @@ const inserts: { id: Kind; label: string }[] = [
   { id: "frosted", label: "Frosted" },
   { id: "mirror", label: "Mirror" },
   { id: "lacquer", label: "Lacquered" },
-  { id: "highlighter", label: "Highlighter" },
   { id: "fabric", label: "Fabric" },
   { id: "cane", label: "Cane" },
   { id: "print", label: "Digital print" },
 ];
+// The client's four headings. Regular glass lists its kinds as buttons; a `mixed` heading shows the
+// options of all its kinds together in one row of swatches.
+const groups: { label: string; kinds: Kind[]; mixed?: boolean }[] = [
+  { label: "Regular glass", kinds: ["clear", "tinted", "fluted", "frosted", "mirror"] },
+  { label: "Lacquered", kinds: ["lacquer"] },
+  { label: "Fabric / Cane", kinds: ["fabric", "cane"], mixed: true },
+  { label: "Digital print", kinds: ["print"] },
+];
 const optionsFor: Partial<Record<Kind, Option[]>> = {
   tinted: finishOptions.tinted.options,
   lacquer: finishOptions.lacquer.options,
-  fabric: fabrics.map((f) => ({ id: f.id, label: f.label, value: texUrl(f.id) })),
+  // The client's own fabric glass samples, cropped from their studio photographs.
+  fabric: [
+    { id: "white-linen", label: "White Linen", value: "/images/fabric-glass/white-linen.webp" },
+    { id: "champagne-weave", label: "Champagne Weave", value: "/images/fabric-glass/champagne-weave.webp" },
+    { id: "bronze-stripe", label: "Bronze Stripe", value: "/images/fabric-glass/bronze-stripe.webp" },
+    { id: "gold-web", label: "Gold Web", value: "/images/fabric-glass/gold-web.webp" },
+    { id: "copper-crackle", label: "Copper Crackle", value: "/images/fabric-glass/copper-crackle.webp" },
+    { id: "black-grid", label: "Black Grid", value: "/images/fabric-glass/black-grid.webp" },
+  ],
+  // Seamless cane weaves at architectural scale, with fine spacing guided by the wardrobe reference.
   cane: finishOptions.cane.options,
   print: finishOptions.print.options,
 };
 
 const gloss = "linear-gradient(118deg, #ffffff14 0 20%, transparent 40%)";
 const lacquerGloss = "linear-gradient(115deg, transparent 35%, #ffffff3d 45%, transparent 55%)";
-const goldLine = (deg: number, at: number) => `linear-gradient(${deg}deg, transparent calc(${at}% - .08cqw), #c9a14e calc(${at}% - .08cqw) calc(${at}% + .08cqw), transparent calc(${at}% + .08cqw))`;
 
 /** The pane in each door: a CSS background for the insert (also used for its swatch). */
-function pane(kind: Kind, opt?: Option, fabricColor = ""): string {
+function pane(kind: Kind, opt?: Option): string {
   const v = opt?.value ?? "";
   switch (kind) {
     case "clear": return `${gloss}, #f4f1ea26`;
-    case "tinted": return opt?.id === "grey" ? `${gloss}, #1e1a1612` : `${gloss}, color-mix(in srgb, ${v} ${opt?.id === "black" ? 72 : 50}%, transparent)`;
+    case "tinted": return `${gloss}, color-mix(in srgb, ${v} ${opt?.id === "black" ? 72 : 50}%, transparent)`;
     case "fluted": return "repeating-linear-gradient(90deg, #ffffff24 0 .1cqw, transparent .1cqw .22cqw, #00000030 .22cqw .34cqw), #e8e4dc1a";
     case "frosted": return "linear-gradient(118deg, #ffffff26 0 20%, transparent 40%), #e6e2db66";
     case "mirror": return "linear-gradient(180deg, #d2dee62e, #7887912e), url(/images/reflect-living.jpg) center / cover";
     case "lacquer": return `${lacquerGloss}, linear-gradient(170deg, color-mix(in srgb, ${v} 88%, #fff), color-mix(in srgb, ${v} 85%, #000))`;
-    case "highlighter": return `${lacquerGloss}, ${goldLine(70, 12)}, ${goldLine(62, 30)}, ${goldLine(66, 52)}, ${goldLine(62, 78)}, ${goldLine(-58, 22)}, ${goldLine(-55, 45)}, ${goldLine(-62, 68)}, ${goldLine(-55, 92)}, ${goldLine(84, 40)}, ${goldLine(84, 88)}, linear-gradient(170deg, #1d1d20, #0a0a0b)`;
-    case "fabric": return `url(${v}) 0 0 / 2.4cqw 2.4cqw, ${fabricColor}`;
-    case "cane": return `radial-gradient(circle, #14100c59 0 24%, transparent 28%) 0 0 / .9cqw .9cqw, repeating-linear-gradient(45deg, ${v} 0 .13cqw, transparent .13cqw .45cqw), repeating-linear-gradient(-45deg, ${v} 0 .13cqw, transparent .13cqw .45cqw), repeating-linear-gradient(0deg, color-mix(in srgb, ${v} 85%, #fff) 0 .07cqw, transparent .07cqw .45cqw), #e9dcc038`;
+    case "fabric": return `url(${v}) center / cover`;
+    case "cane": return `url(${v}) center / var(--cane-tile, .32cqw) auto repeat`;
     case "print": return `url(${v}) center / cover`;
   }
 }
@@ -85,25 +107,30 @@ function Bella({ initialProfile }: { initialProfile: ProfileId }) {
   const [opened, setOpened] = useState<boolean[]>(Array(7).fill(false));
   const [lit, setLit] = useState(true);
   const [profile, setProfile] = useState<ProfileId>(initialProfile);
-  const [frame, setFrame] = useState("graphite");
-  const [kind, setKind] = useState<Kind>("tinted");
-  const [picks, setPicks] = useState<Record<string, string>>({ tinted: "grey", lacquer: "ivory", fabric: "linen", fabricColor: "ivory", cane: "natural", print: "arches" });
+  const [frame, setFrame] = useState("ceramic-black");
+  const [kind, setKind] = useState<Kind>("clear");
+  const [picks, setPicks] = useState<Record<string, string>>({ tinted: "bronze", lacquer: "ivory", fabric: "white-linen", cane: "natural-rattan", print: "arches" });
   const anyOpen = opened.some(Boolean);
-  const [tint, blend] = tints[frame] ?? ["transparent", "normal"];
+  // A finish the new profile doesn't come in falls back to its first one (ceramic black).
+  const frameOptions = finishesFor[profile].map((id) => finishes.find((f) => f.id === id)!);
+  const finish = frameOptions.find((f) => f.id === frame) ?? frameOptions[0];
+  const t = finish.tint;
+  // A soft light-to-dark sheen down each door so the finish reads as metal, not flat paint.
+  const tint = t ? `linear-gradient(165deg, color-mix(in srgb, ${t} 78%, #fff), ${t} 45%, color-mix(in srgb, ${t} 82%, #000))` : "linear-gradient(transparent, transparent)";
+  const blend = t ? "screen" : "normal";
+  const group = groups.find((g) => g.kinds.includes(kind))!;
   const options = optionsFor[kind];
   const opt = options?.find((o) => o.id === picks[kind]) ?? options?.[0];
-  const fabricColors = colorsFor(picks.fabric as FabricId);
-  const fabricColor = fabricColors.find((c) => c.id === picks.fabricColor) ?? fabricColors[0];
-  const metal = !!fabrics.find((f) => f.id === picks.fabric)?.metal;
-  const insertLabel = [findLabel(inserts, kind), opt?.label, kind === "fabric" ? fabricColor.label : null].filter(Boolean).join(" · ");
+  const swatches = (group.mixed ? group.kinds : [kind]).flatMap((k) => (optionsFor[k] ?? []).map((o) => ({ k, o })));
+  const insertLabel = [findLabel(inserts, kind), opt?.label].filter(Boolean).join(" · ");
   // 20 mm keeps the outer half of the photographed frame; the glass grows to meet it. CNC uses the same slim frame (client request).
   const slim = profile === "slim" || profile === "cnc";
   const gwFrac = slim ? 0.91 : glassW, ghFrac = slim ? 0.964 : glassH;
   const roomStyle = {
-    "--tint": `linear-gradient(${tint}, ${tint})`, "--blend": blend, "--gw": `${gwFrac * 100}%`, "--gh": `${ghFrac * 100}%`,
-    "--pane": pane(kind, opt, fabricColor.value), "--pane-blend": kind === "fabric" ? (metal ? "overlay" : "multiply") : "normal",
-    // Fabric glass diffuses the light inside rather than hiding it.
-    "--pane-opacity": kind === "fabric" ? (picks.fabric === "sheer" ? 0.6 : metal ? 0.8 : 0.92) : 1,
+    "--tint": tint, "--blend": blend, "--gw": `${gwFrac * 100}%`, "--gh": `${ghFrac * 100}%`,
+    "--pane": pane(kind, opt),
+    // Fabric glass lets a little of the lit interior glow through.
+    "--pane-opacity": kind === "fabric" ? 0.9 : 1,
   } as React.CSSProperties;
   return (
     <section className="bella dark on-dark" id="bella-studio">
@@ -123,7 +150,7 @@ function Bella({ initialProfile }: { initialProfile: ProfileId }) {
                 const opening = i % 2 ? edges[i] : edges[i + 1] - stile; // hinge-left doors open on the right
                 return (
                   <div className={`bella-bay${open ? " is-open" : ""}`} key={i} style={{ left: `${(edges[i] - 268) / 1010 * 100}%`, width: `${w / 1010 * 100}%`, "--photo-size": `${1545 / w * 100}% ${869 / height * 100}%`, "--photo-position": `${edges[i] / (1545 - w) * 100}% ${top / (869 - height) * 100}%`, "--glass-size": `${1545 / gw * 100}% ${869 / gh * 100}%`, "--glass-position": `${gx / (1545 - gw) * 100}% ${gy / (869 - gh) * 100}%`,
-                    // Where this door's pane sits in the run of seven, so prints and highlighter lines continue across doors.
+                    // Where this door's pane sits in the run of seven, so prints continue across doors.
                     "--pane-x": px(-(edges[i] - 268 + w * (1 - gwFrac) / 2)), "--pane-y": px(-height * (1 - ghFrac) / 2) } as React.CSSProperties}>
                     <div className="bella-interior" aria-hidden="true"><span className="bella-led" /></div>
                     <button type="button" className={`bella-door ${i % 2 ? "hinge-right" : "hinge-left"}`} aria-label={`${open ? "Close" : "Open"} Bella shutter ${i + 1}`} aria-pressed={open} onClick={() => setOpened(values => values.map((value, n) => n === i ? !value : value))}>
@@ -156,21 +183,25 @@ function Bella({ initialProfile }: { initialProfile: ProfileId }) {
             </div>
           </fieldset>
           <fieldset className="ss-group">
-            <legend>Frame colour <span>{findLabel(frameColors, frame)}</span></legend>
-            <div className="swatches">
-              {frameColors.map((f) => <button key={f.id} type="button" className={`sw-metal${frame === f.id ? " is-active" : ""}`} style={{ "--c": f.hex } as React.CSSProperties} aria-label={f.label} aria-pressed={frame === f.id} onClick={() => setFrame(f.id)} />)}
+            <legend>Frame colour <span>{finish.label}</span></legend>
+            <div className="swatches bella-frames">
+              {frameOptions.map((f) => <button key={f.id} type="button" className={`sw-metal${finish.id === f.id ? " is-active" : ""}`} style={{ "--c": f.hex } as React.CSSProperties} aria-label={f.label} title={f.label} aria-pressed={finish.id === f.id} onClick={() => setFrame(f.id)} />)}
             </div>
           </fieldset>
           <fieldset className="ss-group">
             <legend>Glass &amp; insert <span>{insertLabel}</span></legend>
-            <div className="bella-kinds">
-              {inserts.map((k) => <button key={k.id} type="button" aria-pressed={kind === k.id} onClick={() => setKind(k.id)}>{k.label}</button>)}
+            <div className="bella-groups">
+              {groups.map((g) => <button key={g.label} type="button" aria-pressed={group === g} onClick={() => { if (group !== g) setKind(g.kinds[0]); }}>{g.label}</button>)}
             </div>
-            {options && <div className="swatches bella-options">
-              {options.map((o) => <button key={o.id} type="button" className={`bella-swatch${opt?.id === o.id ? " is-active" : ""}`} style={{ "--sw": kind === "tinted" ? `${gloss}, ${o.value}` : pane(kind, o, fabricColor.value), "--sw-blend": kind === "fabric" ? (fabrics.find((f) => f.id === o.id)?.metal ? "overlay" : "multiply") : "normal" } as React.CSSProperties} aria-label={o.label} title={o.label} aria-pressed={opt?.id === o.id} onClick={() => setPicks({ ...picks, [kind]: o.id })} />)}
+            {group.kinds.length > 1 && !group.mixed && <div className="bella-kinds">
+              {group.kinds.map((k) => <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}>{findLabel(inserts, k)}</button>)}
             </div>}
-            {kind === "fabric" && <div className="swatches bella-options">
-              {fabricColors.map((c) => <button key={c.id} type="button" className={`sw-metal sw-round${fabricColor.id === c.id ? " is-active" : ""}`} style={{ "--c": c.value } as React.CSSProperties} aria-label={c.label} title={c.label} aria-pressed={fabricColor.id === c.id} onClick={() => setPicks({ ...picks, fabricColor: c.id })} />)}
+            {swatches.length > 0 && <div className="swatches bella-options">
+              {swatches.map(({ k, o }) => {
+                const on = kind === k && opt?.id === o.id;
+                const label = group.mixed ? `${findLabel(inserts, k)} · ${o.label}` : o.label;
+                return <button key={`${k}-${o.id}`} type="button" className={`bella-swatch${on ? " is-active" : ""}`} style={{ "--sw": k === "tinted" ? `${gloss}, ${o.value}` : pane(k, o) } as React.CSSProperties} aria-label={label} title={label} aria-pressed={on} onClick={() => { setKind(k); setPicks({ ...picks, [k]: o.id }); }} />;
+              })}
             </div>}
           </fieldset>
         </div>
