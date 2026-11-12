@@ -11,7 +11,9 @@ export function FinishSwatch({ kind, value }: { kind: FinishKind; value: string 
   const style =
     kind === "print"
       ? { backgroundImage: `url(${value})`, backgroundSize: "cover", backgroundPosition: "center" }
-      : ({ "--fc": value } as React.CSSProperties);
+      : kind === "cane"
+        ? { backgroundImage: `url(${value})`, backgroundSize: "3px" } // the weave tile, at the same swatch scale as Bella's
+        : ({ "--fc": value } as React.CSSProperties);
   return <span className={`sl-swatch slf-${kind}`} style={style} />;
 }
 

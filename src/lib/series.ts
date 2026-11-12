@@ -62,10 +62,10 @@ export const series: Series[] = [
     tagline: "Floor-to-ceiling sliders, by handle and finish.",
     uses: ["Bedroom wardrobes", "Walk-in closets", "Kids' rooms", "Utility storage"],
     cards: [
-      { name: "Tinted / Fluted", href: `${sliding}#sliding--tinted`, image: "/images/work/sliding-fluted.jpg" },
-      { name: "Lacquered", href: `${sliding}#sliding--lacquered`, image: "/images/work/sliding-lacquered-highlighter.jpg" },
-      { name: "Highlighter", href: `${sliding}#sliding--highlighter`, image: "/images/work/sliding-highlighter.jpg" },
-      { name: "Digital Print", href: `${sliding}#sliding--digital-print`, image: "/images/sliding-rooms/IMG-20261015-WA0018.jpg" },
+      // The client's three ranges, each pictured by a wardrobe from the studio; the tile opens the studio on it.
+      { name: "Essential", href: `${sliding}#sliding--essential`, image: "/images/sliding-rooms/IMG-20261015-WA0028.jpg" },
+      { name: "Luxe", href: `${sliding}#sliding--luxe`, image: "/images/sliding-rooms/IMG-20261015-WA0019.jpg", focus: "30% 50%" },
+      { name: "Premium", href: `${sliding}#sliding--premium`, image: "/images/sliding-rooms/IMG-20261015-WA0038.jpg", focus: "45% 50%" },
     ],
     options: {
       label: "Layouts",
@@ -86,7 +86,6 @@ export const series: Series[] = [
           { name: "Digital Print" },
           { name: "Fabric" },
           { name: "Cane" },
-          { name: "Highlighter" },
         ],
       },
     ],
