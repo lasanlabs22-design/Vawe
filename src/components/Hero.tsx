@@ -119,9 +119,8 @@ export default function Hero() {
           <div className="hero-intro" aria-hidden={open}>
             <div className="hero-kicker">Vawe Interio · Bengaluru</div>
             <h1>
-              Glass, mirror &amp; shutters,
-              <br />
-              <em>crafted</em> for every room.
+              <em>Beyond</em> the ordinary.{" "}
+              <span className="hero-intro-sub">Glass wardrobes, partitions &amp; mirrors, crafted for every room.</span>
             </h1>
             <button type="button" className="hero-step" onClick={stepInside} tabIndex={open ? -1 : 0}>
               Step inside <span aria-hidden="true">↓</span>

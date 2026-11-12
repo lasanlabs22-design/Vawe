@@ -1523,6 +1523,23 @@ button {
   text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45);
 }
 .hero-intro h1 em { color: var(--pink-light); }
+.hero-intro-sub {
+  display: block;
+  width: fit-content;
+  margin: 20px auto 0;
+  padding: 10px 22px;
+  border-radius: 6px;
+  background: rgba(12, 11, 9, 0.45);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-sans);
+  font-size: clamp(15px, 1.6vw, 22px);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-shadow: none;
+}
 .hero-step {
   pointer-events: auto;
   display: inline-flex;

@@ -45,7 +45,7 @@
 .bella-interior::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#0d0b09eb, #0d0b09c7 60%, #0d0b09b3); transition: opacity .7s ease; }
 .bella-room.is-lit .bella-interior::after { opacity: 0; }
 .bella-door { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; padding: 0; cursor: pointer; background: none; transform-style: preserve-3d; transition: transform 1.1s cubic-bezier(.22,.68,.18,1); }
-.bella-door::before { content: ""; position: absolute; inset: calc(50% - var(--gh) / 2) calc(50% - var(--gw) / 2); background: var(--pane); background-blend-mode: var(--pane-blend); opacity: var(--pane-opacity); }
+.bella-door::before { content: ""; position: absolute; inset: calc(50% - var(--gh) / 2) calc(50% - var(--gw) / 2); background: var(--pane); opacity: var(--pane-opacity); }
 .bella-door::after, .bella-patch { background-image: var(--tint), url('/images/bella-kitchen.jpeg'); background-repeat: no-repeat; background-blend-mode: var(--blend), normal; }
 .bella-door::after { content: ""; position: absolute; inset: 0; background-size: 100% 100%, var(--photo-size); background-position: 0 0, var(--photo-position); -webkit-mask: linear-gradient(#000 0 0), linear-gradient(#000 0 0) center / var(--gw) var(--gh) no-repeat; -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0), linear-gradient(#000 0 0) center / var(--gw) var(--gh) no-repeat; mask-composite: exclude; }
 .bella-cnc { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
@@ -53,21 +53,31 @@
 .bella-groove { position: absolute; top: 4%; bottom: 4%; width: .14cqw; translate: -50% 0; background: #000c; box-shadow: .05cqw 0 0 #ffffff26; }
 .bella-room.glass-fluted .bella-door::before { -webkit-backdrop-filter: blur(.12cqw); backdrop-filter: blur(.12cqw); }
 .bella-room.glass-frosted .bella-door::before { -webkit-backdrop-filter: blur(.45cqw); backdrop-filter: blur(.45cqw); }
-/* Prints and highlighter lines are sized to the run of seven doors, so the design continues from door to door. */
-.bella-room.glass-highlighter .bella-door::before { background-size: 65.37cqw 21.1cqw; background-position: var(--pane-x) var(--pane-y); background-repeat: no-repeat; }
+/* Prints are sized to the run of seven doors, so the design continues from door to door. */
 .bella-room.glass-print .bella-door::before, .bella-room.glass-mirror .bella-door::before { background-size: 65.37cqw auto; background-position: var(--pane-x) calc(var(--pane-y) - 12cqw); background-repeat: no-repeat; }
 /* Options panel */
 .bella-panel { display: grid; gap: 24px; align-content: start; }
 .bella-panel .ss-group legend { flex-wrap: wrap; gap: 4px 12px; margin-bottom: 10px; }
-.bella-kinds { display: flex; flex-wrap: wrap; gap: 6px; }
-.bella-kinds button { padding: 7px 12px; border: 1px solid #ffffff2e; border-radius: 999px; font-size: 12px; color: #ffffffc4; transition: background .25s, color .25s, border-color .25s; }
+/* Glass & insert: the four headings, then the kinds inside the chosen one. */
+.bella-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.bella-groups button { padding: 10px 14px; border: 1px solid #ffffff2e; border-radius: 10px; font-size: 13px; font-weight: 500; color: #ffffffc4; text-align: left; transition: background .25s, color .25s, border-color .25s; }
+.bella-groups button:hover { border-color: #ffffff85; color: #fff; }
+.bella-groups button[aria-pressed="true"] { background: #fff; border-color: #fff; color: #181c19; }
+.bella-kinds { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.bella-kinds button { padding: 6px 12px; border: 1px solid #ffffff2e; border-radius: 999px; font-size: 12px; color: #ffffffc4; transition: color .25s, border-color .25s; }
 .bella-kinds button:hover { border-color: #ffffff85; color: #fff; }
-.bella-kinds button[aria-pressed="true"] { background: #fff; border-color: #fff; color: #181c19; }
+.bella-kinds button[aria-pressed="true"] { border-color: var(--pink); color: #fff; }
 .bella-options { margin-top: 14px; gap: 10px; }
 .bella-options .sw-metal { width: 30px; height: 30px; }
-.bella-swatch { width: 34px; height: 46px; border-radius: 4px; background: var(--sw); background-blend-mode: var(--sw-blend); box-shadow: inset 0 0 0 3px #3a3a3e, 0 4px 10px -4px #0009; outline: 2px solid transparent; outline-offset: 3px; transition: outline-color .3s, transform .3s; }
+/* All eight 45 mm finishes on one row. */
+.bella-frames { gap: 8px; }
+.bella-frames .sw-metal { width: 30px; height: 30px; border-radius: 8px; }
+.bella-swatch { width: 34px; height: 46px; border-radius: 4px; background: var(--sw); box-shadow: inset 0 0 0 3px #3a3a3e, 0 4px 10px -4px #0009; outline: 2px solid transparent; outline-offset: 3px; transition: outline-color .3s, transform .3s; }
 .bella-swatch:hover { transform: translateY(-2px); }
 .bella-swatch.is-active { outline-color: var(--pink); }
+/* Keep the seamless weave fine and evenly scaled across every profile. */
+.bella-room.glass-cane .bella-door::before { box-shadow: inset 0 0 .4cqw #302a2040; }
+.bella-options .bella-swatch { --cane-tile: 3px; }
 .bella-door.hinge-left { transform-origin: left center; }
 .bella-door.hinge-right { transform-origin: right center; }
 .bella-bay.is-open .hinge-left { transform: rotateY(-72deg); }

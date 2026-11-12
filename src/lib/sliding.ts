@@ -9,10 +9,9 @@ export const finishOptions: Record<FinishKind, { label: string; note: string; de
   tinted: {
     label: "Tinted",
     note: "Glass",
-    description: "Smoked glass in bronze, grey or black. Moody and softly reflective, with the lit interior glowing through.",
+    description: "Smoked glass in bronze or black. Moody and softly reflective, with the lit interior glowing through.",
     options: [
       { id: "bronze", label: "Bronze", value: "#5a4532" },
-      { id: "grey", label: "Grey", value: "#3d4146" },
       { id: "black", label: "Black", value: "#141414" },
     ],
   },
@@ -45,10 +44,11 @@ export const finishOptions: Record<FinishKind, { label: string; note: string; de
     label: "Cane",
     note: "Natural",
     description: "A rattan weave held in slim aluminium. Light, airy and breathable, with glimpses of the wardrobe behind.",
+    // The client's three cane weaves as seamless tiles, shared with the Bella kitchen studio.
     options: [
-      { id: "natural", label: "Natural", value: "#b48a52" },
-      { id: "walnut", label: "Walnut", value: "#6b4a2b" },
-      { id: "black", label: "Black", value: "#2a2a2a" },
+      { id: "natural-rattan", label: "Natural Rattan", value: "/images/cane/natural-rattan-fine.svg" },
+      { id: "open-weave", label: "Open Weave", value: "/images/cane/open-weave-fine.svg" },
+      { id: "closed-weave", label: "Closed Weave", value: "/images/cane/closed-weave-fine.svg" },
     ],
   },
   print: {

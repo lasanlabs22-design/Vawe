@@ -41,14 +41,9 @@ export const work: Work[] = [
   w("openable-bella", "1312x1600", "Bella Profile", "Crockery & appliance wall", op),
   w("openable-leather-3", "960x1280", "Leather Handle", "Vawe Star Product", op, [k("Vawe Star Product", "Leather Handles")]),
 
-  w("sliding-highlighter", "736x983", "Highlighter", "Floor-to-ceiling slider", sl, [k("Finishes", "Highlighter")]),
   w("sliding-fluted", "736x692", "Fluted", "Floor-to-ceiling slider", sl, [k("Finishes", "Tinted / Fluted")]),
   w("stock/wardrobe-fluted-bedroom", "2400x1686", "Tinted glass sliders", "Bedroom", sl, [k("Finishes", "Tinted / Fluted")]),
   w("sliding-two-tone", "735x848", "Lacquered, two-tone", "Floor-to-ceiling slider", sl, [k("Finishes", "Lacquered")]),
-  w("sliding-lacquered-highlighter", "736x617", "Lacquered & highlighter", "Floor-to-ceiling slider", sl, [
-    k("Finishes", "Lacquered"),
-    k("Finishes", "Highlighter"),
-  ]),
   w("stock/wardrobe-walkin-glass", "2160x1351", "Glass walk-in", "Dressing room", sl),
 
   w("partition-synchro", "1000x1199", "Synchro", "Sliding partition", pa, [k("Partitions", "Synchro")]),
@@ -77,7 +72,7 @@ export const work: Work[] = [
 
 export const workFor = (slug: string) => work.filter((p) => p.collection === slug);
 
-const find = (file: string) => work.find((p) => p.src === `/images/work/${file}.jpg`)!;
+const find = (file: string) => work.find((p) => p.src === (file.includes("/") ? `/images/${file}.jpg` : `/images/work/${file}.jpg`))!;
 
 /**
  * Home page mosaic, in placement order: six tall and four wide photos,
@@ -85,7 +80,7 @@ const find = (file: string) => work.find((p) => p.src === `/images/work/${file}.
  */
 export const featuredWork = [
   ["openable-45-g-handle", true],
-  ["sliding-highlighter", true],
+  ["sliding-two-tone", true],
   ["partition-synchro", true],
   ["openable-g-handle-kitchen", false],
   ["sliding-fluted", false],
@@ -93,5 +88,5 @@ export const featuredWork = [
   ["openable-45-i-handle-crockery", false],
   ["partition-ghost-1", true],
   ["openable-cnc-d-20", true],
-  ["sliding-lacquered-highlighter", false],
+  ["stock/wardrobe-walkin-glass", false],
 ].map(([file, tall]) => ({ ...find(file as string), tall: tall as boolean }));

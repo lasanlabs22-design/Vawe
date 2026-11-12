@@ -37,7 +37,7 @@ const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
 export const metadata: Metadata = {
   metadataBase: new URL(productionHost ? `https://${productionHost}` : site.url),
   title: {
-    default: `${site.name} | Shutters, Sliding Partitions & Mirrors`,
+    default: `${site.name} | Glass Wardrobes, Partitions & Mirrors, Bengaluru`,
     template: `%s | ${site.name}`,
   },
   description: site.description,

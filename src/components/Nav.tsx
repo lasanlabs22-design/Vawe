@@ -63,15 +63,16 @@ export default function Nav() {
   }, []);
 
   const openedAt = useRef(0);
-  const openMenu = (i: number) => {
+  // `at` is the triggering event's timeStamp (Date.now() here fails the react-hooks/purity lint).
+  const openMenu = (i: number, at: number) => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    if (menu !== i) openedAt.current = Date.now();
+    if (menu !== i) openedAt.current = at;
     setMenu(i);
   };
   // A tap fires mouseenter (opening the menu) right before click, so a click that soon after keeps it open.
-  const toggleMenu = (i: number) => {
-    if (menu === i && Date.now() - openedAt.current > 400) setMenu(null);
-    else openMenu(i);
+  const toggleMenu = (i: number, at: number) => {
+    if (menu === i && at - openedAt.current > 400) setMenu(null);
+    else openMenu(i, at);
   };
   const closeMenu = () => {
     closeTimer.current = setTimeout(() => setMenu(null), 160);
@@ -117,13 +118,13 @@ export default function Nav() {
                 const current = s.href === pathname || s.groups.some((g) => g.href === pathname);
                 return (
                   // The label goes to the series page; hover, focus or the chevron opens its menu.
-                  <li key={s.label} className={menu === i ? "is-open" : undefined} onMouseEnter={() => openMenu(i)}>
+                  <li key={s.label} className={menu === i ? "is-open" : undefined} onMouseEnter={(e) => openMenu(i, e.timeStamp)}>
                     <Link
                       className="nav-link"
                       href={s.href}
                       aria-current={current ? "page" : undefined}
                       onClick={() => setMenu(null)}
-                      onFocus={() => openMenu(i)}
+                      onFocus={(e) => openMenu(i, e.timeStamp)}
                     >
                       {s.label}
                     </Link>
@@ -133,7 +134,7 @@ export default function Nav() {
                       aria-label={`${s.label} menu`}
                       aria-expanded={menu === i}
                       aria-controls="mega-menu"
-                      onClick={() => toggleMenu(i)}
+                      onClick={(e) => toggleMenu(i, e.timeStamp)}
                     >
                       <svg className="chev" viewBox="0 0 10 6" fill="none" aria-hidden="true">
                         <path d="m1 1 4 4 4-4" stroke="currentColor" />
@@ -166,7 +167,7 @@ export default function Nav() {
         </div>
 
         {active && (
-          <div className="mega" id="mega-menu" onMouseEnter={() => openMenu(menu!)}>
+          <div className="mega" id="mega-menu" onMouseEnter={(e) => openMenu(menu!, e.timeStamp)}>
             <div className="container mega-grid">
               <p className="mega-uses">
                 <span>Made for</span> {active.uses.join(" · ")}

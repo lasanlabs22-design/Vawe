@@ -24,10 +24,10 @@ const interiorBays = { 2: [0, 1], 3: [0, 2, 3], 4: [0, 1, 2, 3] };
 
 // Aluminium edge-profile colours the client offers on sliding shutters.
 const edgeColors = [
-  { id: "black", label: "Black", hex: "#1c1c1e" },
-  { id: "light-champagne", label: "Light Champagne", hex: "#d8c7a3" },
-  { id: "rose-gold", label: "Rose Gold", hex: "#c39486" },
-  { id: "electro-champagne", label: "Electro Champagne", hex: "#a8865a" },
+  { id: "black", label: "Black", hex: "#080707" },
+  { id: "light-champagne", label: "Light Champagne", hex: "#e8d6b3" },
+  { id: "rose-gold", label: "Rose Gold", hex: "#eda8a8" },
+  { id: "electro-champagne", label: "Electro Champagne", hex: "#815d22" },
 ];
 const mix = (hex: string, to: number, amount: number) => `#${[1, 3, 5].map(i => Math.round(parseInt(hex.slice(i, i + 2), 16) * (1 - amount) + to * amount).toString(16).padStart(2, "0")).join("")}`;
 
@@ -42,7 +42,9 @@ function RoomScene({ room, progress, side, lit, finish, edge }: { room: RoomRend
   // Moving leaves run in front of the neighbour that they overlap.
   panels.sort((a, b) => Number(shifts[a] !== 0) - Number(shifts[b] !== 0));
   const v = finish?.value ?? "";
-  const fill = finish?.kind === "fabric" ? `url(#${id}-fabric)` : finish?.kind === "cane" ? `url(#${id}-cane)` : v;
+  // Cane tiles at the same real size as on the Bella kitchen doors: about 58 across a wardrobe door.
+  const cane = (room.seams[1][0] - room.seams[0][0]) / 58;
+  const fill =finish?.kind === "fabric" ? `url(#${id}-fabric)` : finish?.kind === "cane" ? `url(#${id}-cane)` : v;
   return <svg className={`sl-room-scene${lit ? " is-lit" : ""}`} viewBox={`0 0 ${room.width} ${room.height}`} role="img" aria-label={`${room.name}, ${room.doors} sliding doors${finish ? `, ${finishOptions[finish.kind].label} ${optionLabel(finish)}` : ""}, ${progress ? `${side} section ${progress}% open` : "closed"}${lit ? ", interior light on" : ", interior light off"}`}>
     <defs>
       <clipPath id={`${id}-opening`}><polygon points={polygon} /></clipPath>
@@ -51,7 +53,7 @@ function RoomScene({ room, progress, side, lit, finish, edge }: { room: RoomRend
       <linearGradient id={`${id}-sheen`} x1="0" y1="0" x2="1" y2="1"><stop offset=".3" stopColor="#fff" stopOpacity="0" /><stop offset=".45" stopColor="#fff" stopOpacity={finish?.kind === "lacquer" ? .3 : .13} /><stop offset=".58" stopColor="#fff" stopOpacity="0" /></linearGradient>
       <linearGradient id={`${id}-shade`} x1="0" y1="0" x2="0" y2="1"><stop stopColor="#fff" stopOpacity=".12" /><stop offset=".55" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".2" /></linearGradient>
       <pattern id={`${id}-fabric`} width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill={v} /><path d="M0 .5H4" stroke="#fff" strokeOpacity=".16" /><path d="M.5 0V4" stroke="#000" strokeOpacity=".13" /></pattern>
-      <pattern id={`${id}-cane`} width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill={v} fillOpacity=".16" /><path d="M-2 18 18-2M-2 2 2-2M14 18l4-4M-2-2l20 20M-2 14l4 4M14-2l4 4" stroke={v} strokeWidth="3.4" /><path d="M0 8H16" stroke={v} strokeWidth="1.6" strokeOpacity=".8" /><circle cx="8" cy="0" r="2.2" fill="#14100c" fillOpacity=".3" /></pattern>
+      {finish?.kind === "cane" && <pattern id={`${id}-cane`} width={cane} height={cane} patternUnits="userSpaceOnUse"><image href={v} width={cane} height={cane} /></pattern>}
       {edge && <linearGradient id={`${id}-edge`} x1="0" y1="0" x2="1" y2="1"><stop stopColor={mix(edge, 255, .35)} /><stop offset=".4" stopColor={edge} /><stop offset="1" stopColor={mix(edge, 0, .3)} /></linearGradient>}
       {panels.map(i => {
         const a = room.seams[i], b = room.seams[i + 1];
@@ -91,7 +93,8 @@ function RoomScene({ room, progress, side, lit, finish, edge }: { room: RoomRend
               ? <image href={v} x={box.x} y={box.y} width={box.w} height={box.h} preserveAspectRatio="xMidYMid slice" />
               : <rect x={box.x} y={box.y} width={box.w} height={box.h} fill={fill} className={finish.kind === "tinted" ? "sl-room-tint" : undefined} />}
             {finish.kind !== "tinted" && finish.kind !== "cane" && <polygon points={glass} fill={`url(#${id}-shade)`} />}
-            <polygon points={glass} fill={`url(#${id}-sheen)`} stroke="#000" strokeOpacity=".45" strokeWidth="2.5" />
+            {/* Cane is matte, as on the Bella doors: no glass sheen over it. */}
+            <polygon points={glass} fill={finish.kind === "cane" ? "none" : `url(#${id}-sheen)`} stroke="#000" strokeOpacity=".45" strokeWidth="2.5" />
           </g>}
           {/* Edge profile: the stroke is clipped to the door, so only its inner half shows, as a band along each edge. */}
           {edge && <polygon points={quad([[room.seams[i][0], room.seams[i][1]], [room.seams[i + 1][0], room.seams[i + 1][1]], [room.seams[i + 1][0], room.seams[i + 1][2]], [room.seams[i][0], room.seams[i][2]]])} fill="none" stroke={`url(#${id}-edge)`} strokeWidth={2 * Math.max(6, (room.seams[i + 1][0] - room.seams[i][0]) * .035)} clipPath={`url(#${id}-door-${i})`} className="sl-room-edge" />}
@@ -101,13 +104,12 @@ function RoomScene({ room, progress, side, lit, finish, edge }: { room: RoomRend
   </svg>;
 }
 
-// Nav links pick a finish: /series/sliding-wardrobe-shutters#sliding--lacquered opens the studio on it.
-// Highlighter is a design rather than a finish here, so it opens the room render whose doors carry it.
-const pickFor: Record<string, { room?: number; finish?: Finish["kind"] }> = {
-  "sliding--tinted": { finish: "tinted" },
-  "sliding--lacquered": { finish: "lacquer" },
-  "sliding--digital-print": { finish: "print" },
-  "sliding--highlighter": { room: 34 },
+// Nav links pick a room render: /series/sliding-wardrobe-shutters#sliding--luxe opens the studio on it.
+// Essential, Luxe and Premium are the client's three ranges, each shown by one of the studio's wardrobes.
+const pickFor: Record<string, { room: number }> = {
+  "sliding--essential": { room: 28 },
+  "sliding--luxe": { room: 19 },
+  "sliding--premium": { room: 38 },
   "sliding--2-doors": { room: slidingRooms.find(r => r.doors === 2)!.id },
   "sliding--3-doors": { room: slidingRooms.find(r => r.doors === 3)!.id },
   "sliding--4-doors": { room: slidingRooms.find(r => r.doors === 4)!.id },
@@ -120,16 +122,15 @@ export default function SlidingRoomStudio() {
     if (hash in pickFor) document.getElementById("sliding-studio")?.scrollIntoView({ block: "start" });
   }, [hash]);
   const room = slidingRooms.find(r => r.id === pick?.room) ?? slidingRooms[0];
-  const finish = pick?.finish ? { kind: pick.finish, value: finishOptions[pick.finish].options[0].value } : null;
-  return <SlidingRooms key={hash} initialRoom={room} initialFinish={finish} />;
+  return <SlidingRooms key={hash} initialRoom={room} />;
 }
 
-function SlidingRooms({ initialRoom, initialFinish }: { initialRoom: RoomRender; initialFinish: Finish | null }) {
+function SlidingRooms({ initialRoom }: { initialRoom: RoomRender }) {
   const [selected, setSelected] = useState(initialRoom);
   const [progress, setProgress] = useState(0);
   const [side, setSide] = useState<RevealSide>(initialRoom.doors === 2 ? "left" : "centre");
   const [lit, setLit] = useState(false);
-  const [finish, setFinish] = useState<Finish | null>(initialFinish); // null: the render's own design
+  const [finish, setFinish] = useState<Finish | null>(null); // null: the render's own design
   const [custom, setCustom] = useState<string | null>(null);
   const [edgeId, setEdgeId] = useState<string | null>(null); // null: the render's own frame
   const edge = edgeColors.find(e => e.id === edgeId) ?? null;
