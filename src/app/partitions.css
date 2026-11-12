@@ -362,9 +362,21 @@
 .partition-room .glass-mirror .partition-glass { background: linear-gradient(120deg, #707c80 0%, #c3ced0 22%, #f0f4f2 29%, #a2adae 38%, #647476 60%, #cbd4d3 80%, #8b989b 100%); }
 .partition-room .glass-brown-mirror .partition-glass { background: linear-gradient(120deg, #4f4035 0%, #99826b 22%, #c6af91 29%, #806953 38%, #493e34 60%, #a18d75 80%, #655343 100%); }
 .partition-room .glass-line-fluted .partition-glass { background: repeating-linear-gradient(90deg, #ffffff18 0, #ffffff70 1px, #3d444448 2px, #ffffff0a 4px); backdrop-filter: blur(1px); }
-.partition-room .glass-clear-fluted .partition-glass { background: repeating-linear-gradient(90deg, #ffffff08 0, #ffffff10 9px, #ffffff65 11px, #4d59594a 13px, #ffffff12 15px, #ffffff08 18px); backdrop-filter: blur(1.5px); }
-.partition-room .glass-brown-fluted .partition-glass { background: repeating-linear-gradient(90deg, #ffffff00 0, #ffffff08 9px, #efc79f66 11px, #39231770 13px, #ffffff08 15px, transparent 18px), linear-gradient(115deg, #b48b614a, #633a228c); backdrop-filter: blur(1.5px); }
-.partition-room .glass-grey-fluted .partition-glass { background: repeating-linear-gradient(90deg, #ffffff00 0, #ffffff08 9px, #c3dedc60 11px, #102d3670 13px, #ffffff08 15px, transparent 18px), linear-gradient(115deg, #74928e50, #16343bb0); backdrop-filter: blur(1.5px); }
+/* Clear, brown and grey fluted, drawn like the shower studio's fluted glass: close vertical ribs (a bright edge,
+   then a soft shadow) over a softened view, with the same sheen. --flute is the rib spacing: a fixed on-screen
+   size, so every mechanism matches Synchro whatever the width of its photo. */
+.partition-photo { --flute: 5.4px; }
+@media (max-width: 760px) { .partition-photo { --flute: 3.6px; } }
+.partition-glass-sample { --flute: 4px; }
+.partition-room :is(.glass-clear-fluted, .glass-brown-fluted, .glass-grey-fluted) .partition-glass {
+  --ribs: repeating-linear-gradient(90deg, #ffffff80 0 calc(var(--flute) * .2), transparent calc(var(--flute) * .2) calc(var(--flute) * .36), #20302e33 calc(var(--flute) * .36) calc(var(--flute) * .56), transparent calc(var(--flute) * .56) var(--flute));
+  --sheen: linear-gradient(135deg, #ffffff1f, #ffffff05 38%, #ffffff1a 62%, #ffffff05);
+  -webkit-backdrop-filter: blur(3.5px);
+  backdrop-filter: blur(3.5px);
+}
+.partition-room .glass-clear-fluted .partition-glass { background: var(--sheen), var(--ribs), #eef3f11f; }
+.partition-room .glass-brown-fluted .partition-glass { background: var(--sheen), var(--ribs), linear-gradient(115deg, #b48b614a, #633a228c); }
+.partition-room .glass-grey-fluted .partition-glass { background: var(--sheen), var(--ribs), linear-gradient(115deg, #74928e50, #16343bb0); }
 .partition-glass-options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px 4px; }
 .partition-glass-options button { min-width: 0; align-content: start; line-height: 1.35; text-align: center; padding: 7px 2px; }
 .partition-glass-sample { width: 40px; max-width: 100%; }
