@@ -8,7 +8,14 @@ import { whatsappLink } from "@/lib/site";
 type Version = "front" | "back" | "frame";
 const versions: { id: Version; label: string }[] = [{ id: "front", label: "Front Lit" }, { id: "back", label: "Backlit" }, { id: "frame", label: "Framed" }];
 const tones = [{ id: "warm", label: "Warm", color: "#ffd292" }, { id: "neutral", label: "Natural", color: "#fff3df" }, { id: "cool", label: "Cool", color: "#d8efff" }];
-const frames = [{ label: "Black", color: "#252525" }, { label: "Brush Gold", color: "#b69250" }, { label: "Rose Gold", color: "#bc8e7c" }];
+// The client's mirror frame colours, in their order. shine: the highlight that runs across the metal.
+const frames = [
+  { label: "Black", color: "#252525", shine: "#74797b" },
+  { label: "Brush Gold", color: "#b69250", shine: "#eee0bd" },
+  { label: "Rose Gold", color: "#bc8e7c", shine: "#f5cfbf" },
+  { label: "SS", color: "#9ea3a8", shine: "#f4f6f7" }, // stainless steel, polished
+  { label: "Aluminium", color: "#c4c7ca", shine: "#e3e5e7" }, // brushed, softer sheen
+];
 
 /** Place a 0-100 shape path at its real size in room coordinates, so strokes and the reflection are never stretched. */
 function placePath(d: string, x: number, y: number, w: number, h: number) {
@@ -61,7 +68,7 @@ function MirrorStudio({ initial, initialFrameLight }: { initial: Version; initia
               <clipPath id={`${id}-shape`}><path d={outline} /></clipPath>
               <filter id={`${id}-halo`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13" /></filter>
               <filter id={`${id}-soft`} x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="3" /></filter>
-              <linearGradient id={`${id}-metal`} x1="0" y1="0" x2="1" y2="1"><stop stopColor={frame.color} /><stop offset=".35" stopColor={frame.label === "Black" ? "#74797b" : frame.label === "Rose Gold" ? "#f5cfbf" : "#eee0bd"} /><stop offset=".55" stopColor={frame.color} /><stop offset="1" stopColor={frame.color} /></linearGradient>
+              <linearGradient id={`${id}-metal`} x1="0" y1="0" x2="1" y2="1"><stop stopColor={frame.color} /><stop offset=".35" stopColor={frame.shine} /><stop offset=".55" stopColor={frame.color} /><stop offset="1" stopColor={frame.color} /></linearGradient>
               <linearGradient id={`${id}-sheen`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#c0d3df" stopOpacity=".12" /><stop offset=".5" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#fff" stopOpacity=".09" /></linearGradient>
             </defs>
             <image href="/images/mirror-studio/room.png" width="1122" height="1402" />
