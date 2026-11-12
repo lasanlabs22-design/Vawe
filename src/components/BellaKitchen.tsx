@@ -133,7 +133,7 @@ function Bella({ initialProfile }: { initialProfile: ProfileId }) {
     "--pane-opacity": kind === "fabric" ? 0.9 : 1,
   } as React.CSSProperties;
   return (
-    <section className="bella dark on-dark" id="bella-studio">
+    <section className="bella dark on-dark tone-warm" id="bella-studio">
       <div className="container bella-heading">
         <div><div className="t-eyebrow">Bella · Kitchen collection</div><h2 className="t-h2">A little movement.<br /><em>A different space.</em></h2></div>
         <p className="t-lead">Explore Bella in a real kitchen. Pick a profile, frame colour and glass or insert, then open the shutters and switch the warm lighting on.</p>
