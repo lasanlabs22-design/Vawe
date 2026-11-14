@@ -194,7 +194,10 @@ function Bella({ initialProfile }: { initialProfile: ProfileId }) {
               {groups.map((g) => <button key={g.label} type="button" aria-pressed={group === g} onClick={() => { if (group !== g) setKind(g.kinds[0]); }}>{g.label}</button>)}
             </div>
             {group.kinds.length > 1 && !group.mixed && <div className="bella-kinds">
-              {group.kinds.map((k) => <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}>{findLabel(inserts, k)}</button>)}
+              {group.kinds.map((k) => {
+                const o = optionsFor[k]?.find((x) => x.id === picks[k]) ?? optionsFor[k]?.[0];
+                return <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}><span className="bella-kind-sample" style={{ "--sw": pane(k, o) } as React.CSSProperties} aria-hidden="true" />{findLabel(inserts, k)}</button>;
+              })}
             </div>}
             {swatches.length > 0 && <div className="swatches bella-options">
               {swatches.map(({ k, o }) => {

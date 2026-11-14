@@ -63,10 +63,16 @@
 .bella-groups button { padding: 10px 14px; border: 1px solid #ffffff2e; border-radius: 10px; font-size: 13px; font-weight: 500; color: #ffffffc4; text-align: left; transition: background .25s, color .25s, border-color .25s; }
 .bella-groups button:hover { border-color: #ffffff85; color: #fff; }
 .bella-groups button[aria-pressed="true"] { background: #fff; border-color: #fff; color: #181c19; }
-.bella-kinds { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-.bella-kinds button { padding: 6px 12px; border: 1px solid #ffffff2e; border-radius: 999px; font-size: 12px; color: #ffffffc4; transition: color .25s, border-color .25s; }
+/* Each regular glass shows a sample tile, like the partition studio's glass options. */
+.bella-kinds { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 12px; }
+.bella-kinds button { display: grid; justify-items: center; gap: 7px; min-width: 0; padding: 7px 2px; border: 1px solid transparent; border-radius: 4px; font-size: 11px; color: #ffffffc4; transition: color .25s, border-color .25s, background .25s; }
 .bella-kinds button:hover { border-color: #ffffff85; color: #fff; }
-.bella-kinds button[aria-pressed="true"] { border-color: var(--pink); color: #fff; }
+.bella-kind-sample { position: relative; display: block; width: 40px; max-width: 100%; height: 48px; border: 2px solid #3a3a3e; overflow: hidden;
+  /* A crop of a lit cabinet from the Bella photo, so each glass shows what it does to the view. */
+  background: url(/images/bella-kitchen.jpeg) 29.5% 20.7% / 1287% auto; }
+.bella-kind-sample::after { content: ""; position: absolute; inset: 0; background: var(--sw); }
+.bella-kinds button:nth-child(4) .bella-kind-sample::after { -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+.bella-kinds button[aria-pressed="true"] { border-color: var(--pink); background: #ffffff0b; color: #fff; }
 .bella-options { margin-top: 14px; gap: 10px; }
 .bella-options .sw-metal { width: 30px; height: 30px; }
 /* All eight 45 mm finishes on one row. */

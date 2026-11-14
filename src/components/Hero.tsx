@@ -120,7 +120,7 @@ export default function Hero() {
             <div className="hero-kicker">Vawe Interio · Bengaluru</div>
             <h1>
               <em>Beyond</em> the ordinary.{" "}
-              <span className="hero-intro-sub">Glass wardrobes, partitions &amp; mirrors, crafted for every room.</span>
+              <span className="hero-intro-sub">Glass, sliding and partition shutters, plus glass and mirror work, crafted for every room.</span>
             </h1>
             <button type="button" className="hero-step" onClick={stepInside} tabIndex={open ? -1 : 0}>
               Step inside <span aria-hidden="true">↓</span>
