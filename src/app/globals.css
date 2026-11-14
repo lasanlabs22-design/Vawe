@@ -1526,7 +1526,9 @@ button {
 .hero-intro-sub {
   display: block;
   width: fit-content;
+  max-width: 52ch;
   margin: 20px auto 0;
+  text-wrap: balance;
   padding: 10px 22px;
   border-radius: 6px;
   background: rgba(12, 11, 9, 0.45);
